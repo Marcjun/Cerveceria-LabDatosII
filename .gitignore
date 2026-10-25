@@ -5,4 +5,6 @@ env/
 __pycache__/
 *.pyc
 
-data/Totalizadores*.xlsx
+data/raw/Totalizadores Planta 2021_2023.xlsx
+data/raw/Totalizadores Planta 2020_2022.xlsx
+data/raw/Totalizadores Planta 2022_2023.xlsx
