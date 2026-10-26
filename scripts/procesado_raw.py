@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Concatenas al directorio del proyecto el path de los excels del principio
 RAW_DIR = ROOT / "data" / "raw"
 # A donde termina mandando las cosas
-OUT_DIR = ROOT / "data" / "excels_separados"
+OUT_DIR = ROOT / "data" / "excels"
 
 # glob(coso) busca el coso dentro de la carpeta dada. Acá le doy 
 # el totalizador planta entonces me va a buscar los 3 excels y los 
@@ -86,5 +86,3 @@ for archivo in archivos:
             df_limpio.to_excel(writer, sheet_name=nombre, index=False)
             if eliminadas:
                 print(f"  {nombre[:35]:<35} {eliminadas} filas eliminadas")
-
-    print(f"  Guardado en: {destino}")
