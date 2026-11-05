@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw"
 # A donde termina mandando las cosas
 OUT_DIR = ROOT / "data" / "excels"
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # glob(coso) busca el coso dentro de la carpeta dada. Acá le doy 
 # el totalizador planta entonces me va a buscar los 3 excels y los 
