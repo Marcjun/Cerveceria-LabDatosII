@@ -3,7 +3,7 @@ rellenar
 ### 1 - Clonar el repositorio
 ```
 git clone https://github.com/Marcjun/Cerveceria-LabDatosII
-cd <Cerveceria-LabDatosII>
+cd Cerveceria-LabDatosII
 ```
 
 ### 2 - Crear el enviroment
