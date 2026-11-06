@@ -44,8 +44,5 @@ conda activate cervecera_env
 python src/procesado_raw.py
 python src/auxiliar_functions.py verify
 ```
-conda activate cervecera_env
-pip install uv
-uv pip install -r requirements.txt
-```
+
 
