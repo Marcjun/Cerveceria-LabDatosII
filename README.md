@@ -1,8 +1,14 @@
 rellenar
+### 0 - Abrir CMD
+Escribir y seleccionar en la busqueda de Windows "cmd" 
 
 ### 1 - Clonar el repositorio
 ```
 git clone https://github.com/Marcjun/Cerveceria-LabDatosII
+```
+Presionar tecla Enter luego de cada comando, para asegurar su ejecucion
+
+```
 cd Cerveceria-LabDatosII
 ```
 
@@ -11,10 +17,20 @@ Asegurarse de tener conda instalado.
 
 ``` 
 conda create -n cervecera_env python=3.12 -y
+```
+
+```
 conda activate cervecera_env
+```
+
+```
 pip install uv
+```
+
+```
 uv pip install -r requirements.txt
 ```
+
 Siempre tener cervecera_env activado. En caso que se desactive, correr:
 ``` 
 conda activate cervecera_env
@@ -25,5 +41,6 @@ conda activate cervecera_env
 **Rellenar como poner los datos de los 3 totalizadores, y cambiarle el espacio en el - a uno**
 
 ```
+python src/procesado_raw.py
 python src/auxiliar_functions.py verify
 ```
