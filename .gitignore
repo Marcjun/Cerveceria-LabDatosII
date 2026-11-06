@@ -1,10 +1,9 @@
-.venv/
-venv/
-env/
-
 __pycache__/
 *.pyc
 
 *.xlsx
+*.csv
 
 .ipynb_checkpoints/
+
+estructura.txt
