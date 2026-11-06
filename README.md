@@ -1,4 +1,6 @@
 rellenar
+### 0 - Abrir CMD
+Escribir y seleccionar en la busqueda de Windows "cmd" 
 
 ### 1 - Clonar el repositorio
 ```
