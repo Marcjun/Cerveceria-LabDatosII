@@ -85,3 +85,5 @@ for archivo in archivos:
 
     # CSV con todas las hojas unidas
     unido = unir_hojas(limpias)
+    unido.to_csv(OUT_DIR / f"{base}.csv", index=False, date_format="%d/%m/%Y")
+    print(f"  -> {base}.csv ({unido.shape[0]} filas x {unido.shape[1]} cols)")
