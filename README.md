@@ -25,5 +25,6 @@ conda activate cervecera_env
 **Rellenar como poner los datos de los 3 totalizadores, y cambiarle el espacio en el - a uno**
 
 ```
+python src/procesado_raw.py
 python src/auxiliar_functions.py verify
 ```
