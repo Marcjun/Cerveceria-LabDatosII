@@ -83,7 +83,6 @@ for archivo in archivos:
 
     base = nombre_salida(archivo)
 
-
     # CSV con todas las hojas unidas
     unido = unir_hojas(limpias)
     unido.to_csv(OUT_DIR / f"{base}.csv", index=False, date_format="%d/%m/%Y")
