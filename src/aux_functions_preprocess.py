@@ -126,3 +126,140 @@ def nombre_salida(archivo):
     m = re.search(r"(\d{4})_(\d{4})", archivo.stem)  # el "2021_2022" del nombre
     sufijo = f"{m.group(1)}_{m.group(2)}" if m else archivo.stem
     return f"Totalizador_Formateado {sufijo}"
+
+def a_segundos(horas):
+    """Serie de horas en texto ('23:59:00') -> segundos desde las 00:00. NaN si no se entiende."""
+    return pd.to_timedelta(horas, errors="coerce").dt.total_seconds()
+
+
+def a_float(serie):
+    """Texto con coma decimal / punto de miles -> float. Lo que no se entiende queda NaN."""
+    if pd.api.types.is_numeric_dtype(serie):
+        return serie.astype("float64")
+    txt = serie.astype("string").str.strip()
+    # punto de miles: hay 2 o más puntos, o hay punto y coma a la vez
+    miles = (txt.str.count(r"\.").ge(2) | (txt.str.contains(".", regex=False) & txt.str.contains(",", regex=False))).fillna(False)
+    txt = txt.mask(miles, txt.str.replace(".", "", regex=False))
+    return pd.to_numeric(txt.str.replace(",", ".", regex=False), errors="coerce").astype("float64")
+
+
+def corregir_dias_pegados(df, frio="Consolidado EE | Frio (Kw)"):
+    """Días con más de 26 lecturas (varios días pegados bajo la misma fecha), EDA §7.3.
+    1. Corta en bloques cuando la hora vuelve para atrás y arranca en 00:xx.
+    2. Si el Frio de las 23:59 del bloque k es igual al del día DIA + k, el bloque es una copia y se saca.
+    3. Recoloca fechas: cada (DIA, bloque) va a max(DIA, anterior + 1)."""
+    max_filas = 26
+    inicio_2359 = 23 * 3600 + 59 * 60
+
+    df = df.reset_index(drop=True)
+    conteo = df.groupby("DIA").size()
+    es_pegado = df["DIA"].isin(conteo[conteo > max_filas].index)
+
+    # 1. Bloques. Las filas sueltas del final del día (partidas) no abren un bloque.
+    seg = a_segundos(df["HORA"])
+    corte = (seg.groupby(df["DIA"]).diff() < 0) & (seg < 3600) & es_pegado
+    bloque = corte.groupby(df["DIA"]).cumsum()
+
+    # 2. Desempate: Frio de las 23:59 de cada bloque contra el del día DIA + bloque
+    tmp = pd.DataFrame({"DIA": df["DIA"], "bloque": bloque, "frio": a_float(df[frio])})
+    cierre = (tmp[seg.between(inicio_2359, inicio_2359 + 59)]
+              .groupby(["DIA", "bloque"])["frio"].first().reset_index())
+    base = cierre[cierre["bloque"] == 0].set_index("DIA")["frio"]
+    extra = cierre[cierre["bloque"] > 0].reset_index(drop=True)
+    frio_siguiente = base.reindex(extra["DIA"] + pd.to_timedelta(extra["bloque"], unit="D")).reset_index(drop=True)
+    copias = extra[(extra["frio"] - frio_siguiente).abs() < 1e-6]
+    copias = set(zip(copias["DIA"], copias["bloque"]))
+
+    claves = list(zip(df["DIA"], bloque))
+    queda = [k not in copias for k in claves]
+    df = df[queda].copy()
+    claves = [k for k, q in zip(claves, queda) if q]
+
+    # 3. Fechas: los días faltantes (31, 29-31/08) absorben el corrimiento
+    nueva_fecha, ultima = {}, None
+    for dia, b in sorted(set(claves)):
+        ultima = dia if ultima is None else max(dia, ultima + pd.Timedelta(days=1))
+        nueva_fecha[(dia, b)] = ultima
+    df["DIA"] = [nueva_fecha[k] for k in claves]
+    return df.reset_index(drop=True)
+
+
+def recortar_julio_agosto(df):
+    """Archivos que arrancan el 01/07 y no son el primero: no conocen el corrimiento
+    del archivo anterior, así que jul-ago de su primer año se toman del anterior."""
+    inicio = pd.Timestamp(year=df["DIA"].min().year, month=9, day=1)
+    return df[df["DIA"] >= inicio].copy()
+
+
+def sacar_dias_cortos(df):
+    """Saca los días con menos de 20 lecturas (EDA §7.4)."""
+    min_lecturas = 20
+    lecturas = df.groupby("DIA")["DIA"].transform("size")
+    return df[lecturas >= min_lecturas].copy()
+
+
+def filtrar_2359(df):
+    """Deja solo las filas con hora 23:59:xx (23:59:00, 23:59:01, 23:59:59)."""
+    seg = a_segundos(df["HORA"].astype("string"))
+    inicio = 23 * 3600 + 59 * 60          # 23:59:00
+    fin = inicio + 59                     # 23:59:59
+    return df[(seg >= inicio) & (seg <= fin)].copy()
+
+
+def convertir_a_float(df):
+    """Pasa a float todas las columnas menos DIA y HORA (EDA §7.7)."""
+    df = df.copy()
+    cols = df.columns.drop(["DIA", "HORA"], errors="ignore")
+    df[cols] = df[cols].apply(a_float)
+    # La asignación deja un bloque por columna (PerformanceWarning en los pasos
+    # siguientes); copy() junta todo de nuevo. No cambia los datos.
+    df[cols] = df[cols].apply(a_float)
+    return df
+
+
+def unir_archivos(dfs):
+    """Une los archivos (ya filtrados a 23:59), saca HORA, ARCHIVO y las Unnamed,
+    y deja una fila por día (EDA §7.8, §7.9, §7.10):
+    dentro de cada día gana la fila con menos nulos (si empatan, la que venía primero)
+    y sus huecos se rellenan con las otras filas del mismo día."""
+    partes = []
+    for nombre, df in dfs.items():
+        f = df.copy()
+        f.insert(0, "ARCHIVO", nombre)
+        partes.append(f)
+    total = (pd.concat(partes, ignore_index=True)
+             .sort_values(["DIA", "HORA"], kind="stable").reset_index(drop=True))
+
+    total = total.drop(columns=["HORA", "ARCHIVO"])
+    total = total.drop(columns=[c for c in total.columns if "Unnamed" in c])
+    # El concat de archivos con columnas distintas deja el df en cientos de bloques
+    # (PerformanceWarning en todos los pasos siguientes); copy() lo junta. No cambia los datos.
+    total = total.copy()
+
+    cols_datos = total.columns.drop("DIA")
+    total["_nulos"] = total[cols_datos].isna().sum(axis=1)
+    total["_orden"] = range(len(total))
+    ordenado = total.sort_values(["DIA", "_nulos", "_orden"])
+    # first() toma, por columna, el primer valor no nulo del grupo
+    unido = ordenado.groupby("DIA", sort=True)[list(cols_datos)].first().reset_index()
+    assert unido["DIA"].is_unique
+    return unido
+
+
+def rellenar_dias_faltantes(df):
+    """Días faltantes entre el mínimo y el máximo: promedio de los 2 días anteriores
+    y los 2 posteriores (EDA §7.12)."""
+    rango = pd.date_range(start=df["DIA"].min(), end=df["DIA"].max(), freq="D")
+    faltantes = rango.difference(df["DIA"].dt.normalize())
+    df = df.set_index("DIA").reindex(rango).rename_axis("DIA")
+    vecinos = pd.concat([df.shift(k) for k in (2, 1, -1, -2)])
+    promedio = vecinos.groupby(level=0).mean(numeric_only=True)
+    df.loc[faltantes] = promedio.loc[faltantes]
+    return df.reset_index()
+
+
+def agregar_target(df, frio="Consolidado EE | Frio (Kw)"):
+    """target = Frio (Kw) del día siguiente. Saca las filas sin target (EDA §7.13)."""
+    df = df.sort_values("DIA").reset_index(drop=True)
+    df["target"] = df[frio].shift(-1)
+    return df.dropna(subset=["target"]).reset_index(drop=True)

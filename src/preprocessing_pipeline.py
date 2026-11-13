@@ -6,6 +6,9 @@ import pandas as pd
 from aux_functions_preprocess import (
     HOJAS_EXCLUIDAS, HOJAS_REQUERIDAS, ErrorEstructura,
     procesar_hoja, unir_hojas, validar_estructura,
+    corregir_dias_pegados, recortar_julio_agosto, sacar_dias_cortos,
+    filtrar_2359, convertir_a_float, unir_archivos,
+    rellenar_dias_faltantes, agregar_target,
 )
 
 
@@ -57,9 +60,43 @@ def cargar_excels(rutas):
         raise FileNotFoundError("No se encontró ningún Excel para procesar.")
     return {ruta.stem: formatear_excel(ruta) for ruta in rutas}
 
+def preparar_archivos(dfs):
+    """Pasos del EDA que se hacen archivo por archivo, en el mismo orden que la notebook."""
+    preparados = {}
+    for i, (nombre, df) in enumerate(dfs.items()):
+        df = corregir_dias_pegados(df)
+        if i > 0:                       # con un solo Excel (predict.py) no se aplica
+            df = recortar_julio_agosto(df)
+        df = sacar_dias_cortos(df)
+        df = filtrar_2359(df)
+        if df.empty:
+            raise ErrorEstructura(
+                f"'{nombre}': después de la limpieza no quedó ningún día con lectura de cierre "
+                "(HORA entre 23:59:00 y 23:59:59). Sin esa lectura no se puede armar el total diario.")
+        preparados[nombre] = convertir_a_float(df)
+        preparados[nombre] = convertir_a_float(df)
+    return preparados
+
+
+def armar_dataset(dfs, con_target=True):
+    """dict `dfs` (salida de cargar_excels) -> una fila por día, como datos_base.csv del EDA.
+    con_target=False para predict.py: no hay día siguiente y no se puede perder el último día."""
+    df = rellenar_dias_faltantes(unir_archivos(preparar_archivos(dfs)))
+    return agregar_target(df) if con_target else df
+
+
+def construir_dataset(rutas, con_target=True):
+    """Excel(s) crudo(s) -> una fila por día. Punto de entrada para train y predict."""
+    return armar_dataset(cargar_excels(rutas), con_target)
+
 
 if __name__ == "__main__":
     raw_dir = Path(__file__).resolve().parent.parent / "data" / "raw"
-    dfs = cargar_excels(raw_dir.glob("Totalizadores Planta *.xlsx"))
+    rutas = list(raw_dir.glob("Totalizadores Planta *.xlsx"))
+
+    dfs = cargar_excels(rutas)
     for nombre, df in dfs.items():
         print(f"{nombre}: {df.shape[0]} filas x {df.shape[1]} cols")
+
+    dataset = armar_dataset(dfs)
+    print(f"Dataset final: {dataset.shape} | {dataset['DIA'].min().date()} -> {dataset['DIA'].max().date()}")
