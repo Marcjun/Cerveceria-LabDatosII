@@ -1,9 +1,9 @@
 {
-  "data/processed/datos_base.csv": "a2c0849b456ed777436e5fafaa3083d251aa3c0992b323f5a22a8880b314b3e6",
-  "data/processed/df_total_temp.xlsx": "dc191e8a99b71598fd6e92c2486f50e89021370f0bba860b17c97ee0028f7c8d",
-  "data/raw/Totalizador_Formateado 2020_2022.csv": "fc177dbada55e29902766014e20ace05ff20ca4345be1f53899f8c913b737729",
-  "data/raw/Totalizador_Formateado 2021_2023.csv": "b0166bf9adfe40290c900998458919fa1d87d3c237f17d31d419ab443f63028b",
-  "data/raw/Totalizador_Formateado 2022_2023.csv": "8a1dd9e49c278af7b3322905189afd330b8faed1138895e7c48437a398ffccc4",
+  "data/processed/control_union_TEMP.xlsx": "2117f7c33d9bfa7fe857d74b943076c202be907217da216505d8f44792407e11",
+  "data/processed/datos_base.csv": "6fe871017e098fa3ed6b5dd38729a53ff7c2fc516e069bd75cfdd007b7cd465c",
+  "data/raw/Totalizador_Formateado 2020_2022.csv": "c68ce31d0f8758c1df7646d022270efa7c54c446869827ab0fdf24f489add504",
+  "data/raw/Totalizador_Formateado 2021_2023.csv": "e792598bea58b45a9602f99c147e7b1eff9b85898353f1388dde35ab20ae82d3",
+  "data/raw/Totalizador_Formateado 2022_2023.csv": "c12ba6ba27f4163952f55f3eefc03d977302f7dabd2c004f845ba22f1a2bda2e",
   "data/raw/Totalizadores Planta 2020_2022.xlsx": "7bb3474c1686712eed9634b1afc757540766dad56c15580a866a3145ad9c53d7",
   "data/raw/Totalizadores Planta 2021_2023.xlsx": "b4dbfacd0fd8d7720ec6dfc09dc593fac479d78a7c17ea671692590dc85f90fb",
   "data/raw/Totalizadores Planta 2022_2023.xlsx": "aba9f9ff11e6fa477af282f14a88354f8a55c782941d5a4eb403e4c742e6df98"

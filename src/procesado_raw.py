@@ -1,3 +1,4 @@
+from datetime import datetime, time
 from pathlib import Path
 import re
 
@@ -36,6 +37,17 @@ def limpiar_dias(serie):
     return fechas.where(fechas.dt.year >= AÑO_MIN_VALIDO)
 
 
+def normalizar_hora(serie):
+    """Deja todas las horas como texto 'HH:MM:SS'.
+    La mayoría ya viene así, pero algunas hojas guardan la hora como fecha+hora
+    (1900-01-01 01:00:00) y no coincidirían con las demás al unir por DIA + HORA."""
+    def a_texto(h):
+        if isinstance(h, (datetime, time)):
+            return h.strftime("%H:%M:%S")
+        return str(h).strip()
+    return serie.map(a_texto)
+
+
 def procesar_hoja(df):
     """Col 0 = DIA, col 1 = HORA. Recorta las filas sin clave válida.
     Devuelve (df_limpio, filas_eliminadas)."""
@@ -49,19 +61,25 @@ def procesar_hoja(df):
     mask = dias.notna() & df.iloc[:, 1].notna()
     out = df.loc[mask].copy()
     out["DIA"] = dias[mask]
+    out["HORA"] = normalizar_hora(out["HORA"])
     return out.reset_index(drop=True), int((~mask).sum())
 
 
 def unir_hojas(hojas_limpias):
-    """Une las hojas por DIA + HORA sin descartar filas repetidas."""
+    """Une las hojas por DIA + HORA sin descartar filas repetidas.
+    Deja las filas de cada día en el orden original del Excel."""
     tablas = []
     for nombre, df in hojas_limpias.items():
         df = df.copy()
         # 0 = primera aparición de ese DIA+HORA, 1 = segunda, ...
+        # Se usa solo para unir: sin esto el índice tiene claves repetidas y el concat falla
         df["N_REPETICION"] = df.groupby(COLS_CLAVE, dropna=False).cumcount()
         claves = COLS_CLAVE + ["N_REPETICION"]
         tablas.append(df.set_index(claves).add_prefix(f"{nombre} | "))
-    return pd.concat(tablas, axis=1, join="outer").sort_index().reset_index()
+    unido = pd.concat(tablas, axis=1, join="outer").reset_index()
+    # Ordena solo por día; "stable" no cambia el orden de las filas dentro de cada día
+    unido = unido.sort_values("DIA", kind="stable").reset_index(drop=True)
+    return unido.drop(columns="N_REPETICION")
 
 
 def nombre_salida(archivo):
@@ -78,8 +96,6 @@ for archivo in archivos:
     for nombre, df in hojas.items():
         df_limpio, eliminadas = procesar_hoja(df)
         limpias[nombre] = df_limpio
-        extra = f" | {eliminadas} filas eliminadas" if eliminadas else ""  # >>> CONTROL
-        print(f"  {nombre[:35]:<35} {df.shape[1]:>4} cols{extra}")         # >>> CONTROL
 
     base = nombre_salida(archivo)
 

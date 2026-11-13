@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 CHECKSUMS_PATH = DATA_DIR / "checksums.json"
 
-# Carpetas rastreadas. Por defecto es TODO data/ (raw, processed y lo que se
+# Carpetas rastreadas. Por defecto es todo data/ (raw, processed y lo que se
 # agregue a futuro), así ningún Excel puede quedar sin versionar.
 # Para restringir: [DATA_DIR / "raw", DATA_DIR / "processed"]
 TRACKED_DIRS = [DATA_DIR]
