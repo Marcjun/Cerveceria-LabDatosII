@@ -24,153 +24,6 @@
     "Totalizadores Produccion | Nivel Tk Restos Lev"
   ],
   "tratamientos": {
-    "Consolidado KPI | Meta EE Planta": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Planta": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Planta": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Planta": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Elab": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Bodega": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Cocina": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Envas": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Linea 2": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Linea 3": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Linea 4": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Linea 5": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Servicios": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Agua Planta de Agua": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Produccion Agua": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Elaboracion": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Bodega": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Cocina": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Envasado": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Linea 2": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Linea 3": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Linea 4": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Linea 5": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Servicios": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Sala Maq": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Frio": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Aire": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE CO2": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Caldera": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Eflu": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta EE Agua": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Elab": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Bodega": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Cocina": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Envasado": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Linea 2": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Linea 3": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Linea 4": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Linea 5": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta ET Servicios": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Elaboracion": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Cocina": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Bodega": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Envasado": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire L2": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire L3": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire L4": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire L5": [
-      "media_train_si_no_hay_meta"
-    ],
-    "Consolidado KPI | Meta Aire Servicios": [
-      "media_train_si_no_hay_meta"
-    ],
     "Consolidado KPI | EE Planta / Hl": [
       "promedio_anteriores",
       "winsor_p2_p98_si_zscore_pasada1",
@@ -3279,6 +3132,102 @@
         "Consolidado KPI | Meta Aire Servicios",
         "Consolidado KPI | Aire Servicios / Hl"
       ]
+    }
+  },
+  "metas_tras_eficiencias": [
+    "Consolidado KPI | Meta Agua Bodega",
+    "Consolidado KPI | Meta Agua Cocina",
+    "Consolidado KPI | Meta Agua Elab",
+    "Consolidado KPI | Meta Agua Envas",
+    "Consolidado KPI | Meta Agua Linea 2",
+    "Consolidado KPI | Meta Agua Linea 3",
+    "Consolidado KPI | Meta Agua Linea 4",
+    "Consolidado KPI | Meta Agua Linea 5",
+    "Consolidado KPI | Meta Agua Planta",
+    "Consolidado KPI | Meta Agua Planta de Agua",
+    "Consolidado KPI | Meta Agua Servicios",
+    "Consolidado KPI | Meta Aire Bodega",
+    "Consolidado KPI | Meta Aire Cocina",
+    "Consolidado KPI | Meta Aire Elaboracion",
+    "Consolidado KPI | Meta Aire Envasado",
+    "Consolidado KPI | Meta Aire L2",
+    "Consolidado KPI | Meta Aire L3",
+    "Consolidado KPI | Meta Aire L4",
+    "Consolidado KPI | Meta Aire L5",
+    "Consolidado KPI | Meta Aire Planta",
+    "Consolidado KPI | Meta Aire Servicios",
+    "Consolidado KPI | Meta EE Agua",
+    "Consolidado KPI | Meta EE Aire",
+    "Consolidado KPI | Meta EE Bodega",
+    "Consolidado KPI | Meta EE CO2",
+    "Consolidado KPI | Meta EE Caldera",
+    "Consolidado KPI | Meta EE Cocina",
+    "Consolidado KPI | Meta EE Eflu",
+    "Consolidado KPI | Meta EE Elaboracion",
+    "Consolidado KPI | Meta EE Envasado",
+    "Consolidado KPI | Meta EE Frio",
+    "Consolidado KPI | Meta EE Linea 2",
+    "Consolidado KPI | Meta EE Linea 3",
+    "Consolidado KPI | Meta EE Linea 4",
+    "Consolidado KPI | Meta EE Linea 5",
+    "Consolidado KPI | Meta EE Planta",
+    "Consolidado KPI | Meta EE Sala Maq",
+    "Consolidado KPI | Meta EE Servicios",
+    "Consolidado KPI | Meta ET Bodega",
+    "Consolidado KPI | Meta ET Cocina",
+    "Consolidado KPI | Meta ET Elab",
+    "Consolidado KPI | Meta ET Envasado",
+    "Consolidado KPI | Meta ET Linea 2",
+    "Consolidado KPI | Meta ET Linea 3",
+    "Consolidado KPI | Meta ET Linea 4",
+    "Consolidado KPI | Meta ET Linea 5",
+    "Consolidado KPI | Meta ET Planta",
+    "Consolidado KPI | Meta ET Servicios",
+    "Consolidado KPI | Meta Produccion Agua"
+  ],
+  "seleccion": {
+    "features": [
+      "Consolidado EE | Frio (Kw)",
+      "FRIO_media14",
+      "MES_sin",
+      "Totalizadores Energia | Kw Molino",
+      "Totalizadores Energia | Kw Admininistracion",
+      "Totalizadores Agua | Agua Cond REC",
+      "PROD_cocina_lag9",
+      "MES_cos",
+      "Totalizadores Energia | KW Secador Kaeser",
+      "PROD_bodega_lag7",
+      "Consolidado Aire | Totaliador_Aire_L4",
+      "Totalizadores Energia | KW Cond 5. 6 y 9",
+      "Totalizadores Energia | KW Cond 11. 12 y 13",
+      "Consolidado KPI | Agua Bodega / Hl",
+      "PROD_mosto_lag9",
+      "EST_cos",
+      "FRIO_lag6",
+      "Consolidado GasVapor | Vapor Envasado (Kg)",
+      "RATIO_filtrada_frio",
+      "Consolidado Aire | Aire Envasado (M3)",
+      "FRIO_media5",
+      "Consolidado EE | KW Gral Planta",
+      "Totalizadores Energia | KW Obrador Contratistas",
+      "Consolidado EE | Planta (Kw)",
+      "Consolidado EE | Sala Maq (Kw)",
+      "Consolidado KPI | Aire Planta / Hl",
+      "Consolidado KPI | ET Bodega/Hl",
+      "Consolidado Agua | Red Paste L4",
+      "Consolidado KPI | ET Servicios / Hl",
+      "Consolidado KPI | ET Planta / Hl",
+      "Consolidado KPI | Agua Elab / Hl",
+      "Consolidado KPI | Aire Elaboracion / Hl",
+      "Consolidado KPI | Aire Bodega / Hl"
+    ],
+    "lasso": {
+      "alpha": 257.8696276700211
+    },
+    "random_forest": {
+      "max_depth": 8,
+      "min_samples_leaf": 13,
+      "max_features": 0.4694860158768984
     }
   }
 }
