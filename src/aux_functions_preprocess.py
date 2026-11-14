@@ -2,6 +2,7 @@ from datetime import datetime, time
 import re
 import unicodedata
 
+import numpy as np
 import pandas as pd
 
 # Lo mínimo que tiene que traer cualquier Excel: hoja -> columnas obligatorias.
@@ -257,6 +258,31 @@ def rellenar_dias_faltantes(df):
     df.loc[faltantes] = promedio.loc[faltantes]
     return df.reset_index()
 
+
+def agregar_calendario(diario, col_fecha="DIA"):
+    """Agrega variables de calendario del día que se predice (D+1).
+
+    DIA_SEMANA: 0 = lunes ... 6 = domingo
+    MES:        1 = enero ... 12 = diciembre
+    ESTACION:   0 = invierno (dic-feb), 1 = primavera (mar-may),
+                2 = verano (jun-ago), 3 = otoño (sep-nov)  [hemisferio norte]
+    Las versiones _sin/_cos son la codificación cíclica de cada una.
+    """
+    df = diario.copy()
+    fecha_objetivo = df[col_fecha] + pd.Timedelta(days=1)
+
+    df["DIA_SEMANA"] = fecha_objetivo.dt.dayofweek
+    df["MES"] = fecha_objetivo.dt.month
+    df["ESTACION"] = (df["MES"] % 12) // 3
+    df["FIN_SEMANA"] = (df["DIA_SEMANA"] >= 5).astype(int)
+
+    ciclos = [("DS", df["DIA_SEMANA"], 7), ("MES", df["MES"] - 1, 12), ("EST", df["ESTACION"], 4)]
+    for prefijo, valor, periodo in ciclos:
+        df[f"{prefijo}_sin"] = np.sin(2 * np.pi * valor / periodo)
+        df[f"{prefijo}_cos"] = np.cos(2 * np.pi * valor / periodo)
+
+    return df
+    
 
 def agregar_target(df, frio="Consolidado EE | Frio (Kw)"):
     """target = Frio (Kw) del día siguiente. Saca las filas sin target (EDA §7.13)."""

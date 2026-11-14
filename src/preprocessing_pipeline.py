@@ -8,7 +8,7 @@ from aux_functions_preprocess import (
     procesar_hoja, unir_hojas, validar_estructura,
     corregir_dias_pegados, recortar_julio_agosto, sacar_dias_cortos,
     filtrar_2359, convertir_a_float, unir_archivos,
-    rellenar_dias_faltantes, agregar_target,
+    rellenar_dias_faltantes, agregar_target, agregar_calendario
 )
 
 
@@ -82,6 +82,7 @@ def armar_dataset(dfs, con_target=True):
     """dict `dfs` (salida de cargar_excels) -> una fila por día, como datos_base.csv del EDA.
     con_target=False para predict.py: no hay día siguiente y no se puede perder el último día."""
     df = rellenar_dias_faltantes(unir_archivos(preparar_archivos(dfs)))
+    df = agregar_calendario(df)
     return agregar_target(df) if con_target else df
 
 
@@ -90,9 +91,18 @@ def construir_dataset(rutas, con_target=True):
     return armar_dataset(cargar_excels(rutas), con_target)
 
 
+def guardar_dataset(df, ruta):
+    """Guarda el dataset diario como CSV (DIA en formato aaaa-mm-dd, sin índice),
+    con el mismo formato que datos_base.csv del EDA. Devuelve la ruta."""
+    ruta = Path(ruta)
+    ruta.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(ruta, index=False, date_format="%Y-%m-%d")
+    return ruta
+
+
 if __name__ == "__main__":
-    raw_dir = Path(__file__).resolve().parent.parent / "data" / "raw"
-    rutas = list(raw_dir.glob("Totalizadores Planta *.xlsx"))
+    data_dir = Path(__file__).resolve().parent.parent / "data"
+    rutas = list((data_dir / "raw").glob("Totalizadores Planta *.xlsx"))
 
     dfs = cargar_excels(rutas)
     for nombre, df in dfs.items():
@@ -100,3 +110,6 @@ if __name__ == "__main__":
 
     dataset = armar_dataset(dfs)
     print(f"Dataset final: {dataset.shape} | {dataset['DIA'].min().date()} -> {dataset['DIA'].max().date()}")
+
+    salida = guardar_dataset(dataset, data_dir / "processed" / "datos_preprocess.csv")
+    print("Guardado en", salida)
