@@ -3190,10 +3190,6 @@
       "Consolidado EE | Frio (Kw)",
       "FRIO_media14",
       "MES_sin",
-      "Totalizadores Energia | Kw Molino",
-      "Totalizadores Energia | Kw Admininistracion",
-      "Totalizadores Agua | Agua Cond REC",
-      "PROD_cocina_lag9",
       "MES_cos",
       "Totalizadores Energia | KW Secador Kaeser",
       "PROD_bodega_lag7",
@@ -3201,12 +3197,11 @@
       "Totalizadores Energia | KW Cond 5. 6 y 9",
       "Totalizadores Energia | KW Cond 11. 12 y 13",
       "Consolidado KPI | Agua Bodega / Hl",
+      "Totalizadores Energia | Kw Molino",
       "PROD_mosto_lag9",
       "EST_cos",
+      "Totalizadores Agua | Agua Cond REC",
       "FRIO_lag6",
-      "Consolidado GasVapor | Vapor Envasado (Kg)",
-      "RATIO_filtrada_frio",
-      "Consolidado Aire | Aire Envasado (M3)",
       "FRIO_media5",
       "Consolidado EE | KW Gral Planta",
       "Totalizadores Energia | KW Obrador Contratistas",
@@ -3214,12 +3209,11 @@
       "Consolidado EE | Sala Maq (Kw)",
       "Consolidado KPI | Aire Planta / Hl",
       "Consolidado KPI | ET Bodega/Hl",
+      "Totalizadores Energia | Kw Admininistracion",
       "Consolidado Agua | Red Paste L4",
       "Consolidado KPI | ET Servicios / Hl",
       "Consolidado KPI | ET Planta / Hl",
-      "Consolidado KPI | Agua Elab / Hl",
-      "Consolidado KPI | Aire Elaboracion / Hl",
-      "Consolidado KPI | Aire Bodega / Hl"
+      "Consolidado KPI | Agua Elab / Hl"
     ],
     "lasso": {
       "alpha": 257.8696276700211
@@ -3228,6 +3222,47 @@
       "max_depth": 8,
       "min_samples_leaf": 13,
       "max_features": 0.4694860158768984
+    }
+  },
+  "ejecucion": {
+    "script": "src/preprocessing_pipeline.py",
+    "fecha": "2026-11-14T20:25:41",
+    "entradas": [
+      "Totalizadores Planta 2020_2022.xlsx",
+      "Totalizadores Planta 2021_2023.xlsx",
+      "Totalizadores Planta 2022_2023.xlsx"
+    ],
+    "salida": {
+      "archivo": "data/processed/dataset_final.csv",
+      "filas": 1213,
+      "columnas": 29,
+      "escalado": false
+    },
+    "conjuntos": {
+      "train": {
+        "X_shape": [
+          849,
+          27
+        ],
+        "desde": "2020-07-01",
+        "hasta": "2022-10-27"
+      },
+      "val": {
+        "X_shape": [
+          182,
+          27
+        ],
+        "desde": "2022-10-28",
+        "hasta": "2023-04-27"
+      },
+      "test": {
+        "X_shape": [
+          182,
+          27
+        ],
+        "desde": "2023-04-28",
+        "hasta": "2023-10-26"
+      }
     }
   }
 }

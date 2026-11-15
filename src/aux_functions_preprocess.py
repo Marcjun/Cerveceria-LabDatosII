@@ -1,4 +1,6 @@
 from datetime import datetime, time
+import json
+from pathlib import Path
 import re
 import unicodedata
 
@@ -289,3 +291,250 @@ def agregar_target(df, frio="Consolidado EE | Frio (Kw)"):
     df = df.sort_values("DIA").reset_index(drop=True)
     df["target"] = df[frio].shift(-1)
     return df.dropna(subset=["target"]).reset_index(drop=True)
+
+
+def leer_tratamiento(ruta):
+    """Lee data_lineage.json (las decisiones que tomó la notebook de preprocesamiento)."""
+    ruta = Path(ruta)
+    if not ruta.is_file():
+        raise FileNotFoundError(f"No existe el registro de preprocesamiento: {ruta}. "
+                                "Se genera corriendo la notebook de preprocesamiento.")
+    return json.loads(ruta.read_text(encoding="utf-8"))
+
+
+def columnas_meta(datos):
+    """Columnas de metas: las que empiezan con 'Meta' después del nombre de la hoja."""
+    return [c for c in datos.columns if c.split(" | ", 1)[-1].strip().lower().startswith("meta")]
+
+
+def columnas_con_tratamiento(datos, registro, tratamiento):
+    """Columnas de `datos` que tienen ese tratamiento registrado en el JSON."""
+    return [c for c, lista in registro.get("tratamientos", {}).items()
+            if tratamiento in lista and c in datos.columns]
+
+
+def borrar_columnas(datos, registro, paso):
+    """Borra las columnas que la notebook registró en `paso`.
+    errors="ignore": el Excel de test puede no traer alguna de esas columnas."""
+    return datos.drop(columns=registro[paso], errors="ignore")
+
+
+def marcar_sin_meta(datos):
+    """Agrega no_hay_meta (1 si el día no tiene ninguna meta) y rellena las metas nulas con 1.
+    El 1 es provisorio: las eficiencias se calculan solo en días con meta."""
+    df = datos.copy()
+    metas = columnas_meta(df)
+    df["no_hay_meta"] = df[metas].isna().all(axis=1).astype(int)
+    df[metas] = df[metas].fillna(1)
+    return df
+
+
+def imputar_promedio_anteriores(datos, columnas, n=2, col_fecha="DIA", invalidar_negativos=False):
+    """Rellena cada nulo con el promedio de los `n` valores válidos anteriores.
+
+    Solo mira hacia atrás: no usa información del futuro
+    y se comporta igual en train que en predict.py.
+    Si hay varios nulos seguidos, todos reciben el promedio de los n válidos previos al hueco.
+    Si no hay ningún valor válido antes (inicio de la serie), usa el siguiente válido.
+    Si `invalidar_negativos=True`, los negativos se tratan como nulos.
+    """
+    df = datos.sort_values(col_fecha).copy()
+    if invalidar_negativos:
+        df[columnas] = df[columnas].mask(df[columnas] < 0)
+    for col in columnas:
+        s = df[col]
+        media_previa = s.dropna().rolling(n, min_periods=1).mean().reindex(s.index).ffill()
+        df[col] = s.fillna(media_previa).fillna(s.bfill())
+    return df
+
+
+def linea_de(col):
+    """Devuelve el área (Cocina, Línea 2-5, Filtro) según el nombre de la columna."""
+    nombre = col.split(" | ", 1)[-1]
+    patrones = [("Cocina", r"Cocina"), ("Filtro", r"Filtro")] + \
+               [(f"Línea {n}", rf"L(?:inea)?\s*{n}\b") for n in [2, 3, 4, 5]]
+    for area, patron in patrones:
+        if re.search(patron, nombre, flags=re.IGNORECASE):
+            return area
+    return "Otra"
+
+
+def marcar_nulos_por_area(datos, columnas):
+    """Agrega nulo_<área>: 1 si ese día faltaba algún dato del área (antes de imputar).
+    `columnas`: las que se imputan con promedio_anteriores; el área sale de linea_de."""
+    df = datos.copy()
+    for area in ["Cocina", "Línea 2", "Línea 3", "Línea 4", "Línea 5", "Filtro"]:
+        cols = [c for c in columnas if linea_de(c) == area]
+        df[f"nulo_{area}"] = df[cols].isna().any(axis=1).astype(int)
+    return df
+
+
+def separar_conjuntos(datos, registro, col_fecha="DIA"):
+    """Corta en train / val / test con las fechas que guardó la notebook (clave "split").
+    No recalcula el corte: usa fin_train y fin_val del registro."""
+    fin_train = pd.Timestamp(registro["split"]["fin_train"])
+    fin_val = pd.Timestamp(registro["split"]["fin_val"])
+    fechas = datos[col_fecha]
+    partes = {"train": fechas <= fin_train,
+              "val": (fechas > fin_train) & (fechas <= fin_val),
+              "test": fechas > fin_val}
+    return {nombre: datos[mascara].reset_index(drop=True) for nombre, mascara in partes.items()}
+
+
+def corregir_outliers(datos, registro, pasada, frio="Consolidado EE | Frio (Kw)", col_fecha="DIA"):
+    """Una pasada de outliers con los números de train guardados en el registro:
+    marca |x - media| / desvío > umbral y lleva SOLO esas celdas a p_inf / p_sup.
+    Si se corrige Frio y hay target, lo recalcula (Frio de D+1)."""
+    parametros = registro["outliers"][pasada]
+    cols = [c for c in parametros["media"] if c in datos.columns]
+    media, desvio, p_inf, p_sup = (pd.Series(parametros[k])[cols] for k in ("media", "desvio", "p_inf", "p_sup"))
+
+    x = datos[cols]
+    mascara = ((x - media) / desvio).abs() > registro["outliers"]["umbral"]
+    recortado = x.clip(lower=p_inf, upper=p_sup, axis=1)
+
+    df = datos.copy()
+    df[cols] = x.where(~mascara, recortado)
+
+    if "target" in df.columns and frio in cols and mascara[frio].any():
+        frio_nuevo = df.set_index(col_fecha)[frio]
+        df["target"] = (df[col_fecha] + pd.Timedelta(days=1)).map(frio_nuevo).fillna(df["target"])
+    return df
+
+
+def leer_temperatura(ruta):
+    """Lee el CSV de temperatura diaria de Tecate (bajado de Open-Meteo en la notebook)."""
+    ruta = Path(ruta)
+    if not ruta.is_file():
+        raise FileNotFoundError(f"No existe el archivo de temperatura: {ruta}")
+    return pd.read_csv(ruta, parse_dates=["DIA"])
+
+
+def agregar_temperatura(datos, temp, col_fecha="DIA"):
+    """Pega la temperatura del día D y su variación contra el día anterior (> 0: está subiendo).
+    La variación se calcula sobre la tabla de temperatura (calendario continuo),
+    así que funciona igual en cualquier conjunto aunque se procese por separado."""
+    temp = temp.sort_values(col_fecha).copy()
+    temp["TEMP_dif"] = temp["TEMP_media"].diff()
+    return datos.merge(temp, on=col_fecha, how="left", validate="m:1")
+
+
+def serie_con_previo(datos, columna, previo=None, col_fecha="DIA"):
+    """Serie de `columna` indexada por fecha, con los días de `previo` adelante (si se pasa)."""
+    partes = [datos[[col_fecha, columna]]] if previo is None else [previo[[col_fecha, columna]], datos[[col_fecha, columna]]]
+    return pd.concat(partes).sort_values(col_fecha).set_index(col_fecha)[columna]
+
+
+def media_movil(datos, columna, nombre, ventana, previo=None, col_fecha="DIA"):
+    """Promedio de los últimos `ventana` días, incluyendo el día D (no usa datos futuros).
+    `previo`: días anteriores a `datos`, para que los primeros días tengan historia."""
+    resultado = serie_con_previo(datos, columna, previo, col_fecha).rolling(ventana, min_periods=1).mean()
+    datos = datos.copy()
+    datos[nombre] = datos[col_fecha].map(resultado)
+    return datos
+
+
+def variacion(datos, columna, nombre, previo=None, col_fecha="DIA"):
+    """Diferencia contra el día anterior (> 0: está creciendo).
+    Si no hay día anterior (inicio de la serie, sin `previo`), queda en 0."""
+    resultado = serie_con_previo(datos, columna, previo, col_fecha).diff().fillna(0)
+    datos = datos.copy()
+    datos[nombre] = datos[col_fecha].map(resultado)
+    return datos
+
+
+def rezago(datos, columna, nombre, k, previo=None, col_fecha="DIA"):
+    """Valor de `columna` k días antes de D. Con `previo`, los primeros días toman la historia.
+    Si no hay k días anteriores (inicio de la serie), usa el primer valor disponible."""
+    resultado = serie_con_previo(datos, columna, previo, col_fecha).shift(k).bfill()
+    datos = datos.copy()
+    datos[nombre] = datos[col_fecha].map(resultado)
+    return datos
+
+
+def agregar_combinaciones(datos, ratios=None, interacciones=None):
+    """Agrega columnas calculadas con valores del mismo día (no ajusta nada con train, no necesita `previo`).
+    ratios: {nombre: (numerador, denominador)} -> numerador / denominador (0 si el denominador es 0).
+    interacciones: {nombre: (col_a, col_b)} -> col_a * col_b."""
+    ratios, interacciones = ratios or {}, interacciones or {}
+    nuevas = {}
+    for nombre, (num, den) in ratios.items():
+        nuevas[nombre] = (datos[num] / datos[den]).where(datos[den] != 0, 0)
+    for nombre, (a, b) in interacciones.items():
+        nuevas[nombre] = datos[a] * datos[b]
+    datos = datos.drop(columns=list(nuevas), errors="ignore")   # si se vuelve a correr, no duplica
+    return pd.concat([datos, pd.DataFrame(nuevas, index=datos.index)], axis=1)
+
+
+def agregar_eficiencias(datos, pares, medias):
+    """Crea efic_<X> = KPI / meta para cada par {nombre: [meta, kpi]} del registro.
+    Solo en días con meta (no_hay_meta == 0) y meta distinta de 0; el resto lleva la media de train."""
+    nuevas = {}
+    for nombre, (meta, kpi) in pares.items():
+        if meta not in datos.columns or kpi not in datos.columns:
+            continue
+        efic = (datos[kpi] / datos[meta]).where(datos["no_hay_meta"].eq(0) & datos[meta].ne(0))
+        nuevas[nombre] = efic.fillna(medias[nombre])
+    datos = datos.drop(columns=list(nuevas), errors="ignore")
+    return pd.concat([datos, pd.DataFrame(nuevas, index=datos.index)], axis=1)
+
+
+def columnas_origen(feature, registro):
+    """Columnas del Excel de las que sale una feature, según la clave "features" del registro.
+    Una columna cruda (o de calendario) se devuelve a sí misma."""
+    f = registro["features"]
+    if feature in f["medias_moviles"]:
+        origen = [f["medias_moviles"][feature][0]]
+    elif feature in f["rezagos"]:
+        origen = [f["rezagos"][feature][0]]
+    elif feature in f["variaciones"]:
+        origen = [f["variaciones"][feature]]
+    elif feature in f["ratios"]:
+        origen = list(f["ratios"][feature])
+    elif feature in f["eficiencias"]:
+        origen = list(f["eficiencias"][feature])
+    elif feature in f["temperatura"]["columnas"]:
+        return [f["temperatura"]["csv"]]
+    else:
+        return [feature]
+    # FRIO_media5_dif sale de FRIO_media5, que sale de Frio: se sigue hasta la columna cruda
+    return [c for o in origen for c in columnas_origen(o, registro)]
+
+
+def seleccionar(datos, registro, col_fecha="DIA"):
+    """Deja DIA + las features elegidas en la notebook (+ target si está).
+    Si falta alguna, falla diciendo cuáles y de qué columnas del Excel salen."""
+    features = registro["seleccion"]["features"]
+    faltan = [c for c in features if c not in datos.columns]
+    if faltan:
+        lineas = []
+        for c in faltan:
+            origen = columnas_origen(c, registro)
+            lineas.append(f"  - {c}" if origen == [c] else f"  - {c} (se calcula de: {', '.join(origen)})")
+        raise ErrorEstructura("Faltan features que el modelo necesita:\n" + "\n".join(lineas))
+    final = [col_fecha, *features] + (["target"] if "target" in datos.columns else [])
+    return datos[final].copy()
+
+
+def chequear_conjuntos(conjuntos, col_fecha="DIA"):
+    """Chequeo final: mismas columnas en los tres conjuntos, sin nulos ni infinitos
+    y solo la fecha como columna no numérica. Falla con la lista de problemas."""
+    problemas = []
+    columnas = list(conjuntos["train"].columns)
+    for nombre, df in conjuntos.items():
+        if list(df.columns) != columnas:
+            problemas.append(f"{nombre}: no tiene las mismas columnas que train")
+        if len(df) == 0:
+            problemas.append(f"{nombre}: no tiene filas")
+        no_numericas = [c for c in df.columns if c != col_fecha and not pd.api.types.is_numeric_dtype(df[c])]
+        if no_numericas:
+            problemas.append(f"{nombre}: columnas no numéricas: {no_numericas}")
+        numericas = df.select_dtypes("number")
+        con_nulos = list(numericas.columns[numericas.isna().any()])
+        if con_nulos:
+            problemas.append(f"{nombre}: columnas con nulos: {con_nulos}")
+        con_inf = list(numericas.columns[np.isinf(numericas).any()])
+        if con_inf:
+            problemas.append(f"{nombre}: columnas con infinitos: {con_inf}")
+    if problemas:
+        raise ValueError("El dataset final no pasa el chequeo:\n" + "\n".join(f"  - {p}" for p in problemas))
