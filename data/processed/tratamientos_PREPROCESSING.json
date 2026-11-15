@@ -434,16 +434,6 @@
     "umbral": 10,
     "excluir": [
       "target",
-      "DIA_SEMANA",
-      "MES",
-      "ESTACION",
-      "FIN_SEMANA",
-      "DS_sin",
-      "DS_cos",
-      "MES_sin",
-      "MES_cos",
-      "EST_sin",
-      "EST_cos",
       "Consolidado KPI | Meta EE Planta",
       "Consolidado KPI | Meta Agua Planta",
       "Consolidado KPI | Meta ET Planta",
@@ -2116,6 +2106,12 @@
         6
       ]
     },
+    "medias_mismo_dia": {
+      "FRIO_mismo_dia4": [
+        "Consolidado EE | Frio (Kw)",
+        4
+      ]
+    },
     "ratios": {
       "RATIO_mosto_frio": [
         "Consolidado Produccion | Hl de Mosto",
@@ -2356,38 +2352,49 @@
     "features": [
       "Consolidado EE | Frio (Kw)",
       "FRIO_media14",
-      "PROD_mosto_lag9",
       "Totalizadores Energia | Kw Molino",
+      "PROD_mosto_lag9",
+      "MES_sin",
+      "Totalizadores Energia | Kw Admininistracion",
+      "PROD_cocina_lag9",
+      "Totalizadores Agua | Agua Cond REC",
       "MES_cos",
       "Totalizadores Energia | KW Secador Kaeser",
       "PROD_bodega_lag7",
-      "MES_sin",
-      "Totalizadores Energia | KW Cond 11. 12 y 13",
       "Consolidado Aire | Totaliador_Aire_L4",
+      "Totalizadores Energia | KW Cond 11. 12 y 13",
       "Consolidado KPI | Agua Bodega / Hl",
       "Totalizadores Energia | KW Cond 5. 6 y 9",
       "Consolidado GasVapor | Vapor Envasado (Kg)",
       "FRIO_lag6",
-      "EST_cos",
+      "EST_invierno",
+      "Consolidado Produccion | Hl Producido Bodega",
+      "Consolidado Aire | Aire Envasado (M3)",
       "FRIO_media5",
       "Consolidado KPI | ET Bodega/Hl",
       "Totalizadores Energia | KW Obrador Contratistas",
-      "Totalizadores Energia | Kw Admininistracion",
-      "Totalizadores Energia | KW Trafo 11",
       "Consolidado KPI | Agua Elab / Hl",
+      "Totalizadores Energia | KW Trafo 11",
       "RATIO_l4_frio",
-      "Consolidado Agua | Agua Planta (Hl)",
-      "Consolidado KPI | ET Planta / Hl",
+      "FRIO_mismo_dia4",
       "Totalizadores Energia | KW Trafo 12",
-      "Consolidado KPI | Agua Planta / Hl"
+      "PROD_envasada_dif",
+      "Consolidado KPI | Aire Bodega / Hl",
+      "Totalizadores Energia | KW Mycom 2",
+      "Consolidado KPI | ET Planta / Hl",
+      "DS_sin",
+      "DS_cos",
+      "EST_primavera",
+      "EST_verano",
+      "EST_otono"
     ],
     "lasso": {
-      "alpha": 353.1419218461619
+      "alpha": 347.0266988650418
     },
     "random_forest": {
-      "max_depth": 16,
-      "min_samples_leaf": 14,
-      "max_features": 0.9572172960730372
+      "max_depth": 6,
+      "min_samples_leaf": 17,
+      "max_features": 0.9151718538409617
     }
   }
 }

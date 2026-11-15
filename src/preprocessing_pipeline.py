@@ -17,7 +17,7 @@ from aux_functions_preprocess import (
     # Split y outliers
     separar_conjuntos, corregir_outliers,
     # Feature engineering
-    leer_temperatura, agregar_temperatura, media_movil, variacion, rezago,
+    leer_temperatura, agregar_temperatura, media_movil, variacion, rezago, media_mismo_dia,
     agregar_combinaciones, agregar_eficiencias,
     # Selección y chequeo
     seleccionar, chequear_conjuntos, aplicar, registrar_paso
@@ -134,8 +134,8 @@ def limpiar(diario, registro_eda, log=None):
 
 
 def armar_dataset(dfs, registro_eda, con_target=True, log=None):
-    """dict `dfs` (salida de cargar_excels) -> una fila por día con la limpieza del EDA,
-    calendario y target. Es lo que se guarda en datos_preprocess.csv.
+    """dict `dfs` (salida de cargar_excels) -> una fila por día con la limpieza del EDA
+    y el target. Es lo que se guarda en datos_preprocess.csv.
     con_target=False para predict.py: no hay día siguiente y no se puede perder el último día."""
     df = unir(preparar_archivos(dfs, log), log)
     df = limpiar(df, registro_eda, log)
@@ -143,8 +143,6 @@ def armar_dataset(dfs, registro_eda, con_target=True, log=None):
     df = aplicar(log, df, rellenar_dias_faltantes, k, etapa="Limpieza (EDA)",
                  descripcion="Agrega los días faltantes con la mediana de los k días anteriores del mismo mes y la columna imputado",
                  parametros={"k": k}, detalle="tratamientos_EDA.json > dias_faltantes")
-    df = aplicar(log, df, agregar_calendario, etapa="Calendario",
-                 descripcion="Día de la semana, mes, estación y fin de semana del día que se predice (D+1), con su codificación seno/coseno")
     if con_target:
         df = aplicar(log, df, agregar_target, etapa="Target",
                      descripcion="target = Frio (Kw) del día siguiente; se saca el último día (no tiene target)")
@@ -202,6 +200,11 @@ def crear_features(datos, registro, temp, log=None):
             df = aplicar(log, df, rezago, columna, nombre, k, etapa=etapa,
                          descripcion=f"{nombre}: valor de {k} días antes",
                          parametros={"columna": columna, "k": k}, detalle=f"{fuente} > rezagos")
+    for nombre, (columna, semanas) in f["medias_mismo_dia"].items():
+        if columna in df.columns:
+            df = aplicar(log, df, media_mismo_dia, columna, nombre, semanas, etapa=etapa,
+                         descripcion=f"{nombre}: promedio de las últimas {semanas} semanas en el mismo día de la semana que D+1",
+                         parametros={"columna": columna, "semanas": semanas}, detalle=f"{fuente} > medias_mismo_dia")
 
     ratios = {nombre: par for nombre, par in f["ratios"].items() if set(par) <= set(df.columns)}
     df = aplicar(log, df, agregar_combinaciones, ratios=ratios, etapa=etapa,
@@ -223,6 +226,9 @@ def preprocesar(diario, registro, temp, log=None):
     Aplica lo que decidió la notebook leyendo el registro: no ajusta nada con los datos que recibe."""
     df = tratar_outliers(diario, registro, log)
     df = crear_features(df, registro, temp, log)
+    df = aplicar(log, df, agregar_calendario, etapa="Calendario",
+                 descripcion="Día de la semana y mes del día que se predice (D+1) con codificación seno/coseno, "
+                             "estación en one-hot (4 columnas) y fin de semana")
     return aplicar(log, df, seleccionar, registro, etapa="Selección",
                    descripcion="Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
                    parametros={"features": len(registro["seleccion"]["features"])},

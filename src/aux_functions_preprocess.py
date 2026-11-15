@@ -259,6 +259,9 @@ def rellenar_dias_faltantes(df, k=10):
     for f in faltantes:
         previos = observados[(observados.index < f) & (observados.index.month == f.month)].tail(k)
         base.loc[f] = previos.median()
+    # Asignar filas enteras con .loc deja el df en cientos de bloques
+    # (PerformanceWarning acá y en agregar_target); copy() lo junta. No cambia los datos.
+    base = base.copy()
     base["imputado"] = base.index.isin(faltantes)
     return base.reset_index()
 
@@ -270,7 +273,9 @@ def agregar_calendario(diario, col_fecha="DIA"):
     MES:        1 = enero ... 12 = diciembre
     ESTACION:   0 = invierno (dic-feb), 1 = primavera (mar-may),
                 2 = verano (jun-ago), 3 = otoño (sep-nov)  [hemisferio norte]
-    Las versiones _sin/_cos son la codificación cíclica de cada una.
+    DIA_SEMANA y MES llevan codificación cíclica (_sin/_cos). La estación va en
+    one-hot con 4 columnas fijas (EST_invierno ... EST_otono), aunque el lote
+    traiga una sola estación.
     """
     df = diario.copy()
     fecha_objetivo = df[col_fecha] + pd.Timedelta(days=1)
@@ -280,10 +285,13 @@ def agregar_calendario(diario, col_fecha="DIA"):
     df["ESTACION"] = (df["MES"] % 12) // 3
     df["FIN_SEMANA"] = (df["DIA_SEMANA"] >= 5).astype(int)
 
-    ciclos = [("DS", df["DIA_SEMANA"], 7), ("MES", df["MES"] - 1, 12), ("EST", df["ESTACION"], 4)]
+    ciclos = [("DS", df["DIA_SEMANA"], 7), ("MES", df["MES"] - 1, 12)]
     for prefijo, valor, periodo in ciclos:
         df[f"{prefijo}_sin"] = np.sin(2 * np.pi * valor / periodo)
         df[f"{prefijo}_cos"] = np.cos(2 * np.pi * valor / periodo)
+
+    for i, nombre in enumerate(["invierno", "primavera", "verano", "otono"]):
+        df[f"EST_{nombre}"] = (df["ESTACION"] == i).astype(int)
 
     return df
     
@@ -505,6 +513,18 @@ def rezago(datos, columna, nombre, k, previo=None, col_fecha="DIA"):
     return datos
 
 
+def media_mismo_dia(datos, columna, nombre, semanas, previo=None, col_fecha="DIA"):
+    """Promedio de `columna` en los últimos `semanas` días con el mismo día de la semana que D+1
+    (D-6, D-13, D-20, ...). Al inicio de la serie promedia los que haya; si no hay ninguno,
+    usa el primer valor disponible (como rezago)."""
+    serie = serie_con_previo(datos, columna, previo, col_fecha)
+    mismos_dias = pd.concat([serie.shift(6 + 7 * s) for s in range(semanas)], axis=1)
+    resultado = mismos_dias.mean(axis=1).bfill()
+    datos = datos.copy()
+    datos[nombre] = datos[col_fecha].map(resultado)
+    return datos
+
+
 def agregar_combinaciones(datos, ratios=None, interacciones=None):
     """Agrega columnas calculadas con valores del mismo día (no ajusta nada con train, no necesita `previo`).
     ratios: {nombre: (numerador, denominador)} -> numerador / denominador (0 si el denominador es 0).
@@ -540,6 +560,8 @@ def columnas_origen(feature, registro):
         origen = [f["medias_moviles"][feature][0]]
     elif feature in f["rezagos"]:
         origen = [f["rezagos"][feature][0]]
+    elif feature in f["medias_mismo_dia"]:
+        origen = [f["medias_mismo_dia"][feature][0]]
     elif feature in f["variaciones"]:
         origen = [f["variaciones"][feature]]
     elif feature in f["ratios"]:
