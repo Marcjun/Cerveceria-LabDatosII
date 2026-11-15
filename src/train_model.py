@@ -1,12 +1,11 @@
-"""Entrenamiento de modelos (Fase 3).
+"""Entrenamiento de modelos
 
 Funciones que usa notebooks/modelado.ipynb (baselines, búsqueda con Optuna, métricas y
 registro de experimentos) y entrenamiento final del modelo elegido:
 
-    python src/train_model.py [version]      # por defecto 1.0.0
+    python src/train_model.py <version> <modelo> <hiperparametros en JSON>
 
-El entrenamiento final lee models/seleccion_modelo.json (lo escribe la notebook), mide en
-validación con el modelo entrenado solo con train, reentrena con train + validación, guarda
+mide en validación con el modelo entrenado solo con train, reentrena con train + validación, guarda
 models/modelo_v<version>.pkl y actualiza models/model_registry.json. El test no se usa acá.
 """
 from datetime import datetime
@@ -211,17 +210,6 @@ def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_fe
     pd.DataFrame([fila]).to_csv(ruta, mode="a", header=not ruta.exists(), index=False)
 
 
-def guardar_seleccion(nombre, hiperparametros):
-    """Escribe models/seleccion_modelo.json con el modelo elegido en la notebook.
-    Es lo que lee el entrenamiento final (python src/train_model.py)."""
-    ruta = raiz_repo() / "models" / "seleccion_modelo.json"
-    ruta.parent.mkdir(parents=True, exist_ok=True)
-    seleccion = {"modelo": nombre, "hiperparametros": hiperparametros,
-                 "fecha": datetime.now().isoformat(timespec="seconds")}
-    ruta.write_text(json.dumps(seleccion, ensure_ascii=False, indent=2), encoding="utf-8")
-    return ruta
-
-
 def guardar_modelo(modelo, version):
     """Guarda el Pipeline entrenado en models/modelo_v<version>.pkl con joblib."""
     ruta = raiz_repo() / "models" / f"modelo_v{version}.pkl"
@@ -269,13 +257,11 @@ def actualizar_registro(version, ruta_modelo, nombre, hiperparametros, features,
 
 if __name__ == "__main__":
     semilla = 42
-    version = sys.argv[1] if len(sys.argv) > 1 else "1.0.0"
 
-    ruta_sel = raiz_repo() / "models" / "seleccion_modelo.json"
-    if not ruta_sel.is_file():
-        raise FileNotFoundError(f"No existe {ruta_sel}. Se genera en notebooks/modelado.ipynb (guardar_seleccion).")
-    seleccion = json.loads(ruta_sel.read_text(encoding="utf-8"))
-    nombre, params = seleccion["modelo"], seleccion["hiperparametros"]
+    if len(sys.argv) != 4:
+        raise SystemExit("Uso: python src/train_model.py <version> <modelo> <hiperparametros en JSON>")
+    version, nombre, params = sys.argv[1], sys.argv[2], json.loads(sys.argv[3])
+
     print(f"Modelo elegido: {nombre} | {params}")
 
     conjuntos, features = cargar_conjuntos()
