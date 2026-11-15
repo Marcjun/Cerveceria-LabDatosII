@@ -24,11 +24,13 @@ def normalizar_nombre(nombre):
     return " ".join(sin_tildes.split()).upper()
 
 
-def validar_estructura(hojas):
-    """Revisa que estén las hojas y columnas de HOJAS_REQUERIDAS.
+def validar_estructura(hojas, requeridas=None):
+    """Revisa que estén las hojas y columnas requeridas ({hoja: [columnas]}).
+    Sin `requeridas` usa HOJAS_REQUERIDAS (el mínimo, para entrenamiento).
     Junta todo lo que falta y falla una sola vez con la lista completa."""
+    requeridas = requeridas or HOJAS_REQUERIDAS
     faltantes = []
-    for hoja, columnas in HOJAS_REQUERIDAS.items():
+    for hoja, columnas in requeridas.items():
         if hoja not in hojas:
             faltantes.append(f"  - falta la hoja '{hoja}'")
             continue
@@ -577,6 +579,20 @@ def columnas_origen(feature, registro):
         return [feature]
     # FRIO_media5_dif sale de FRIO_media5, que sale de Frio: se sigue hasta la columna cruda
     return [c for o in origen for c in columnas_origen(o, registro)]
+
+
+def columnas_requeridas(features, registro, frio="Consolidado EE | Frio (Kw)"):
+    """Hojas y columnas del Excel que hacen falta para calcular `features`: {hoja: [columnas]}.
+    Sigue cada feature hasta sus columnas crudas con columnas_origen. Las que no tienen
+    "Hoja | " (calendario, temperatura, indicadores) las crea el pipeline y no se piden.
+    Frio se pide siempre (días pegados y features de frío)."""
+    origenes = {frio} | {c for f in features for c in columnas_origen(f, registro)}
+    requeridas = {}
+    for col in sorted(origenes):
+        if " | " in col:
+            hoja, columna = col.split(" | ", 1)
+            requeridas.setdefault(hoja, []).append(columna)
+    return requeridas
 
 
 def seleccionar(datos, registro, col_fecha="DIA"):
