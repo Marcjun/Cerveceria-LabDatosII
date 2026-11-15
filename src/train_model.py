@@ -165,7 +165,7 @@ def optimizar(nombre, espacio, X, y, n_trials=50, n_folds=4, dias_fold=91, semil
     study = optuna.create_study(direction="minimize", study_name=nombre,
                                 sampler=optuna.samplers.TPESampler(seed=semilla),
                                 pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=1))
-    study.optimize(objetivo, n_trials=n_trials, timeout=timeout, callbacks=[registrar_trial])
+    study.optimize(objetivo, n_trials=n_trials, timeout=timeout, callbacks=[registrar_trial], show_progress_bar=True)
 
     estados = pd.Series([t.state.name for t in study.trials]).value_counts()
     print(f"{nombre}: {estados.get('COMPLETE', 0)} completos, {estados.get('PRUNED', 0)} podados | "

@@ -1,0 +1,75 @@
+{
+  "latest": "1.0.0",
+  "versiones": {
+    "1.0.0": {
+      "path": "models/modelo_v1.0.0.pkl",
+      "modelo": "random_forest",
+      "hiperparametros": {
+        "n_estimators": 150,
+        "max_depth": 11,
+        "min_samples_split": 10,
+        "min_samples_leaf": 7,
+        "max_features": 0.5708487839378247,
+        "max_samples": 0.7098373760011485
+      },
+      "features": [
+        "Consolidado EE | Frio (Kw)",
+        "FRIO_media14",
+        "MES_sin",
+        "PROD_mosto_lag9",
+        "Totalizadores Energia | Kw Molino",
+        "PROD_bodega_lag7",
+        "Totalizadores Energia | Kw Admininistracion",
+        "Consolidado GasVapor | Vapor Envasado (Kg)",
+        "Totalizadores Agua | Agua Cond REC",
+        "MES_cos",
+        "Totalizadores Energia | KW Secador Kaeser",
+        "Consolidado Aire | Totaliador_Aire_L4",
+        "Totalizadores Energia | KW Cond 11. 12 y 13",
+        "Consolidado KPI | Agua Bodega / Hl",
+        "Totalizadores Energia | KW Cond 5. 6 y 9",
+        "FRIO_lag6",
+        "EST_invierno",
+        "PROD_cocina_lag9",
+        "Consolidado Produccion | Hl Producido Bodega",
+        "Consolidado Aire | Aire Envasado (M3)",
+        "FRIO_media5",
+        "Totalizadores Energia | KW Obrador Contratistas",
+        "Consolidado KPI | ET Bodega/Hl",
+        "Consolidado KPI | Agua Elab / Hl",
+        "Totalizadores Energia | KW Trafo 11",
+        "Consolidado KPI | ET Planta / Hl",
+        "FRIO_mismo_dia4",
+        "PROD_envasada_dif",
+        "RATIO_l4_frio",
+        "Consolidado Agua | Agua Planta (Hl)",
+        "Consolidado EE | Pta Agua / Eflu (Kw)",
+        "EST_primavera",
+        "EST_verano",
+        "EST_otono",
+        "DS_lunes",
+        "DS_martes",
+        "DS_miercoles",
+        "DS_jueves",
+        "DS_viernes",
+        "DS_sabado",
+        "DS_domingo"
+      ],
+      "metricas_validacion": {
+        "mae": 2214.7992391326875,
+        "rmse": 2859.788654222807,
+        "r2": 0.4539158916764485
+      },
+      "entrenado_con": {
+        "conjuntos": "train + validacion",
+        "desde": "2020-07-01",
+        "hasta": "2023-04-27",
+        "dias": 1031
+      },
+      "semilla": 42,
+      "commit": "0ae6bd5",
+      "cambios_sin_commitear": true,
+      "fecha": "2026-11-15T13:14:52"
+    }
+  }
+}

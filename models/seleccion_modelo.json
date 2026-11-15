@@ -1,0 +1,12 @@
+{
+  "modelo": "random_forest",
+  "hiperparametros": {
+    "n_estimators": 150,
+    "max_depth": 11,
+    "min_samples_split": 10,
+    "min_samples_leaf": 7,
+    "max_features": 0.5708487839378247,
+    "max_samples": 0.7098373760011485
+  },
+  "fecha": "2026-11-15T13:14:06"
+}
