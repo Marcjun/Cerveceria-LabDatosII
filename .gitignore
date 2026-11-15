@@ -13,3 +13,4 @@ __pycache__/
 estructura.txt
 
 !results/experiment_logs.csv
+!data/external/temperatura_tecate.csv
