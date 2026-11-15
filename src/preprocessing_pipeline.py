@@ -35,21 +35,22 @@ def leer_excel(ruta):
     return {nombre: df for nombre, df in hojas.items() if nombre not in HOJAS_EXCLUIDAS}
 
 
-def formatear_excel(ruta):
+def formatear_excel(ruta, requeridas=None):
     """Excel crudo -> un df con DIA, HORA y "<Hoja> | <columna>"."""
+    requeridas = requeridas or HOJAS_REQUERIDAS
     hojas = leer_excel(ruta)
-    validar_estructura(hojas)
+    validar_estructura(hojas, requeridas)
 
     limpias = {}
     for nombre, df in hojas.items():
         try:
             df_limpio, eliminadas = procesar_hoja(df, nombre)
         except ErrorEstructura as e:
-            if nombre in HOJAS_REQUERIDAS:
+            if nombre in requeridas:        
                 raise
             warnings.warn(f"{e} -> se saltea la hoja.")
             continue
-        if df_limpio.empty and nombre in HOJAS_REQUERIDAS:
+        if df_limpio.empty and nombre in requeridas:
             raise ErrorEstructura(f"Hoja '{nombre}': no tiene ninguna fila con DIA y HORA válidos.")
         limpias[nombre] = df_limpio
     unido = unir_hojas(limpias)
@@ -60,8 +61,7 @@ def formatear_excel(ruta):
     datos = unido.columns.difference(["DIA", "HORA"])
     return unido.dropna(how="all", subset=datos).reset_index(drop=True)
 
-
-def cargar_excels(rutas):
+def cargar_excels(rutas, requeridas=None):
     """Formatea cada Excel por separado. Devuelve {nombre_archivo: df} en orden
     cronológico (por nombre de archivo), como el dict `dfs` del EDA.
     Acepta una ruta sola (predict.py) o varias (entrenamiento)."""
@@ -70,7 +70,7 @@ def cargar_excels(rutas):
     rutas = sorted(Path(r) for r in rutas)
     if not rutas:
         raise FileNotFoundError("No se encontró ningún Excel para procesar.")
-    return {ruta.stem: formatear_excel(ruta) for ruta in rutas}
+    return {ruta.stem: formatear_excel(ruta, requeridas) for ruta in rutas}
 
 def preparar_archivos(dfs, log=None):
     """Pasos del EDA que se hacen archivo por archivo, en el mismo orden que la notebook."""
@@ -149,9 +149,10 @@ def armar_dataset(dfs, registro_eda, con_target=True, log=None):
     return df
 
 
-def construir_dataset(rutas, registro_eda, con_target=True, log=None):
-    """Excel(s) crudo(s) -> una fila por día. Punto de entrada para train y predict."""
-    return armar_dataset(cargar_excels(rutas), registro_eda, con_target, log)
+def construir_dataset(rutas, registro_eda, con_target=True, log=None, requeridas=None):
+    """Excel(s) crudo(s) -> una fila por día. Punto de entrada para train y predict.
+    `requeridas`: {hoja: [columnas]} que tiene que traer cada Excel (predict.py); sin él, HOJAS_REQUERIDAS."""
+    return armar_dataset(cargar_excels(rutas, requeridas), registro_eda, con_target, log)
 
 
 def guardar_dataset(df, ruta):
