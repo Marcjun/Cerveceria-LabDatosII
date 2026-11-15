@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import re
 import unicodedata
+import holidays
 
 import numpy as np
 import pandas as pd
@@ -189,11 +190,22 @@ def corregir_dias_pegados(df, frio="Consolidado EE | Frio (Kw)"):
     return df.reset_index(drop=True)
 
 
-def recortar_julio_agosto(df):
-    """Archivos que arrancan el 01/07 y no son el primero: no conocen el corrimiento
-    del archivo anterior, así que jul-ago de su primer año se toman del anterior."""
-    inicio = pd.Timestamp(year=df["DIA"].min().year, month=9, day=1)
-    return df[df["DIA"] >= inicio].copy()
+def anclar_septiembre(df):
+    """Archivos que arrancan antes del 01/09 de su primer año (EDA, "Anclaje en el 01/09"):
+    no conocen el corrimiento del archivo anterior. El 01/09 tiene atraso 0 y cada etiqueta
+    es un día real, así que los días anteriores se fechan contando etiquetas para atrás desde
+    el 01/09. Si el archivo arranca en septiembre o después, o no llega al 01/09, queda igual."""
+    inicio = df["DIA"].min()
+    ancla = pd.Timestamp(year=inicio.year, month=9, day=1)
+    if inicio >= ancla or not (df["DIA"] == ancla).any():
+        return df
+    antes = df["DIA"] < ancla
+    previos = pd.DatetimeIndex(sorted(df.loc[antes, "DIA"].unique()))
+    # El último previo es el 31/08, el anterior el 30/08, ... (uno por etiqueta, sin importar huecos)
+    nuevas = ancla - pd.to_timedelta(np.arange(len(previos), 0, -1), unit="D")
+    df = df.copy()
+    df.loc[antes, "DIA"] = df.loc[antes, "DIA"].map(dict(zip(previos, nuevas)))
+    return df
 
 
 def sacar_dias_cortos(df):
@@ -286,6 +298,10 @@ def agregar_calendario(diario, col_fecha="DIA"):
     df["MES"] = fecha_objetivo.dt.month
     df["ESTACION"] = (df["MES"] % 12) // 3
     df["FIN_SEMANA"] = (df["DIA_SEMANA"] >= 5).astype(int)
+
+    años = range(fecha_objetivo.dt.year.min(), fecha_objetivo.dt.year.max() + 1)
+    feriados = pd.to_datetime(list(holidays.country_holidays("MX", years=años)))
+    df["FERIADO"] = fecha_objetivo.dt.normalize().isin(feriados).astype(int)
 
     ciclos = [("DS", df["DIA_SEMANA"], 7), ("MES", df["MES"] - 1, 12)]
     for prefijo, valor, periodo in ciclos:
@@ -575,6 +591,8 @@ def columnas_origen(feature, registro):
         origen = list(f["eficiencias"][feature])
     elif feature in f["temperatura"]["columnas"]:
         return [f["temperatura"]["csv"]]
+    elif feature in f.get("interacciones", {}):
+        origen = list(f["interacciones"][feature])
     else:
         return [feature]
     # FRIO_media5_dif sale de FRIO_media5, que sale de Frio: se sigue hasta la columna cruda

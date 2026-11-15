@@ -1,5 +1,5 @@
 {
-  "latest": "1.0.0",
+  "latest": "2.0.0",
   "versiones": {
     "1.0.0": {
       "path": "models/modelo_v1.0.0.pkl",
@@ -70,6 +70,76 @@
       "commit": "c5d4d6a",
       "cambios_sin_commitear": true,
       "fecha": "2026-11-15T16:11:17"
+    },
+    "2.0.0": {
+      "path": "models/modelo_v2.0.0.pkl",
+      "modelo": "random_forest",
+      "hiperparametros": {
+        "n_estimators": 150,
+        "max_depth": 11,
+        "min_samples_split": 10,
+        "min_samples_leaf": 7,
+        "max_features": 0.5708487839378247,
+        "max_samples": 0.7098373760011485
+      },
+      "features": [
+        "Consolidado EE | Frio (Kw)",
+        "FRIO_media14",
+        "FRIO_media5",
+        "MES_sin",
+        "Totalizadores Energia | Kw Molino",
+        "INT_Frio (Kw)__x__Agua Planta (Hl)",
+        "Totalizadores Energia | Kw Admininistracion",
+        "Consolidado KPI | Agua Bodega / Hl",
+        "MES_cos",
+        "PROD_bodega_lag7",
+        "PROD_mosto_lag9",
+        "Totalizadores Energia | KW Cond 5. 6 y 9",
+        "Consolidado Aire | Totaliador_Aire_L4",
+        "DS_lunes",
+        "EST_invierno",
+        "Consolidado Agua | Agua Planta (Hl)",
+        "Totalizadores Energia | KW Cond 11. 12 y 13",
+        "Consolidado GasVapor | Vapor Cocina (Kg)",
+        "RATIO_filtrada_frio",
+        "Consolidado Aire | Aire Envasado (M3)",
+        "INT_Frio (Kw)__x__FRIO_mismo_dia4",
+        "Totalizadores Energia | KW Obrador Contratistas",
+        "Consolidado KPI | ET Bodega/Hl",
+        "RATIO_l4_frio",
+        "Consolidado KPI | EE Agua / Hl",
+        "Consolidado KPI | Aire Bodega / Hl",
+        "INT_FRIO_mismo_dia4__x__Agua Planta (Hl)",
+        "Totalizadores Energia | KW Caldera 3",
+        "Consolidado EE | Pta Agua / Eflu (Kw)",
+        "Consolidado KPI | Agua Elab / Hl",
+        "PROD_cocina_lag9",
+        "Consolidado KPI | Aire Cocina / Hl",
+        "EST_primavera",
+        "EST_verano",
+        "EST_otono",
+        "DS_martes",
+        "DS_miercoles",
+        "DS_jueves",
+        "DS_viernes",
+        "DS_sabado",
+        "DS_domingo"
+      ],
+      "metricas_validacion": {
+        "mae": 2270.6376379754593,
+        "rmse": 2942.8243909551593,
+        "r2": 0.4217437247113237
+      },
+      "entrenado_con": {
+        "conjuntos": "train + validacion",
+        "desde": "2020-07-04",
+        "hasta": "2023-04-27",
+        "dias": 1028
+      },
+      "semilla": 42,
+      "commit": "9ac83b3",
+      "cambios_sin_commitear": true,
+      "fecha": "2026-11-15T19:05:16"
     }
   }
 }

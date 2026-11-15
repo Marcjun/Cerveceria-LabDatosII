@@ -8,7 +8,7 @@ from aux_functions_preprocess import (
     HOJAS_EXCLUIDAS, HOJAS_REQUERIDAS, ErrorEstructura,
     # Unificación de los Excels
     procesar_hoja, unir_hojas, validar_estructura,
-    corregir_dias_pegados, recortar_julio_agosto, sacar_dias_cortos,
+    corregir_dias_pegados, anclar_septiembre, sacar_dias_cortos,
     filtrar_2359, convertir_a_float, unir_archivos,
     rellenar_dias_faltantes, agregar_target, agregar_calendario,
     # Limpieza
@@ -75,14 +75,13 @@ def cargar_excels(rutas, requeridas=None):
 def preparar_archivos(dfs, log=None):
     """Pasos del EDA que se hacen archivo por archivo, en el mismo orden que la notebook."""
     preparados = {}
-    for i, (nombre, df) in enumerate(dfs.items()):
+    for nombre, df in dfs.items():
         etapa = f"Unión | {nombre}"
         df = aplicar(log, df, corregir_dias_pegados, etapa=etapa,
                      descripcion="Días con más de 26 lecturas: separa los días pegados, saca los bloques copiados y recoloca las fechas",
                      parametros={"max_lecturas": 26})
-        if i > 0:                       # con un solo Excel (predict.py) no se aplica
-            df = aplicar(log, df, recortar_julio_agosto, etapa=etapa,
-                         descripcion="Saca julio y agosto del primer año del archivo (se toman del archivo anterior)")
+        df = aplicar(log, df, anclar_septiembre, etapa=etapa,
+                     descripcion="Fecha los días anteriores al primer 01/09 contando etiquetas para atrás desde el 01/09")
         df = aplicar(log, df, sacar_dias_cortos, etapa=etapa,
                      descripcion="Saca los días con menos de 20 lecturas", parametros={"min_lecturas": 20})
         df = aplicar(log, df, filtrar_2359, etapa=etapa,
@@ -211,15 +210,21 @@ def crear_features(datos, registro, temp, log=None):
     df = aplicar(log, df, agregar_combinaciones, ratios=ratios, etapa=etapa,
                  descripcion="Ratios producción / frío del mismo día (0 si el frío es 0)",
                  parametros={"ratios": len(ratios)}, detalle=f"{fuente} > ratios")
+
     df = aplicar(log, df, agregar_eficiencias, f["eficiencias"], registro["medias_train"]["eficiencias"], etapa=etapa,
                  descripcion="efic_<X> = KPI / meta en los días con meta; el resto, la media de train",
                  parametros={"pares": len(f["eficiencias"])},
                  detalle=f"{fuente} > eficiencias y tratamientos_PREPROCESSING.json > medias_train")
 
-    return aplicar(log, df, borrar_columnas, registro, "metas_tras_eficiencias", etapa=etapa,
-                   descripcion="Borra las metas (ya están dentro de las efic_*)",
-                   parametros={"columnas_registradas": len(registro["metas_tras_eficiencias"])},
-                   detalle="tratamientos_PREPROCESSING.json > metas_tras_eficiencias")
+    df = aplicar(log, df, borrar_columnas, registro, "metas_tras_eficiencias", etapa=etapa,
+                 descripcion="Borra las metas (ya están dentro de las efic_*)",
+                 parametros={"columnas_registradas": len(registro["metas_tras_eficiencias"])},
+                 detalle="tratamientos_PREPROCESSING.json > metas_tras_eficiencias")
+
+    interacciones = {nombre: par for nombre, par in f.get("interacciones", {}).items() if set(par) <= set(df.columns)}
+    return aplicar(log, df, agregar_combinaciones, interacciones=interacciones, etapa=etapa,
+                   descripcion="Interacciones: producto de cada par de variables principales del mismo día",
+                   parametros={"interacciones": len(interacciones)}, detalle=f"{fuente} > interacciones")
 
 
 def preprocesar(diario, registro, temp, log=None):

@@ -269,9 +269,6 @@
     "Consolidado KPI | Aire L2 / Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | EE Linea 3 / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | Agua Linea 3/Hl": [
       "promedio_anteriores"
     ],
@@ -303,19 +300,19 @@
     "Consolidado Aire | Aire Servicios (M3)": [
       "promedio_anteriores_sin_negativos"
     ],
+    "Totalizadores Agua | Temp Tq Intermedio": [
+      "promedio_anteriores_sin_negativos"
+    ],
     "Consolidado EE | Prod Agua (Kw)": [
       "promedio_anteriores_sin_negativos"
     ],
-    "Totalizadores Agua | Temp Tq Intermedio": [
+    "Consolidado KPI | Agua Planta de Agua/Hl": [
       "promedio_anteriores_sin_negativos"
     ],
     "Consolidado EE | Pta Agua / Eflu (Kw)": [
       "promedio_anteriores_sin_negativos"
     ],
     "Consolidado Agua | Agua Servicios (Hl)": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Consolidado KPI | Agua Planta de Agua/Hl": [
       "promedio_anteriores_sin_negativos"
     ],
     "Consolidado EE | Elaboracion (Kw)": [
@@ -450,9 +447,6 @@
   ],
   "dias_faltantes": {
     "dias": [
-      "2020-08-29",
-      "2020-08-30",
-      "2020-08-31",
       "2021-07-16",
       "2022-03-05",
       "2023-01-17",
@@ -499,6 +493,7 @@
     "Totalizadores Energia | KW Mycom 1",
     "Totalizadores Energia | KW Mycom 2",
     "Totalizadores Energia | KW Mycom 5",
+    "Totalizadores Energia | KW Secador Kaeser",
     "Totalizadores Energia | KW Toma Agua",
     "Totalizadores Energia | KW Trafo 12",
     "Totalizadores Gas y Vapor | CAUDAL DE GAS CALDERA 1 M3",
@@ -539,6 +534,7 @@
     "Consolidado KPI | Aire Planta / Hl",
     "Consolidado KPI | EE Aire / Hl",
     "Consolidado KPI | EE Bodega / Hl",
+    "Consolidado KPI | EE Linea 3 / Hl",
     "Consolidado KPI | EE Planta / Hl",
     "Consolidado KPI | EE Sala Maq / Hl",
     "Consolidado KPI | EE Servicios / Hl",
