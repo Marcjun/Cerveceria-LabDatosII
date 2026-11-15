@@ -1,0 +1,509 @@
+{
+  "nulos_mayor_36": [
+    "Consolidado GasVapor | Vapor _Vapor_L5 (KG)",
+    "Consolidado KPI | ",
+    "Consolidado KPI | Aire Expulsion / Hl",
+    "Consolidado KPI | CO 2 linea 2 / Hl",
+    "Consolidado KPI | EE Linea 5 / Hl",
+    "Totalizadores Agua | Id",
+    "Totalizadores Aire | Id",
+    "Totalizadores CO2 | Id",
+    "Totalizadores Efluentes | Id",
+    "Totalizadores Energia | Id",
+    "Totalizadores Gas y Vapor | Id",
+    "Totalizadores Gas y Vapor | Vapor Paste L3",
+    "Totalizadores Gas y Vapor | Vapor _Vapor_L5 (KG)",
+    "Totalizadores Glicol | Tot  Reposo Superior",
+    "Totalizadores Glicol | Tot A10/20",
+    "Totalizadores Glicol | Tot Fermantacion_Cocina",
+    "Totalizadores Glicol | Tot L3, L4 y Planta de CO2",
+    "Totalizadores Glicol | Tot L3. L4 y Planta de CO2",
+    "Totalizadores Glicol | Tot Reposo Inferior",
+    "Totalizadores Produccion | Hl Session IPA",
+    "Totalizadores Produccion | Id",
+    "Totalizadores Produccion | Nivel Tk Restos Lev"
+  ],
+  "tratamientos": {
+    "Consolidado KPI | Meta EE Planta": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Planta": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Planta": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Planta": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Elab": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Bodega": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Cocina": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Envas": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Linea 2": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Linea 3": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Linea 4": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Linea 5": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Servicios": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Agua Planta de Agua": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Produccion Agua": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Elaboracion": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Bodega": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Cocina": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Envasado": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Linea 2": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Linea 3": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Linea 4": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Linea 5": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Servicios": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Sala Maq": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Frio": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Aire": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE CO2": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Caldera": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Eflu": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta EE Agua": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Elab": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Bodega": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Cocina": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Envasado": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Linea 2": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Linea 3": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Linea 4": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Linea 5": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta ET Servicios": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Elaboracion": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Cocina": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Bodega": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Envasado": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire L2": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire L3": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire L4": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire L5": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | Meta Aire Servicios": [
+      "media_train_si_no_hay_meta"
+    ],
+    "Consolidado KPI | EE Planta / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Elaboracion / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Bodega / Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | EE Envasado / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Servicios / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Sala Maq / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Frio / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Aire / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE CO2 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Caldera / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Eflu / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Agua / Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | Agua Planta / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Elab / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Bodega / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Envas / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Servicios/Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | ET Planta / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Elab/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Bodega/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Envasado/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Servicios / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Planta / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Elaboracion / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Bodega / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Envasado / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Servicios / Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | CO 2 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado GasVapor | VAPOR DE LINEA 1 Y 2 KG": [
+      "promedio_anteriores"
+    ],
+    "Totalizadores CO2 | Totalizador_L2_Barriles": [
+      "promedio_anteriores"
+    ],
+    "Totalizadores CO2 | Totalizador_L3": [
+      "promedio_anteriores"
+    ],
+    "Totalizadores CO2 | Totaliador_Latas": [
+      "promedio_anteriores"
+    ],
+    "Totalizadores CO2 | Totalizador_Bodega": [
+      "promedio_anteriores"
+    ],
+    "Totalizadores CO2 | Totalizador_Tq_Pulmon": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores CO2 | Totalizador_Filtracion": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Cocina / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Cocina / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Cocina/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire Cocina / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Linea 2 / Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | Agua Linea 2/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Linea 2/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire L2 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Linea 3 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Linea 3/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Linea 3/Hl": [
+      "promedio_anteriores",
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | Aire L3 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | CO 2 linea 3 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | EE Linea 4 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Linea 4/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Linea 4/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire L4 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | CO 2 Linea 4 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Agua Linea 5/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | ET Linea 5/Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | Aire L5 / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado KPI | CO 2 Filtro / Hl": [
+      "promedio_anteriores"
+    ],
+    "Consolidado Aire | Aire Servicios (M3)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado EE | Bodega (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado EE | Prod Agua (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado EE | Linea 2 (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Agua | Temp Tq Intermedio": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado EE | Pta Agua / Eflu (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Energia | KW Filtr Carbon": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado Agua | Agua Servicios (Hl)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado KPI | Agua Planta de Agua/Hl": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Consolidado EE | Elaboracion (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Agua | Retorno Planta CO2": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Efluentes | Totalizador Bba P1": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Efluentes | Totalizador Bba P4": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Efluentes | Totalizador Bba Envasado": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Efluentes | Totalizador Bba P51": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Efluentes | Totalizador Bba P2": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Energia | KW Planta de Agua": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Agua | Red Paste L3": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Energia | KW Obrador Contratistas": [
+      "promedio_anteriores_sin_negativos"
+    ],
+    "Totalizadores Gas y Vapor | VAPOR DE CALDERA 4 KG": [
+      "promedio_anteriores_sin_negativos"
+    ]
+  },
+  "nulos_uno_o_dos_tramos": [
+    "Consolidado Agua | Agua CO2",
+    "Consolidado Agua | Agua Calderas",
+    "Consolidado Agua | Agua Cond Evaporativos",
+    "Consolidado Agua | Agua Efluentes",
+    "Consolidado Agua | Agua Lavadora L3",
+    "Consolidado Agua | Agua Paste L3",
+    "Consolidado GasVapor | Medicion Gas Planta (M3)",
+    "Consolidado GasVapor | Tot Vap Lav L3 / Hora",
+    "Consolidado GasVapor | Tot Vap Paste L3 / Hora",
+    "Consolidado GasVapor | Vapor_L5 (KG)",
+    "Consolidado KPI | Agua Lavadora L3 / Hl",
+    "Consolidado KPI | Agua Paste L3 / Hl",
+    "Consolidado Produccion | Cocimientos Diarios",
+    "Consolidado Produccion | Hl de Mosto Copia",
+    "Totalizadores Aire | Tot Aire Expulsion",
+    "Totalizadores Aire | Tot Aire Servicio Logistica",
+    "Totalizadores Gas y Vapor | Vapor_L5 (KG)",
+    "Totalizadores Glicol | Id",
+    "Totalizadores Glicol | Tot  A130/330/430",
+    "Totalizadores Glicol | Tot  Trasiego",
+    "Totalizadores Glicol | Tot A40/240/50/60/Centec/Filtro",
+    "Totalizadores Produccion | Cocimientos Diarios",
+    "Totalizadores Produccion | Hl Reserva 7",
+    "Totalizadores Produccion | Nivel Silo Bagazo Norte (1)",
+    "Totalizadores Produccion | Nivel Silo Bagazo Sur (2)"
+  ],
+  "restos_redundantes": [
+    "Consolidado EE | Resto Serv (Kw)",
+    "Consolidado EE | Restos Planta (Kw)",
+    "Consolidado KPI | EE Resto Planta / Hl",
+    "Consolidado KPI | EE Resto Serv / Hl",
+    "Consolidado KPI | Meta EE Resto Planta",
+    "Consolidado KPI | Meta EE Resto Serv"
+  ],
+  "columnas_en_cero": [
+    "Totalizadores Agua | Agua Filt FMaCist CE",
+    "Totalizadores Agua | Red Barriles",
+    "Totalizadores Agua | Rep Agua Cist CE",
+    "Totalizadores Energia | KW Linea 4",
+    "Totalizadores Energia | Kw llum/Serv L2",
+    "Totalizadores Gas y Vapor | Fuel Oil Tk1 (Kg)",
+    "Totalizadores Gas y Vapor | Fuel Oil Tk2 (Kg)",
+    "Totalizadores Gas y Vapor | Tot_Vapor_Caldera 3",
+    "Totalizadores Gas y Vapor | VAPOR DE CALDERA 1 KG",
+    "Totalizadores Produccion | HL Mosto Bieckert",
+    "Totalizadores Produccion | HL Mosto Budweiser",
+    "Totalizadores Produccion | HL Mosto Frost",
+    "Totalizadores Produccion | HL Mosto Fuerte",
+    "Totalizadores Produccion | HL Mosto Indio",
+    "Totalizadores Produccion | HL Mosto Local",
+    "Totalizadores Produccion | HL Mosto Malta",
+    "Totalizadores Produccion | HL Mosto Palermo",
+    "Totalizadores Produccion | Hl Reserva 8"
+  ],
+  "columnas_identicas": [
+    "Consolidado GasVapor | Tot_Vapor_CIP_Bodega",
+    "Totalizadores Agua | FC Barriles",
+    "Totalizadores Agua | FC L1 y L2",
+    "Totalizadores Agua | FC Lavadora L2",
+    "Totalizadores Agua | FC Lavadora L3",
+    "Totalizadores Agua | Red L1 y L2",
+    "Totalizadores Agua | Red L3",
+    "Totalizadores Agua | Red Paste L4",
+    "Totalizadores Aire | Totaliador_Aire_L4",
+    "Totalizadores Aire | Totalizador Sistema Kaeser",
+    "Totalizadores Aire | Totalizador_Aire_Bodega",
+    "Totalizadores Aire | Totalizador_Aire_Cocina",
+    "Totalizadores Aire | Totalizador_Aire_L2",
+    "Totalizadores Aire | Totalizador_Aire_L3",
+    "Totalizadores Aire | Totalizador_Aire_L5",
+    "Totalizadores Energia | KW Gral Planta",
+    "Totalizadores Gas y Vapor | Tot_Vapor_CIP_Bodega",
+    "Totalizadores Gas y Vapor | Tot_Vapor_L3_L4",
+    "Totalizadores Gas y Vapor | VAPOR DE LINEA 1 Y 2 KG",
+    "Totalizadores Gas y Vapor | VAPOR DE LINEA 4 KG",
+    "Totalizadores Produccion | Hl Cerveza L2",
+    "Totalizadores Produccion | Hl Cerveza L3",
+    "Totalizadores Produccion | Hl Cerveza L4",
+    "Totalizadores Produccion | Hl Cerveza L5"
+  ],
+  "dias_faltantes": {
+    "dias": [
+      "2020-08-29",
+      "2020-08-30",
+      "2020-08-31",
+      "2021-07-16",
+      "2022-03-05",
+      "2023-01-17",
+      "2023-02-28",
+      "2023-04-15",
+      "2023-04-21"
+    ],
+    "tratamiento": "mediana_k_anteriores_mismo_mes",
+    "k": 10
+  }
+}
