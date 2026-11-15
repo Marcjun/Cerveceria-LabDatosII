@@ -388,6 +388,42 @@
     "Totalizadores Produccion | Nivel Silo Bagazo Norte (1)",
     "Totalizadores Produccion | Nivel Silo Bagazo Sur (2)"
   ],
+  "indicadores_nulos": {
+    "nulo_Cocina": [
+      "Consolidado KPI | EE Cocina / Hl",
+      "Consolidado KPI | Agua Cocina / Hl",
+      "Consolidado KPI | ET Cocina/Hl",
+      "Consolidado KPI | Aire Cocina / Hl"
+    ],
+    "nulo_Línea 2": [
+      "Consolidado KPI | EE Linea 2 / Hl",
+      "Consolidado KPI | Agua Linea 2/Hl",
+      "Consolidado KPI | ET Linea 2/Hl",
+      "Consolidado KPI | Aire L2 / Hl"
+    ],
+    "nulo_Línea 3": [
+      "Consolidado KPI | EE Linea 3 / Hl",
+      "Consolidado KPI | Agua Linea 3/Hl",
+      "Consolidado KPI | ET Linea 3/Hl",
+      "Consolidado KPI | Aire L3 / Hl",
+      "Consolidado KPI | CO 2 linea 3 / Hl"
+    ],
+    "nulo_Línea 4": [
+      "Consolidado KPI | EE Linea 4 / Hl",
+      "Consolidado KPI | Agua Linea 4/Hl",
+      "Consolidado KPI | ET Linea 4/Hl",
+      "Consolidado KPI | Aire L4 / Hl",
+      "Consolidado KPI | CO 2 Linea 4 / Hl"
+    ],
+    "nulo_Línea 5": [
+      "Consolidado KPI | Agua Linea 5/Hl",
+      "Consolidado KPI | ET Linea 5/Hl",
+      "Consolidado KPI | Aire L5 / Hl"
+    ],
+    "nulo_Filtro": [
+      "Consolidado KPI | CO 2 Filtro / Hl"
+    ]
+  },
   "restos_redundantes": [
     "Consolidado EE | Resto Serv (Kw)",
     "Consolidado EE | Restos Planta (Kw)",

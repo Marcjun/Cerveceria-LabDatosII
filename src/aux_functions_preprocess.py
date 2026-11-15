@@ -249,16 +249,18 @@ def unir_archivos(dfs):
     return unido
 
 
-def rellenar_dias_faltantes(df):
-    """Días faltantes entre el mínimo y el máximo: promedio de los 2 días anteriores
-    y los 2 posteriores (EDA §7.12)."""
-    rango = pd.date_range(start=df["DIA"].min(), end=df["DIA"].max(), freq="D")
-    faltantes = rango.difference(df["DIA"].dt.normalize())
-    df = df.set_index("DIA").reindex(rango).rename_axis("DIA")
-    vecinos = pd.concat([df.shift(k) for k in (2, 1, -1, -2)])
-    promedio = vecinos.groupby(level=0).mean(numeric_only=True)
-    df.loc[faltantes] = promedio.loc[faltantes]
-    return df.reset_index()
+def rellenar_dias_faltantes(df, k=10):
+    """Días faltantes entre el mínimo y el máximo: mediana de los k días anteriores
+    del mismo mes (regla del EDA). Agrega `imputado` (True en los días rellenados)."""
+    observados = df.set_index("DIA").sort_index()
+    rango = pd.date_range(observados.index.min(), observados.index.max(), freq="D")
+    faltantes = rango.difference(observados.index)
+    base = observados.reindex(rango).rename_axis("DIA")
+    for f in faltantes:
+        previos = observados[(observados.index < f) & (observados.index.month == f.month)].tail(k)
+        base.loc[f] = previos.median()
+    base["imputado"] = base.index.isin(faltantes)
+    return base.reset_index()
 
 
 def agregar_calendario(diario, col_fecha="DIA"):
@@ -294,12 +296,63 @@ def agregar_target(df, frio="Consolidado EE | Frio (Kw)"):
 
 
 def leer_tratamiento(ruta):
-    """Lee data_lineage.json (las decisiones que tomó la notebook de preprocesamiento)."""
+    """Lee un JSON de tratamientos (tratamientos_EDA.json o tratamientos_PREPROCESSING.json).
+    Falla si no existe o está vacío: se generan corriendo la notebook correspondiente."""
     ruta = Path(ruta)
     if not ruta.is_file():
-        raise FileNotFoundError(f"No existe el registro de preprocesamiento: {ruta}. "
-                                "Se genera corriendo la notebook de preprocesamiento.")
-    return json.loads(ruta.read_text(encoding="utf-8"))
+        raise FileNotFoundError(f"No existe {ruta}. Se genera corriendo su notebook (Run All).")
+    registro = json.loads(ruta.read_text(encoding="utf-8"))
+    if not registro:
+        raise ValueError(f"{ruta} está vacío. Correr su notebook completa (Run All) antes del pipeline.")
+    return registro
+
+
+def celdas_modificadas(antes, despues, col_fecha="DIA"):
+    """Cantidad de celdas que cambiaron de valor entre dos versiones del df,
+    comparando por fecha y en las columnas numéricas que tienen las dos.
+    None si no se puede comparar fila a fila (fechas repetidas, antes de quedar un día por fila)."""
+    if col_fecha not in antes or col_fecha not in despues:
+        return None
+    if not (antes[col_fecha].is_unique and despues[col_fecha].is_unique):
+        return None
+    a, b = antes.set_index(col_fecha), despues.set_index(col_fecha)
+    filas = a.index.intersection(b.index)
+    cols = [c for c in a.columns.intersection(b.columns)
+            if pd.api.types.is_numeric_dtype(a[c]) and pd.api.types.is_numeric_dtype(b[c])]
+    x = a.loc[filas, cols].to_numpy(dtype=float)
+    y = b.loc[filas, cols].to_numpy(dtype=float)
+    return int((~((x == y) | (np.isnan(x) & np.isnan(y)))).sum())
+
+
+def registrar_paso(log, antes, despues, etapa, descripcion, funcion=None, parametros=None, detalle=None):
+    """Agrega a `log` (lista) una entrada legible de un paso: qué hizo, con qué parámetros,
+    dónde está el detalle y cómo cambió el df. Con log=None no hace nada (predict.py)."""
+    if log is None:
+        return
+    cols_antes, cols_despues = set(antes.columns), set(despues.columns)
+    entrada = {
+        "paso": len(log) + 1,
+        "etapa": etapa,
+        "funcion": funcion,
+        "descripcion": descripcion,
+        "parametros": parametros or {},
+        "filas": [len(antes), len(despues)],
+        "columnas": [antes.shape[1], despues.shape[1]],
+        "columnas_agregadas": sorted(cols_despues - cols_antes),
+        "columnas_borradas": len(cols_antes - cols_despues),
+        "nulos": [int(antes.isna().sum().sum()), int(despues.isna().sum().sum())],
+        "celdas_modificadas": celdas_modificadas(antes, despues),
+    }
+    if detalle:
+        entrada["detalle"] = detalle
+    log.append(entrada)
+
+
+def aplicar(log, df, funcion, *args, etapa, descripcion, parametros=None, detalle=None, **kwargs):
+    """Aplica funcion(df, *args, **kwargs), registra el paso en `log` y devuelve el resultado."""
+    nuevo = funcion(df, *args, **kwargs)
+    registrar_paso(log, df, nuevo, etapa, descripcion, funcion.__name__, parametros, detalle)
+    return nuevo
 
 
 def columnas_meta(datos):
@@ -359,13 +412,13 @@ def linea_de(col):
     return "Otra"
 
 
-def marcar_nulos_por_area(datos, columnas):
+def marcar_nulos_por_area(datos, indicadores):
     """Agrega nulo_<área>: 1 si ese día faltaba algún dato del área (antes de imputar).
-    `columnas`: las que se imputan con promedio_anteriores; el área sale de linea_de."""
+    `indicadores`: {nombre: [columnas]}, clave "indicadores_nulos" del JSON del EDA."""
     df = datos.copy()
-    for area in ["Cocina", "Línea 2", "Línea 3", "Línea 4", "Línea 5", "Filtro"]:
-        cols = [c for c in columnas if linea_de(c) == area]
-        df[f"nulo_{area}"] = df[cols].isna().any(axis=1).astype(int)
+    for nombre, columnas in indicadores.items():
+        cols = [c for c in columnas if c in df.columns]
+        df[nombre] = df[cols].isna().any(axis=1).astype(int)
     return df
 
 

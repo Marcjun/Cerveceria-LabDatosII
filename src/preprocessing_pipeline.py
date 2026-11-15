@@ -1,13 +1,7 @@
-from pathlib import Path
-import warnings
-
-import pandas as pd
-
 from datetime import datetime
-import json
 from pathlib import Path
 import warnings
-
+import json
 import pandas as pd
 
 from aux_functions_preprocess import (
@@ -26,7 +20,7 @@ from aux_functions_preprocess import (
     leer_temperatura, agregar_temperatura, media_movil, variacion, rezago,
     agregar_combinaciones, agregar_eficiencias,
     # Selección y chequeo
-    seleccionar, chequear_conjuntos,
+    seleccionar, chequear_conjuntos, aplicar, registrar_paso
 )
 
 
@@ -78,34 +72,88 @@ def cargar_excels(rutas):
         raise FileNotFoundError("No se encontró ningún Excel para procesar.")
     return {ruta.stem: formatear_excel(ruta) for ruta in rutas}
 
-def preparar_archivos(dfs):
+def preparar_archivos(dfs, log=None):
     """Pasos del EDA que se hacen archivo por archivo, en el mismo orden que la notebook."""
     preparados = {}
     for i, (nombre, df) in enumerate(dfs.items()):
-        df = corregir_dias_pegados(df)
+        etapa = f"Unión | {nombre}"
+        df = aplicar(log, df, corregir_dias_pegados, etapa=etapa,
+                     descripcion="Días con más de 26 lecturas: separa los días pegados, saca los bloques copiados y recoloca las fechas",
+                     parametros={"max_lecturas": 26})
         if i > 0:                       # con un solo Excel (predict.py) no se aplica
-            df = recortar_julio_agosto(df)
-        df = sacar_dias_cortos(df)
-        df = filtrar_2359(df)
+            df = aplicar(log, df, recortar_julio_agosto, etapa=etapa,
+                         descripcion="Saca julio y agosto del primer año del archivo (se toman del archivo anterior)")
+        df = aplicar(log, df, sacar_dias_cortos, etapa=etapa,
+                     descripcion="Saca los días con menos de 20 lecturas", parametros={"min_lecturas": 20})
+        df = aplicar(log, df, filtrar_2359, etapa=etapa,
+                     descripcion="Deja solo la lectura de cierre del día", parametros={"horas": "23:59:00 a 23:59:59"})
         if df.empty:
             raise ErrorEstructura(
                 f"'{nombre}': después de la limpieza no quedó ningún día con lectura de cierre "
                 "(HORA entre 23:59:00 y 23:59:59). Sin esa lectura no se puede armar el total diario.")
-        preparados[nombre] = convertir_a_float(df)
+        preparados[nombre] = aplicar(log, df, convertir_a_float, etapa=etapa,
+                                     descripcion="Pasa a float todas las columnas menos DIA y HORA")
     return preparados
 
 
-def armar_dataset(dfs, con_target=True):
-    """dict `dfs` (salida de cargar_excels) -> una fila por día, como datos_base.csv del EDA.
+def unir(preparados, log=None):
+    """Une los archivos en una fila por día y registra el paso."""
+    unido = unir_archivos(preparados)
+    registrar_paso(log, pd.concat(preparados.values(), ignore_index=True), unido, "Unión",
+                   "Une los archivos, saca HORA y las columnas Unnamed y deja una fila por día: "
+                   "gana la fila con menos nulos (empate: la primera) y sus huecos se rellenan con las otras",
+                   funcion="unir_archivos")
+    return unido
+
+
+def limpiar(diario, registro_eda, log=None):
+    """Limpieza del EDA, leyendo sus decisiones de tratamientos_EDA.json."""
+    etapa, fuente = "Limpieza (EDA)", "tratamientos_EDA.json"
+    df = aplicar(log, diario, marcar_sin_meta, etapa=etapa,
+                 descripcion="Agrega no_hay_meta (día sin ninguna meta) y rellena las metas nulas con 1 (provisorio)")
+    df = aplicar(log, df, marcar_nulos_por_area, registro_eda["indicadores_nulos"], etapa=etapa,   # antes de imputar
+                 descripcion="Agrega nulo_<área>: 1 si ese día faltaba algún dato del área",
+                 detalle=f"{fuente} > indicadores_nulos")
+
+    cols = columnas_con_tratamiento(df, registro_eda, "promedio_anteriores")
+    df = aplicar(log, df, imputar_promedio_anteriores, cols, etapa=etapa,
+                 descripcion="Rellena los nulos con el promedio de los 2 valores válidos anteriores",
+                 parametros={"n": 2, "columnas": len(cols)}, detalle=f"{fuente} > tratamientos")
+    cols = columnas_con_tratamiento(df, registro_eda, "promedio_anteriores_sin_negativos")
+    df = aplicar(log, df, imputar_promedio_anteriores, cols, invalidar_negativos=True, etapa=etapa,
+                 descripcion="Pasa los negativos a nulo y los rellena con el promedio de los 2 valores válidos anteriores",
+                 parametros={"n": 2, "columnas": len(cols)}, detalle=f"{fuente} > tratamientos")
+
+    # Todas las listas del JSON del EDA son pasos de borrado (incluye correlacion_mayor_<umbral>)
+    for paso, columnas in registro_eda.items():
+        if isinstance(columnas, list):
+            df = aplicar(log, df, borrar_columnas, registro_eda, paso, etapa=etapa,
+                         descripcion=f"Borra las columnas del paso '{paso}'",
+                         parametros={"columnas_registradas": len(columnas)}, detalle=f"{fuente} > {paso}")
+    return df
+
+
+def armar_dataset(dfs, registro_eda, con_target=True, log=None):
+    """dict `dfs` (salida de cargar_excels) -> una fila por día con la limpieza del EDA,
+    calendario y target. Es lo que se guarda en datos_preprocess.csv.
     con_target=False para predict.py: no hay día siguiente y no se puede perder el último día."""
-    df = rellenar_dias_faltantes(unir_archivos(preparar_archivos(dfs)))
-    df = agregar_calendario(df)
-    return agregar_target(df) if con_target else df
+    df = unir(preparar_archivos(dfs, log), log)
+    df = limpiar(df, registro_eda, log)
+    k = registro_eda["dias_faltantes"]["k"]
+    df = aplicar(log, df, rellenar_dias_faltantes, k, etapa="Limpieza (EDA)",
+                 descripcion="Agrega los días faltantes con la mediana de los k días anteriores del mismo mes y la columna imputado",
+                 parametros={"k": k}, detalle="tratamientos_EDA.json > dias_faltantes")
+    df = aplicar(log, df, agregar_calendario, etapa="Calendario",
+                 descripcion="Día de la semana, mes, estación y fin de semana del día que se predice (D+1), con su codificación seno/coseno")
+    if con_target:
+        df = aplicar(log, df, agregar_target, etapa="Target",
+                     descripcion="target = Frio (Kw) del día siguiente; se saca el último día (no tiene target)")
+    return df
 
 
-def construir_dataset(rutas, con_target=True):
+def construir_dataset(rutas, registro_eda, con_target=True, log=None):
     """Excel(s) crudo(s) -> una fila por día. Punto de entrada para train y predict."""
-    return armar_dataset(cargar_excels(rutas), con_target)
+    return armar_dataset(cargar_excels(rutas), registro_eda, con_target, log)
 
 
 def guardar_dataset(df, ruta):
@@ -117,72 +165,86 @@ def guardar_dataset(df, ruta):
     return ruta
 
 
-def limpiar(diario, registro):
-    """Limpieza de la notebook de preprocesamiento, leyendo las decisiones del JSON."""
-    df = borrar_columnas(diario, registro, "nulos_mayor_36")
-    df = marcar_sin_meta(df)
-    df = borrar_columnas(df, registro, "nulos_uno_o_dos_tramos")
-
-    cols = columnas_con_tratamiento(df, registro, "promedio_anteriores")
-    df = marcar_nulos_por_area(df, cols)          # antes de imputar
-    df = imputar_promedio_anteriores(df, cols)
-
-    cols = columnas_con_tratamiento(df, registro, "promedio_anteriores_sin_negativos")
-    df = imputar_promedio_anteriores(df, cols, invalidar_negativos=True)
-
-    for paso in ("restos_redundantes", "columnas_en_cero", "columnas_identicas"):
-        df = borrar_columnas(df, registro, paso)
+def tratar_outliers(datos, registro, log=None):
+    """Las dos pasadas de z-score de la notebook, con los números de train del registro."""
+    df = datos
+    for pasada in ("pasada1", "pasada2"):
+        df = aplicar(log, df, corregir_outliers, registro, pasada, etapa="Outliers",
+                     descripcion="Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
+                     parametros={"umbral": registro["outliers"]["umbral"],
+                                 "columnas_analizadas": len(registro["outliers"][pasada]["media"])},
+                     detalle=f"tratamientos_PREPROCESSING.json > outliers > {pasada}")
     return df
 
 
-def tratar_outliers(datos, registro):
-    """Las dos pasadas de z-score de la notebook, con los números de train del registro."""
-    df = corregir_outliers(datos, registro, "pasada1")
-    return corregir_outliers(df, registro, "pasada2")
-
-
-def crear_features(datos, registro, temp):
+def crear_features(datos, registro, temp, log=None):
     """Feature engineering de la notebook, en el orden de la clave "features" del registro.
     Una feature se saltea si falta su columna de origen (el Excel de test puede traer menos columnas);
     si era una de las seleccionadas, `seleccionar` avisa cuál falta. Al final borra las metas."""
     f = registro["features"]
-    df = agregar_temperatura(datos, temp)
+    etapa, fuente = "Feature engineering", "tratamientos_PREPROCESSING.json > features"
+    df = aplicar(log, datos, agregar_temperatura, temp, etapa=etapa,
+                 descripcion="Temperatura media, máxima y mínima del día (Open-Meteo, Tecate) y su variación",
+                 parametros={"csv": f["temperatura"]["csv"]}, detalle=f"{fuente} > temperatura")
 
     for nombre, (columna, ventana) in f["medias_moviles"].items():
         if columna in df.columns:
-            df = media_movil(df, columna, nombre, ventana)
+            df = aplicar(log, df, media_movil, columna, nombre, ventana, etapa=etapa,
+                         descripcion=f"{nombre}: media móvil de {ventana} días (incluye D)",
+                         parametros={"columna": columna, "ventana": ventana}, detalle=f"{fuente} > medias_moviles")
     for nombre, columna in f["variaciones"].items():
         if columna in df.columns:
-            df = variacion(df, columna, nombre)
+            df = aplicar(log, df, variacion, columna, nombre, etapa=etapa,
+                         descripcion=f"{nombre}: diferencia contra el día anterior",
+                         parametros={"columna": columna}, detalle=f"{fuente} > variaciones")
     for nombre, (columna, k) in f["rezagos"].items():
         if columna in df.columns:
-            df = rezago(df, columna, nombre, k)
+            df = aplicar(log, df, rezago, columna, nombre, k, etapa=etapa,
+                         descripcion=f"{nombre}: valor de {k} días antes",
+                         parametros={"columna": columna, "k": k}, detalle=f"{fuente} > rezagos")
 
     ratios = {nombre: par for nombre, par in f["ratios"].items() if set(par) <= set(df.columns)}
-    df = agregar_combinaciones(df, ratios=ratios)
-    df = agregar_eficiencias(df, f["eficiencias"], registro["medias_train"]["eficiencias"])
+    df = aplicar(log, df, agregar_combinaciones, ratios=ratios, etapa=etapa,
+                 descripcion="Ratios producción / frío del mismo día (0 si el frío es 0)",
+                 parametros={"ratios": len(ratios)}, detalle=f"{fuente} > ratios")
+    df = aplicar(log, df, agregar_eficiencias, f["eficiencias"], registro["medias_train"]["eficiencias"], etapa=etapa,
+                 descripcion="efic_<X> = KPI / meta en los días con meta; el resto, la media de train",
+                 parametros={"pares": len(f["eficiencias"])},
+                 detalle=f"{fuente} > eficiencias y tratamientos_PREPROCESSING.json > medias_train")
 
-    return borrar_columnas(df, registro, "metas_tras_eficiencias")
+    return aplicar(log, df, borrar_columnas, registro, "metas_tras_eficiencias", etapa=etapa,
+                   descripcion="Borra las metas (ya están dentro de las efic_*)",
+                   parametros={"columnas_registradas": len(registro["metas_tras_eficiencias"])},
+                   detalle="tratamientos_PREPROCESSING.json > metas_tras_eficiencias")
 
 
-def preprocesar(diario, registro, temp):
+def preprocesar(diario, registro, temp, log=None):
     """Dataset diario (salida de construir_dataset) -> DIA + features seleccionadas (+ target).
     Aplica lo que decidió la notebook leyendo el registro: no ajusta nada con los datos que recibe."""
-    df = limpiar(diario, registro)
-    df = tratar_outliers(df, registro)
-    df = crear_features(df, registro, temp)
-    return seleccionar(df, registro)
+    df = tratar_outliers(diario, registro, log)
+    df = crear_features(df, registro, temp, log)
+    return aplicar(log, df, seleccionar, registro, etapa="Selección",
+                   descripcion="Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
+                   parametros={"features": len(registro["seleccion"]["features"])},
+                   detalle="tratamientos_PREPROCESSING.json > seleccion")
 
 
-def armar_ejecucion(final, conjuntos, entradas):
-    """Datos de la corrida del pipeline, para la clave "ejecucion" de data_lineage.json.
-    Las transformaciones (qué se borró, imputó, corrigió y creó) están en el resto del archivo."""
+def armar_ejecucion(dfs):
+    """Encabezado de data_lineage.json: script, fecha y archivos de entrada."""
     return {
         "script": "src/preprocessing_pipeline.py",
         "fecha": datetime.now().isoformat(timespec="seconds"),
-        "entradas": sorted(entradas),
-        "salida": {"archivo": "data/processed/dataset_final.csv", "filas": len(final),
-                   "columnas": final.shape[1], "escalado": False},
+        "estado": "en curso",
+        "entradas": {f"{nombre}.xlsx": {"filas": len(df), "columnas": df.shape[1]} for nombre, df in dfs.items()},
+        "hojas_excluidas": sorted(HOJAS_EXCLUIDAS),
+    }
+
+
+def describir_salida(final, conjuntos):
+    """Dataset final y shapes de X_train, X_val, X_test."""
+    return {
+        "archivo": "data/processed/dataset_final.csv", "filas": len(final),
+        "columnas": final.shape[1], "escalado": False,
         "conjuntos": {nombre: {"X_shape": [len(df), df.shape[1] - 2],   # sin DIA ni target
                                "desde": str(df["DIA"].min().date()),
                                "hasta": str(df["DIA"].max().date())}
@@ -192,36 +254,52 @@ def armar_ejecucion(final, conjuntos, entradas):
 
 if __name__ == "__main__":
     raiz = Path(__file__).resolve().parent.parent
-    data_dir = raiz / "data"
-    rutas = list((data_dir / "raw").glob("Totalizadores Planta *.xlsx"))
+    proc = raiz / "data" / "processed"
+    rutas = list((raiz / "data" / "raw").glob("Totalizadores Planta *.xlsx"))
+
+    # Decisiones del EDA (falla si no existe o está vacío)
+    registro_eda = leer_tratamiento(proc / "tratamientos_EDA.json")
 
     dfs = cargar_excels(rutas)
     for nombre, df in dfs.items():
         print(f"{nombre}: {df.shape[0]} filas x {df.shape[1]} cols")
 
-    dataset = armar_dataset(dfs)
-    print(f"Dataset diario: {dataset.shape} | {dataset['DIA'].min().date()} -> {dataset['DIA'].max().date()}")
+    # data_lineage.json se rehace en cada corrida. Si algo falla, se guarda igual hasta el paso que falló
+    pasos = []
+    lineage = {
+        "descripcion": "Transformaciones que aplica src/preprocessing_pipeline.py, en orden. "
+                       "Cada paso indica en 'detalle' dónde están las columnas y parámetros completos.",
+        "ejecucion": armar_ejecucion(dfs),
+        "fuentes": {"eda": "data/processed/tratamientos_EDA.json",
+                    "preprocesamiento": "data/processed/tratamientos_PREPROCESSING.json"},
+        "pasos": pasos,
+    }
+    ruta_lineage = proc / "data_lineage.json"
+    try:
+        dataset = armar_dataset(dfs, registro_eda, log=pasos)
+        print(f"Dataset diario: {dataset.shape} | {dataset['DIA'].min().date()} -> {dataset['DIA'].max().date()}")
 
-    # Entrada de la notebook de preprocesamiento: se guarda ANTES de limpiar,
-    # para que la notebook siga recibiendo el diario sin tocar (1213 x 397)
-    salida = guardar_dataset(dataset, data_dir / "processed" / "datos_preprocess.csv")
-    print("Guardado en", salida)
+        # Entrada de la notebook de preprocesamiento: limpieza del EDA aplicada, antes de outliers y features
+        print("Guardado en", guardar_dataset(dataset, proc / "datos_preprocess.csv"))
 
-    ruta_registro = data_dir / "processed" / "data_lineage.json"
-    registro = leer_tratamiento(ruta_registro)
-    temp = leer_temperatura(raiz / registro["features"]["temperatura"]["csv"])
-    final = preprocesar(dataset, registro, temp)
+        # Decisiones de la notebook de preprocesamiento: recién hacen falta acá
+        registro = leer_tratamiento(proc / "tratamientos_PREPROCESSING.json")
 
-    conjuntos = separar_conjuntos(final, registro)
-    chequear_conjuntos(conjuntos)
-    for nombre, df in conjuntos.items():
-        X = df.drop(columns=["DIA", "target"])
-        print(f"X_{nombre}: {X.shape} | {df['DIA'].min().date()} -> {df['DIA'].max().date()}")
+        temp = leer_temperatura(raiz / registro["features"]["temperatura"]["csv"])
+        final = preprocesar(dataset, registro, temp, log=pasos)
 
-    salida = guardar_dataset(final, data_dir / "processed" / "dataset_final.csv")
-    print("Guardado en", salida)
+        conjuntos = separar_conjuntos(final, registro)
+        chequear_conjuntos(conjuntos)
+        for nombre, df in conjuntos.items():
+            X = df.drop(columns=["DIA", "target"])
+            print(f"X_{nombre}: {X.shape} | {df['DIA'].min().date()} -> {df['DIA'].max().date()}")
 
-    # Solo se agrega/actualiza "ejecucion": las decisiones de la notebook quedan como están
-    registro["ejecucion"] = armar_ejecucion(final, conjuntos, [r.name for r in rutas])
-    ruta_registro.write_text(json.dumps(registro, ensure_ascii=False, indent=2), encoding="utf-8")
-    print("Ejecución registrada en", ruta_registro)
+        print("Guardado en", guardar_dataset(final, proc / "dataset_final.csv"))
+        lineage["salida"] = describir_salida(final, conjuntos)
+        lineage["ejecucion"]["estado"] = "completo"
+    except Exception as e:
+        lineage["ejecucion"]["estado"] = f"error en el paso {len(pasos) + 1}: {type(e).__name__}: {e}"
+        raise
+    finally:
+        ruta_lineage.write_text(json.dumps(lineage, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"Registro de la corrida en {ruta_lineage} ({len(pasos)} pasos)")
