@@ -183,9 +183,6 @@
     "Consolidado KPI | EE CO2 / Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | EE Caldera / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | EE Eflu / Hl": [
       "promedio_anteriores"
     ],
@@ -235,9 +232,6 @@
       "promedio_anteriores"
     ],
     "Consolidado GasVapor | VAPOR DE LINEA 1 Y 2 KG": [
-      "promedio_anteriores"
-    ],
-    "Totalizadores CO2 | Totalizador_L2_Barriles": [
       "promedio_anteriores"
     ],
     "Totalizadores CO2 | Totalizador_L3": [
@@ -303,22 +297,19 @@
     "Consolidado KPI | CO 2 Linea 4 / Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | ET Linea 5/Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | CO 2 Filtro / Hl": [
       "promedio_anteriores"
     ],
     "Consolidado Aire | Aire Servicios (M3)": [
       "promedio_anteriores_sin_negativos"
     ],
+    "Consolidado EE | Prod Agua (Kw)": [
+      "promedio_anteriores_sin_negativos"
+    ],
     "Totalizadores Agua | Temp Tq Intermedio": [
       "promedio_anteriores_sin_negativos"
     ],
     "Consolidado EE | Pta Agua / Eflu (Kw)": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Energia | KW Filtr Carbon": [
       "promedio_anteriores_sin_negativos"
     ],
     "Consolidado Agua | Agua Servicios (Hl)": [
@@ -330,34 +321,13 @@
     "Consolidado EE | Elaboracion (Kw)": [
       "promedio_anteriores_sin_negativos"
     ],
-    "Totalizadores Agua | Retorno Planta CO2": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Efluentes | Totalizador Bba P1": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Efluentes | Totalizador Bba P4": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Efluentes | Totalizador Bba Envasado": [
-      "promedio_anteriores_sin_negativos"
-    ],
     "Totalizadores Efluentes | Totalizador Bba P51": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Efluentes | Totalizador Bba P2": [
       "promedio_anteriores_sin_negativos"
     ],
     "Totalizadores Energia | KW Planta de Agua": [
       "promedio_anteriores_sin_negativos"
     ],
-    "Totalizadores Agua | Red Paste L3": [
-      "promedio_anteriores_sin_negativos"
-    ],
     "Totalizadores Energia | KW Obrador Contratistas": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores Gas y Vapor | VAPOR DE CALDERA 4 KG": [
       "promedio_anteriores_sin_negativos"
     ]
   },
@@ -493,6 +463,58 @@
     "tratamiento": "mediana_k_anteriores_mismo_mes",
     "k": 10
   },
+  "quiebre_estructural": [
+    "Consolidado Aire | Tot Aire Expulsion",
+    "Consolidado EE | Calderas (Kw)",
+    "Consolidado KPI | Agua Linea 5/Hl",
+    "Consolidado KPI | Aire L5 / Hl",
+    "Consolidado KPI | EE Caldera / Hl",
+    "Consolidado KPI | ET Linea 5/Hl",
+    "Totalizadores Agua | Agua Cald",
+    "Totalizadores Agua | Agua Cist Industrial",
+    "Totalizadores Agua | Agua Enjuagadora L2",
+    "Totalizadores Agua | Agua Helada Cocina",
+    "Totalizadores Agua | Agua Lavadora L2",
+    "Totalizadores Agua | Agua Red Servicios",
+    "Totalizadores Agua | Entrada Osmosis",
+    "Totalizadores Agua | Glicol Paste L3",
+    "Totalizadores Agua | Rechazo Osmosis",
+    "Totalizadores Agua | Red Bodega",
+    "Totalizadores Agua | Red Paste L3",
+    "Totalizadores Agua | Retorno Planta CO2",
+    "Totalizadores CO2 | Totalizador_L2_Barriles",
+    "Totalizadores Efluentes | Totalizador Bba Envasado",
+    "Totalizadores Efluentes | Totalizador Bba Gas",
+    "Totalizadores Efluentes | Totalizador Bba P1",
+    "Totalizadores Efluentes | Totalizador Bba P2",
+    "Totalizadores Efluentes | Totalizador Bba P4",
+    "Totalizadores Energia | KW Atlas 3",
+    "Totalizadores Energia | KW CO2",
+    "Totalizadores Energia | KW Caldera 4",
+    "Totalizadores Energia | KW Comp Kaeser",
+    "Totalizadores Energia | KW Cond 7. 8 y 11",
+    "Totalizadores Energia | KW Enfr Agua Cocina",
+    "Totalizadores Energia | KW Filtr Carbon",
+    "Totalizadores Energia | KW Linea 2",
+    "Totalizadores Energia | KW Mycom 1",
+    "Totalizadores Energia | KW Mycom 2",
+    "Totalizadores Energia | KW Mycom 5",
+    "Totalizadores Energia | KW Toma Agua",
+    "Totalizadores Energia | KW Trafo 12",
+    "Totalizadores Gas y Vapor | CAUDAL DE GAS CALDERA 1 M3",
+    "Totalizadores Gas y Vapor | TOT AGUA DESAIREADA",
+    "Totalizadores Gas y Vapor | VAPOR DE CALDERA 4 KG",
+    "Totalizadores Produccion | HL Mosto Amstel",
+    "Totalizadores Produccion | HL Mosto Isenbeck",
+    "Totalizadores Produccion | HL Mosto Roja",
+    "Totalizadores Produccion | Hl Mosto Cautiva Torrontes"
+  ],
+  "compresores_individuales": [
+    "Totalizadores Energia | KW Mycom 3",
+    "Totalizadores Energia | KW Mycom 4",
+    "Totalizadores Energia | KW Mycom 6",
+    "Totalizadores Energia | KW Mycom 7"
+  ],
   "correlacion_mayor_0.85": [
     "Consolidado Agua | Agua Cocina (Hl)",
     "Consolidado Agua | Agua Dilucion (Hl)",
@@ -502,22 +524,18 @@
     "Consolidado Aire | Totalizador_Aire_L5",
     "Consolidado EE | Aire (Kw)",
     "Consolidado EE | Bodega (Kw)",
-    "Consolidado EE | Calderas (Kw)",
     "Consolidado EE | Envasado (Kw)",
     "Consolidado EE | KW Gral Planta",
     "Consolidado EE | Linea 2 (Kw)",
     "Consolidado EE | Linea 3 (Kw)",
     "Consolidado EE | Planta (Kw)",
-    "Consolidado EE | Prod Agua (Kw)",
     "Consolidado EE | Sala Maq (Kw)",
     "Consolidado EE | Servicios (Kw)",
     "Consolidado GasVapor | ET Elaboracion (Mj)",
     "Consolidado GasVapor | Tot_Vapor_L3_L4",
     "Consolidado GasVapor | Vapor Elaboracion (Kg)",
-    "Consolidado KPI | Agua Linea 5/Hl",
     "Consolidado KPI | Aire Elaboracion / Hl",
     "Consolidado KPI | Aire L3 / Hl",
-    "Consolidado KPI | Aire L5 / Hl",
     "Consolidado KPI | Aire Planta / Hl",
     "Consolidado KPI | EE Aire / Hl",
     "Consolidado KPI | EE Bodega / Hl",
@@ -528,14 +546,10 @@
     "Consolidado KPI | Produccion Agua / Hl",
     "Totalizadores Agua | FC Cocina",
     "Totalizadores Agua | Filtro de Carbon",
-    "Totalizadores Agua | Rechazo Osmosis",
-    "Totalizadores Agua | Red Bodega",
     "Totalizadores CO2 | Totaliador_Latas",
     "Totalizadores CO2 | Totalizador_Filtracion",
     "Totalizadores Energia | KW Cocina",
     "Totalizadores Energia | KW Enfluente Efl",
-    "Totalizadores Energia | KW Enfr Agua Cocina",
-    "Totalizadores Energia | KW Linea 2",
     "Totalizadores Energia | KW Linea 3",
     "Totalizadores Energia | KW Linea 3 y 4",
     "Totalizadores Energia | KW Trafo 8",

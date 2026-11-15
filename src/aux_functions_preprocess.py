@@ -293,6 +293,9 @@ def agregar_calendario(diario, col_fecha="DIA"):
     for i, nombre in enumerate(["invierno", "primavera", "verano", "otono"]):
         df[f"EST_{nombre}"] = (df["ESTACION"] == i).astype(int)
 
+    for i, nombre in enumerate(["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"]):
+        df[f"DS_{nombre}"] = (df["DIA_SEMANA"] == i).astype(int)
+
     return df
     
 

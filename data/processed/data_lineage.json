@@ -2,7 +2,7 @@
   "descripcion": "Transformaciones que aplica src/preprocessing_pipeline.py, en orden. Cada paso indica en 'detalle' dónde están las columnas y parámetros completos.",
   "ejecucion": {
     "script": "src/preprocessing_pipeline.py",
-    "fecha": "2026-11-15T02:51:20",
+    "fecha": "2026-11-15T10:39:29",
     "estado": "completo",
     "entradas": {
       "Totalizadores Planta 2020_2022.xlsx": {
@@ -437,7 +437,7 @@
       "descripcion": "Rellena los nulos con el promedio de los 2 valores válidos anteriores",
       "parametros": {
         "n": 2,
-        "columnas": 44
+        "columnas": 41
       },
       "filas": [
         1205,
@@ -451,9 +451,9 @@
       "columnas_borradas": 0,
       "nulos": [
         28613,
-        25842
+        26191
       ],
-      "celdas_modificadas": 2771,
+      "celdas_modificadas": 2422,
       "detalle": "tratamientos_EDA.json > tratamientos"
     },
     {
@@ -463,7 +463,7 @@
       "descripcion": "Pasa los negativos a nulo y los rellena con el promedio de los 2 valores válidos anteriores",
       "parametros": {
         "n": 2,
-        "columnas": 23
+        "columnas": 16
       },
       "filas": [
         1205,
@@ -476,10 +476,10 @@
       "columnas_agregadas": [],
       "columnas_borradas": 0,
       "nulos": [
-        25842,
-        25842
+        26191,
+        26191
       ],
-      "celdas_modificadas": 111,
+      "celdas_modificadas": 102,
       "detalle": "tratamientos_EDA.json > tratamientos"
     },
     {
@@ -501,8 +501,8 @@
       "columnas_agregadas": [],
       "columnas_borradas": 22,
       "nulos": [
-        25842,
-        10074
+        26191,
+        10423
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > nulos_mayor_36"
@@ -526,8 +526,8 @@
       "columnas_agregadas": [],
       "columnas_borradas": 25,
       "nulos": [
-        10074,
-        1012
+        10423,
+        1361
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > nulos_uno_o_dos_tramos"
@@ -551,8 +551,8 @@
       "columnas_agregadas": [],
       "columnas_borradas": 6,
       "nulos": [
-        1012,
-        968
+        1361,
+        1317
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > restos_redundantes"
@@ -576,8 +576,8 @@
       "columnas_agregadas": [],
       "columnas_borradas": 18,
       "nulos": [
-        968,
-        968
+        1317,
+        1317
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > columnas_en_cero"
@@ -601,8 +601,8 @@
       "columnas_agregadas": [],
       "columnas_borradas": 24,
       "nulos": [
-        968,
-        967
+        1317,
+        1316
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > columnas_identicas"
@@ -611,9 +611,9 @@
       "paso": 25,
       "etapa": "Limpieza (EDA)",
       "funcion": "borrar_columnas",
-      "descripcion": "Borra las columnas del paso 'correlacion_mayor_0.85'",
+      "descripcion": "Borra las columnas del paso 'quiebre_estructural'",
       "parametros": {
-        "columnas_registradas": 48
+        "columnas_registradas": 44
       },
       "filas": [
         1205,
@@ -621,19 +621,69 @@
       ],
       "columnas": [
         298,
+        254
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 44,
+      "nulos": [
+        1316,
+        315
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > quiebre_estructural"
+    },
+    {
+      "paso": 26,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'compresores_individuales'",
+      "parametros": {
+        "columnas_registradas": 4
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        254,
         250
       ],
       "columnas_agregadas": [],
-      "columnas_borradas": 48,
+      "columnas_borradas": 4,
       "nulos": [
-        967,
+        315,
+        315
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > compresores_individuales"
+    },
+    {
+      "paso": 27,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'correlacion_mayor_0.85'",
+      "parametros": {
+        "columnas_registradas": 40
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        250,
+        210
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 40,
+      "nulos": [
+        315,
         0
       ],
       "celdas_modificadas": 0,
       "detalle": "tratamientos_EDA.json > correlacion_mayor_0.85"
     },
     {
-      "paso": 26,
+      "paso": 28,
       "etapa": "Limpieza (EDA)",
       "funcion": "rellenar_dias_faltantes",
       "descripcion": "Agrega los días faltantes con la mediana de los k días anteriores del mismo mes y la columna imputado",
@@ -645,8 +695,8 @@
         1214
       ],
       "columnas": [
-        250,
-        251
+        210,
+        211
       ],
       "columnas_agregadas": [
         "imputado"
@@ -660,7 +710,7 @@
       "detalle": "tratamientos_EDA.json > dias_faltantes"
     },
     {
-      "paso": 27,
+      "paso": 29,
       "etapa": "Target",
       "funcion": "agregar_target",
       "descripcion": "target = Frio (Kw) del día siguiente; se saca el último día (no tiene target)",
@@ -670,8 +720,8 @@
         1213
       ],
       "columnas": [
-        251,
-        252
+        211,
+        212
       ],
       "columnas_agregadas": [
         "target"
@@ -684,21 +734,21 @@
       "celdas_modificadas": 0
     },
     {
-      "paso": 28,
+      "paso": 30,
       "etapa": "Outliers",
       "funcion": "corregir_outliers",
       "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
       "parametros": {
         "umbral": 10,
-        "columnas_analizadas": 190
+        "columnas_analizadas": 151
       },
       "filas": [
         1213,
         1213
       ],
       "columnas": [
-        252,
-        252
+        212,
+        212
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 0,
@@ -706,25 +756,25 @@
         0,
         0
       ],
-      "celdas_modificadas": 492,
+      "celdas_modificadas": 177,
       "detalle": "tratamientos_PREPROCESSING.json > outliers > pasada1"
     },
     {
-      "paso": 29,
+      "paso": 31,
       "etapa": "Outliers",
       "funcion": "corregir_outliers",
       "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
       "parametros": {
         "umbral": 10,
-        "columnas_analizadas": 187
+        "columnas_analizadas": 149
       },
       "filas": [
         1213,
         1213
       ],
       "columnas": [
-        252,
-        252
+        212,
+        212
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 0,
@@ -732,11 +782,11 @@
         0,
         0
       ],
-      "celdas_modificadas": 158,
+      "celdas_modificadas": 95,
       "detalle": "tratamientos_PREPROCESSING.json > outliers > pasada2"
     },
     {
-      "paso": 30,
+      "paso": 32,
       "etapa": "Feature engineering",
       "funcion": "agregar_temperatura",
       "descripcion": "Temperatura media, máxima y mínima del día (Open-Meteo, Tecate) y su variación",
@@ -748,8 +798,8 @@
         1213
       ],
       "columnas": [
-        252,
-        256
+        212,
+        216
       ],
       "columnas_agregadas": [
         "TEMP_dif",
@@ -766,7 +816,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > temperatura"
     },
     {
-      "paso": 31,
+      "paso": 33,
       "etapa": "Feature engineering",
       "funcion": "media_movil",
       "descripcion": "FRIO_media5: media móvil de 5 días (incluye D)",
@@ -779,8 +829,8 @@
         1213
       ],
       "columnas": [
-        256,
-        257
+        216,
+        217
       ],
       "columnas_agregadas": [
         "FRIO_media5"
@@ -794,7 +844,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > medias_moviles"
     },
     {
-      "paso": 32,
+      "paso": 34,
       "etapa": "Feature engineering",
       "funcion": "media_movil",
       "descripcion": "FRIO_media14: media móvil de 14 días (incluye D)",
@@ -807,8 +857,8 @@
         1213
       ],
       "columnas": [
-        257,
-        258
+        217,
+        218
       ],
       "columnas_agregadas": [
         "FRIO_media14"
@@ -822,7 +872,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > medias_moviles"
     },
     {
-      "paso": 33,
+      "paso": 35,
       "etapa": "Feature engineering",
       "funcion": "variacion",
       "descripcion": "FRIO_media5_dif: diferencia contra el día anterior",
@@ -834,8 +884,8 @@
         1213
       ],
       "columnas": [
-        258,
-        259
+        218,
+        219
       ],
       "columnas_agregadas": [
         "FRIO_media5_dif"
@@ -849,7 +899,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
     },
     {
-      "paso": 34,
+      "paso": 36,
       "etapa": "Feature engineering",
       "funcion": "variacion",
       "descripcion": "PROD_cocina_dif: diferencia contra el día anterior",
@@ -861,8 +911,8 @@
         1213
       ],
       "columnas": [
-        259,
-        260
+        219,
+        220
       ],
       "columnas_agregadas": [
         "PROD_cocina_dif"
@@ -876,7 +926,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
     },
     {
-      "paso": 35,
+      "paso": 37,
       "etapa": "Feature engineering",
       "funcion": "variacion",
       "descripcion": "PROD_bodega_dif: diferencia contra el día anterior",
@@ -888,8 +938,8 @@
         1213
       ],
       "columnas": [
-        260,
-        261
+        220,
+        221
       ],
       "columnas_agregadas": [
         "PROD_bodega_dif"
@@ -903,7 +953,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
     },
     {
-      "paso": 36,
+      "paso": 38,
       "etapa": "Feature engineering",
       "funcion": "variacion",
       "descripcion": "PROD_filtrada_dif: diferencia contra el día anterior",
@@ -915,8 +965,8 @@
         1213
       ],
       "columnas": [
-        261,
-        262
+        221,
+        222
       ],
       "columnas_agregadas": [
         "PROD_filtrada_dif"
@@ -930,7 +980,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
     },
     {
-      "paso": 37,
+      "paso": 39,
       "etapa": "Feature engineering",
       "funcion": "variacion",
       "descripcion": "PROD_envasada_dif: diferencia contra el día anterior",
@@ -942,8 +992,8 @@
         1213
       ],
       "columnas": [
-        262,
-        263
+        222,
+        223
       ],
       "columnas_agregadas": [
         "PROD_envasada_dif"
@@ -957,7 +1007,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
     },
     {
-      "paso": 38,
+      "paso": 40,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "PROD_mosto_lag9: valor de 9 días antes",
@@ -970,8 +1020,8 @@
         1213
       ],
       "columnas": [
-        263,
-        264
+        223,
+        224
       ],
       "columnas_agregadas": [
         "PROD_mosto_lag9"
@@ -985,7 +1035,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 39,
+      "paso": 41,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "PROD_cocina_lag9: valor de 9 días antes",
@@ -998,8 +1048,8 @@
         1213
       ],
       "columnas": [
-        264,
-        265
+        224,
+        225
       ],
       "columnas_agregadas": [
         "PROD_cocina_lag9"
@@ -1013,7 +1063,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 40,
+      "paso": 42,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "PROD_bodega_lag7: valor de 7 días antes",
@@ -1026,8 +1076,8 @@
         1213
       ],
       "columnas": [
-        265,
-        266
+        225,
+        226
       ],
       "columnas_agregadas": [
         "PROD_bodega_lag7"
@@ -1041,7 +1091,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 41,
+      "paso": 43,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "PROD_filtrada_lag7: valor de 7 días antes",
@@ -1054,8 +1104,8 @@
         1213
       ],
       "columnas": [
-        266,
-        267
+        226,
+        227
       ],
       "columnas_agregadas": [
         "PROD_filtrada_lag7"
@@ -1069,7 +1119,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 42,
+      "paso": 44,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "PROD_envasada_lag7: valor de 7 días antes",
@@ -1082,8 +1132,8 @@
         1213
       ],
       "columnas": [
-        267,
-        268
+        227,
+        228
       ],
       "columnas_agregadas": [
         "PROD_envasada_lag7"
@@ -1097,7 +1147,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 43,
+      "paso": 45,
       "etapa": "Feature engineering",
       "funcion": "rezago",
       "descripcion": "FRIO_lag6: valor de 6 días antes",
@@ -1110,8 +1160,8 @@
         1213
       ],
       "columnas": [
-        268,
-        269
+        228,
+        229
       ],
       "columnas_agregadas": [
         "FRIO_lag6"
@@ -1125,7 +1175,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
     },
     {
-      "paso": 44,
+      "paso": 46,
       "etapa": "Feature engineering",
       "funcion": "media_mismo_dia",
       "descripcion": "FRIO_mismo_dia4: promedio de las últimas 4 semanas en el mismo día de la semana que D+1",
@@ -1138,8 +1188,8 @@
         1213
       ],
       "columnas": [
-        269,
-        270
+        229,
+        230
       ],
       "columnas_agregadas": [
         "FRIO_mismo_dia4"
@@ -1153,7 +1203,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > medias_mismo_dia"
     },
     {
-      "paso": 45,
+      "paso": 47,
       "etapa": "Feature engineering",
       "funcion": "agregar_combinaciones",
       "descripcion": "Ratios producción / frío del mismo día (0 si el frío es 0)",
@@ -1165,8 +1215,8 @@
         1213
       ],
       "columnas": [
-        270,
-        279
+        230,
+        239
       ],
       "columnas_agregadas": [
         "RATIO_bodega_frio",
@@ -1188,20 +1238,20 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > ratios"
     },
     {
-      "paso": 46,
+      "paso": 48,
       "etapa": "Feature engineering",
       "funcion": "agregar_eficiencias",
       "descripcion": "efic_<X> = KPI / meta en los días con meta; el resto, la media de train",
       "parametros": {
-        "pares": 36
+        "pares": 34
       },
       "filas": [
         1213,
         1213
       ],
       "columnas": [
-        279,
-        315
+        239,
+        273
       ],
       "columnas_agregadas": [
         "efic_Agua Bodega",
@@ -1222,7 +1272,6 @@
         "efic_Aire Servicios",
         "efic_EE Agua",
         "efic_EE CO2",
-        "efic_EE Caldera",
         "efic_EE Cocina",
         "efic_EE Eflu",
         "efic_EE Elaboracion",
@@ -1238,7 +1287,6 @@
         "efic_ET Linea 2",
         "efic_ET Linea 3",
         "efic_ET Linea 4",
-        "efic_ET Linea 5",
         "efic_ET Planta"
       ],
       "columnas_borradas": 0,
@@ -1250,7 +1298,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > features > eficiencias y tratamientos_PREPROCESSING.json > medias_train"
     },
     {
-      "paso": 47,
+      "paso": 49,
       "etapa": "Feature engineering",
       "funcion": "borrar_columnas",
       "descripcion": "Borra las metas (ya están dentro de las efic_*)",
@@ -1262,8 +1310,8 @@
         1213
       ],
       "columnas": [
-        315,
-        266
+        273,
+        224
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 49,
@@ -1275,7 +1323,7 @@
       "detalle": "tratamientos_PREPROCESSING.json > metas_tras_eficiencias"
     },
     {
-      "paso": 48,
+      "paso": 50,
       "etapa": "Calendario",
       "funcion": "agregar_calendario",
       "descripcion": "Día de la semana y mes del día que se predice (D+1) con codificación seno/coseno, estación en one-hot (4 columnas) y fin de semana",
@@ -1285,13 +1333,20 @@
         1213
       ],
       "columnas": [
-        266,
-        278
+        224,
+        243
       ],
       "columnas_agregadas": [
         "DIA_SEMANA",
         "DS_cos",
+        "DS_domingo",
+        "DS_jueves",
+        "DS_lunes",
+        "DS_martes",
+        "DS_miercoles",
+        "DS_sabado",
         "DS_sin",
+        "DS_viernes",
         "ESTACION",
         "EST_invierno",
         "EST_otono",
@@ -1310,23 +1365,23 @@
       "celdas_modificadas": 0
     },
     {
-      "paso": 49,
+      "paso": 51,
       "etapa": "Selección",
       "funcion": "seleccionar",
       "descripcion": "Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
       "parametros": {
-        "features": 37
+        "features": 41
       },
       "filas": [
         1213,
         1213
       ],
       "columnas": [
-        278,
-        39
+        243,
+        43
       ],
       "columnas_agregadas": [],
-      "columnas_borradas": 239,
+      "columnas_borradas": 200,
       "nulos": [
         0,
         0
@@ -1338,13 +1393,13 @@
   "salida": {
     "archivo": "data/processed/dataset_final.csv",
     "filas": 1213,
-    "columnas": 39,
+    "columnas": 43,
     "escalado": false,
     "conjuntos": {
       "train": {
         "X_shape": [
           849,
-          37
+          41
         ],
         "desde": "2020-07-01",
         "hasta": "2022-10-27"
@@ -1352,7 +1407,7 @@
       "val": {
         "X_shape": [
           182,
-          37
+          41
         ],
         "desde": "2022-10-28",
         "hasta": "2023-04-27"
@@ -1360,7 +1415,7 @@
       "test": {
         "X_shape": [
           182,
-          37
+          41
         ],
         "desde": "2023-04-28",
         "hasta": "2023-10-26"
