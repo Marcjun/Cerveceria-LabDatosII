@@ -2,7 +2,7 @@
   "descripcion": "Transformaciones que aplica src/preprocessing_pipeline.py, en orden. Cada paso indica en 'detalle' dónde están las columnas y parámetros completos.",
   "ejecucion": {
     "script": "src/preprocessing_pipeline.py",
-    "fecha": "2026-11-15T18:16:31",
+    "fecha": "2026-11-15T19:46:26",
     "estado": "completo",
     "entradas": {
       "Totalizadores Planta 2020_2022.xlsx": {
@@ -635,7 +635,7 @@
       "funcion": "borrar_columnas",
       "descripcion": "Borra las columnas del paso 'quiebre_estructural'",
       "parametros": {
-        "columnas_registradas": 45
+        "columnas_registradas": 47
       },
       "filas": [
         1205,
@@ -643,10 +643,10 @@
       ],
       "columnas": [
         298,
-        253
+        251
       ],
       "columnas_agregadas": [],
-      "columnas_borradas": 45,
+      "columnas_borradas": 47,
       "nulos": [
         1453,
         452
@@ -667,8 +667,8 @@
         1205
       ],
       "columnas": [
-        253,
-        249
+        251,
+        247
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 4,
@@ -692,8 +692,8 @@
         1205
       ],
       "columnas": [
-        249,
-        208
+        247,
+        206
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 41,
@@ -717,8 +717,8 @@
         1211
       ],
       "columnas": [
-        208,
-        209
+        206,
+        207
       ],
       "columnas_agregadas": [
         "imputado"
@@ -742,8 +742,8 @@
         1210
       ],
       "columnas": [
-        209,
-        210
+        207,
+        208
       ],
       "columnas_agregadas": [
         "target"
@@ -762,15 +762,15 @@
       "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
       "parametros": {
         "umbral": 10,
-        "columnas_analizadas": 149
+        "columnas_analizadas": 147
       },
       "filas": [
         1210,
         1210
       ],
       "columnas": [
-        210,
-        210
+        208,
+        208
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 0,
@@ -788,15 +788,15 @@
       "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
       "parametros": {
         "umbral": 10,
-        "columnas_analizadas": 147
+        "columnas_analizadas": 145
       },
       "filas": [
         1210,
         1210
       ],
       "columnas": [
-        210,
-        210
+        208,
+        208
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 0,
@@ -820,8 +820,8 @@
         1210
       ],
       "columnas": [
-        210,
-        214
+        208,
+        212
       ],
       "columnas_agregadas": [
         "TEMP_dif",
@@ -851,8 +851,8 @@
         1210
       ],
       "columnas": [
-        214,
-        215
+        212,
+        213
       ],
       "columnas_agregadas": [
         "FRIO_media5"
@@ -879,8 +879,8 @@
         1210
       ],
       "columnas": [
-        215,
-        216
+        213,
+        214
       ],
       "columnas_agregadas": [
         "FRIO_media14"
@@ -906,8 +906,8 @@
         1210
       ],
       "columnas": [
-        216,
-        217
+        214,
+        215
       ],
       "columnas_agregadas": [
         "FRIO_media5_dif"
@@ -933,8 +933,8 @@
         1210
       ],
       "columnas": [
-        217,
-        218
+        215,
+        216
       ],
       "columnas_agregadas": [
         "PROD_cocina_dif"
@@ -960,8 +960,8 @@
         1210
       ],
       "columnas": [
-        218,
-        219
+        216,
+        217
       ],
       "columnas_agregadas": [
         "PROD_bodega_dif"
@@ -987,8 +987,8 @@
         1210
       ],
       "columnas": [
-        219,
-        220
+        217,
+        218
       ],
       "columnas_agregadas": [
         "PROD_filtrada_dif"
@@ -1014,8 +1014,8 @@
         1210
       ],
       "columnas": [
-        220,
-        221
+        218,
+        219
       ],
       "columnas_agregadas": [
         "PROD_envasada_dif"
@@ -1042,8 +1042,8 @@
         1210
       ],
       "columnas": [
-        221,
-        222
+        219,
+        220
       ],
       "columnas_agregadas": [
         "PROD_mosto_lag9"
@@ -1070,8 +1070,8 @@
         1210
       ],
       "columnas": [
-        222,
-        223
+        220,
+        221
       ],
       "columnas_agregadas": [
         "PROD_cocina_lag9"
@@ -1098,8 +1098,8 @@
         1210
       ],
       "columnas": [
-        223,
-        224
+        221,
+        222
       ],
       "columnas_agregadas": [
         "PROD_bodega_lag7"
@@ -1126,8 +1126,8 @@
         1210
       ],
       "columnas": [
-        224,
-        225
+        222,
+        223
       ],
       "columnas_agregadas": [
         "PROD_filtrada_lag7"
@@ -1154,8 +1154,8 @@
         1210
       ],
       "columnas": [
-        225,
-        226
+        223,
+        224
       ],
       "columnas_agregadas": [
         "PROD_envasada_lag7"
@@ -1182,8 +1182,8 @@
         1210
       ],
       "columnas": [
-        226,
-        227
+        224,
+        225
       ],
       "columnas_agregadas": [
         "FRIO_lag6"
@@ -1210,8 +1210,8 @@
         1210
       ],
       "columnas": [
-        227,
-        228
+        225,
+        226
       ],
       "columnas_agregadas": [
         "FRIO_mismo_dia4"
@@ -1237,8 +1237,8 @@
         1210
       ],
       "columnas": [
-        228,
-        237
+        226,
+        235
       ],
       "columnas_agregadas": [
         "RATIO_bodega_frio",
@@ -1272,8 +1272,8 @@
         1210
       ],
       "columnas": [
-        237,
-        270
+        235,
+        268
       ],
       "columnas_agregadas": [
         "efic_Agua Bodega",
@@ -1331,8 +1331,8 @@
         1210
       ],
       "columnas": [
-        270,
-        221
+        268,
+        219
       ],
       "columnas_agregadas": [],
       "columnas_borradas": 49,
@@ -1356,20 +1356,20 @@
         1210
       ],
       "columnas": [
-        221,
-        231
+        219,
+        229
       ],
       "columnas_agregadas": [
-        "INT_Agua Planta (Hl)__x__KW Cond 5. 6 y 9",
+        "INT_Agua Planta (Hl)__x__ET Bodega/Hl",
         "INT_FRIO_mismo_dia4__x__Agua Planta (Hl)",
-        "INT_FRIO_mismo_dia4__x__KW Cond 5. 6 y 9",
+        "INT_FRIO_mismo_dia4__x__ET Bodega/Hl",
         "INT_FRIO_mismo_dia4__x__KW Trafo 11",
         "INT_Frio (Kw)__x__Agua Planta (Hl)",
+        "INT_Frio (Kw)__x__ET Bodega/Hl",
         "INT_Frio (Kw)__x__FRIO_mismo_dia4",
-        "INT_Frio (Kw)__x__KW Cond 5. 6 y 9",
         "INT_Frio (Kw)__x__KW Trafo 11",
         "INT_KW Trafo 11__x__Agua Planta (Hl)",
-        "INT_KW Trafo 11__x__KW Cond 5. 6 y 9"
+        "INT_KW Trafo 11__x__ET Bodega/Hl"
       ],
       "columnas_borradas": 0,
       "nulos": [
@@ -1390,8 +1390,8 @@
         1210
       ],
       "columnas": [
-        231,
-        251
+        229,
+        249
       ],
       "columnas_agregadas": [
         "DIA_SEMANA",
@@ -1428,18 +1428,18 @@
       "funcion": "seleccionar",
       "descripcion": "Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
       "parametros": {
-        "features": 41
+        "features": 27
       },
       "filas": [
         1210,
         1210
       ],
       "columnas": [
-        251,
-        43
+        249,
+        29
       ],
       "columnas_agregadas": [],
-      "columnas_borradas": 208,
+      "columnas_borradas": 220,
       "nulos": [
         0,
         0
@@ -1451,13 +1451,13 @@
   "salida": {
     "archivo": "data/processed/dataset_final.csv",
     "filas": 1210,
-    "columnas": 43,
+    "columnas": 29,
     "escalado": false,
     "conjuntos": {
       "train": {
         "X_shape": [
           846,
-          41
+          27
         ],
         "desde": "2020-07-04",
         "hasta": "2022-10-27"
@@ -1465,7 +1465,7 @@
       "val": {
         "X_shape": [
           182,
-          41
+          27
         ],
         "desde": "2022-10-28",
         "hasta": "2023-04-27"
@@ -1473,7 +1473,7 @@
       "test": {
         "X_shape": [
           182,
-          41
+          27
         ],
         "desde": "2023-04-28",
         "hasta": "2023-10-26"

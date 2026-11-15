@@ -119,7 +119,7 @@ def entrenar_y_evaluar(nombre, params, ajuste, evaluacion, features, conjunto, s
     metricas = evaluar(evaluacion[col_target], pred)
     if registrar:
         registrar_experimento(nombre, conjunto, metricas, hiperparametros=params,
-                              n_features=len(features), semilla=semilla)
+                              n_features=len(features), semilla=semilla, features=features)
     return modelo, pred, metricas
 
 
@@ -155,19 +155,25 @@ def optimizar(nombre, espacio, X, y, n_trials=50, n_folds=4, dias_fold=91, semil
         trial.set_user_attr("r2", float(np.mean(r2s)))
         return float(np.mean(maes))
 
-    def registrar_trial(study, trial):
-        if registrar and trial.state == optuna.trial.TrialState.COMPLETE:
-            registrar_experimento(nombre, "cv_train", {"mae": trial.value, **trial.user_attrs},
-                                  hiperparametros=trial.params, n_features=X.shape[1],
-                                  trial=trial.number, semilla=semilla, commit=commit)
-
     study = optuna.create_study(direction="minimize", study_name=nombre,
                                 sampler=optuna.samplers.TPESampler(seed=semilla),
                                 pruner=optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=1))
-    study.optimize(objetivo, n_trials=n_trials, timeout=timeout, callbacks=[registrar_trial], show_progress_bar=True)
 
-    estados = pd.Series([t.state.name for t in study.trials]).value_counts()
-    print(f"{nombre}: {estados.get('COMPLETE', 0)} completos, {estados.get('PRUNED', 0)} podados | "
+
+    try:
+        study.optimize(objetivo, n_trials=n_trials, timeout=timeout, show_progress_bar=True)
+    finally:
+        estados = pd.Series([t.state.name for t in study.trials]).value_counts()
+        completos = int(estados.get("COMPLETE", 0))
+        if registrar and completos:
+            mejor = study.best_trial
+            registrar_experimento(nombre, "cv_train", {"mae": mejor.value, **mejor.user_attrs},
+                     hiperparametros=mejor.params, n_features=X.shape[1],
+                     trial=mejor.number, semilla=semilla, commit=commit,
+                     trials_completos=completos,
+                     trials_podados=int(estados.get("PRUNED", 0)),
+                     features=list(X.columns))
+    print(f"{nombre}: {completos} completos, {estados.get('PRUNED', 0)} podados | "
           f"MAE CV {study.best_value:,.0f} ± {study.best_trial.user_attrs['mae_desvio_folds']:,.0f} kW")
     return study
 
@@ -186,8 +192,8 @@ def commit_actual():
         return {"hash": "desconocido", "sin_commitear": None}
 
 
-def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_features=None,
-                          trial=None, semilla=42, commit=None):
+def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_features=None, features=None,
+                          trial=None, semilla=42, commit=None, trials_completos=None, trials_podados=None):
     """Agrega una fila a results/experiment_logs.csv (lo crea con encabezado si no existe).
     En 'commit', un * al final indica cambios sin commitear al momento de la corrida."""
     ruta = raiz_repo() / "results" / "experiment_logs.csv"
@@ -198,12 +204,15 @@ def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_fe
         "modelo": modelo,
         "conjunto": conjunto,
         "trial": trial,
+        "trials_completos" : trials_completos,
+        "trials_podados" : trials_podados,
         "hiperparametros": json.dumps(hiperparametros or {}, ensure_ascii=False),
         "mae": metricas.get("mae"),
         "mae_desvio_folds": metricas.get("mae_desvio_folds"),
         "rmse": metricas.get("rmse"),
         "r2": metricas.get("r2"),
         "n_features": n_features,
+        "features": json.dumps(list(features), ensure_ascii=False) if features is not None else None,
         "semilla": semilla,
         "commit": commit["hash"] + ("*" if commit["sin_commitear"] else ""),
     }
@@ -211,10 +220,16 @@ def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_fe
 
 
 def guardar_modelo(modelo, version):
-    """Guarda el Pipeline entrenado en models/modelo_v<version>.pkl con joblib."""
-    ruta = raiz_repo() / "models" / f"modelo_v{version}.pkl"
-    ruta.parent.mkdir(parents=True, exist_ok=True)
+    """Guarda el Pipeline entrenado en models/modelo_v<version>.pkl con joblib y borra los .pkl
+    de versiones anteriores (se recuperan desde el tag de git de cada versión)."""
+    carpeta = raiz_repo() / "models"
+    carpeta.mkdir(parents=True, exist_ok=True)
+    ruta = carpeta / f"modelo_v{version}.pkl"
     joblib.dump(modelo, ruta)
+    for viejo in carpeta.glob("modelo_v*.pkl"):
+        if viejo != ruta:
+            viejo.unlink()
+            print(f"Borrado {viejo.name}")
     return ruta
 
 
@@ -224,15 +239,11 @@ def actualizar_registro(version, ruta_modelo, nombre, hiperparametros, features,
     a la versión semántica más alta. Formato: {"latest": "x.y.z", "versiones": {"x.y.z": {...}}}."""
     raiz = raiz_repo()
     ruta = raiz / "models" / "model_registry.json"
-    texto = ruta.read_text(encoding="utf-8").strip() if ruta.is_file() else ""
-    versiones = json.loads(texto).get("versiones", {}) if texto else {}
-    if version in versiones:
-        print(f"Aviso: la versión {version} ya estaba en el registro y se reemplaza.")
 
     commit = commit_actual()
     if commit["sin_commitear"]:
         print("Aviso: hay cambios sin commitear; el hash del registro no reproduce exactamente este modelo.")
-    versiones[version] = {
+    versiones = {version:{
         "path": ruta_modelo.relative_to(raiz).as_posix(),
         "modelo": nombre,
         "hiperparametros": hiperparametros,
@@ -246,9 +257,8 @@ def actualizar_registro(version, ruta_modelo, nombre, hiperparametros, features,
         "commit": commit["hash"],
         "cambios_sin_commitear": commit["sin_commitear"],
         "fecha": datetime.now().isoformat(timespec="seconds"),
-    }
-    latest = max(versiones, key=lambda v: tuple(int(p) for p in v.split(".")))
-    registro = {"latest": latest, "versiones": versiones}
+    }}
+    registro = {"latest": version, "versiones": versiones}
     ruta.write_text(json.dumps(registro, ensure_ascii=False, indent=2), encoding="utf-8")
     return ruta
 
