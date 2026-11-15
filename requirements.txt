@@ -77,7 +77,6 @@ pandas==3.1.0
 pandocfilters==1.5.1
 parso==0.8.7
 pillow==13.0.0
-pip @ file:///home/conda/feedstock_root/build_artifacts/pip_1793659322676/work
 platformdirs==4.13.5
 prometheus-client==0.26.0
 prompt-toolkit==3.0.53
