@@ -171,29 +171,13 @@
     "Consolidado KPI | Meta Aire Servicios": [
       "media_train_si_no_hay_meta"
     ],
-    "Consolidado KPI | EE Planta / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | EE Elaboracion / Hl": [
       "promedio_anteriores"
-    ],
-    "Consolidado KPI | EE Bodega / Hl": [
-      "promedio_anteriores",
-      "promedio_anteriores_sin_negativos"
     ],
     "Consolidado KPI | EE Envasado / Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | EE Servicios / Hl": [
-      "promedio_anteriores"
-    ],
-    "Consolidado KPI | EE Sala Maq / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | EE Frio / Hl": [
-      "promedio_anteriores"
-    ],
-    "Consolidado KPI | EE Aire / Hl": [
       "promedio_anteriores"
     ],
     "Consolidado KPI | EE CO2 / Hl": [
@@ -237,15 +221,6 @@
     "Consolidado KPI | ET Envasado/Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | ET Servicios / Hl": [
-      "promedio_anteriores"
-    ],
-    "Consolidado KPI | Aire Planta / Hl": [
-      "promedio_anteriores"
-    ],
-    "Consolidado KPI | Aire Elaboracion / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | Aire Bodega / Hl": [
       "promedio_anteriores"
     ],
@@ -268,18 +243,12 @@
     "Totalizadores CO2 | Totalizador_L3": [
       "promedio_anteriores"
     ],
-    "Totalizadores CO2 | Totaliador_Latas": [
-      "promedio_anteriores"
-    ],
     "Totalizadores CO2 | Totalizador_Bodega": [
       "promedio_anteriores"
     ],
     "Totalizadores CO2 | Totalizador_Tq_Pulmon": [
       "promedio_anteriores",
       "promedio_anteriores_sin_negativos"
-    ],
-    "Totalizadores CO2 | Totalizador_Filtracion": [
-      "promedio_anteriores"
     ],
     "Consolidado KPI | EE Cocina / Hl": [
       "promedio_anteriores"
@@ -316,9 +285,6 @@
       "promedio_anteriores",
       "promedio_anteriores_sin_negativos"
     ],
-    "Consolidado KPI | Aire L3 / Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | CO 2 linea 3 / Hl": [
       "promedio_anteriores"
     ],
@@ -337,28 +303,13 @@
     "Consolidado KPI | CO 2 Linea 4 / Hl": [
       "promedio_anteriores"
     ],
-    "Consolidado KPI | Agua Linea 5/Hl": [
-      "promedio_anteriores"
-    ],
     "Consolidado KPI | ET Linea 5/Hl": [
-      "promedio_anteriores"
-    ],
-    "Consolidado KPI | Aire L5 / Hl": [
       "promedio_anteriores"
     ],
     "Consolidado KPI | CO 2 Filtro / Hl": [
       "promedio_anteriores"
     ],
     "Consolidado Aire | Aire Servicios (M3)": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Consolidado EE | Bodega (Kw)": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Consolidado EE | Prod Agua (Kw)": [
-      "promedio_anteriores_sin_negativos"
-    ],
-    "Consolidado EE | Linea 2 (Kw)": [
       "promedio_anteriores_sin_negativos"
     ],
     "Totalizadores Agua | Temp Tq Intermedio": [
@@ -505,5 +456,55 @@
     ],
     "tratamiento": "mediana_k_anteriores_mismo_mes",
     "k": 10
-  }
+  },
+  "correlacion_mayor_0.85": [
+    "Consolidado Agua | Agua Cocina (Hl)",
+    "Consolidado Agua | Agua Dilucion (Hl)",
+    "Consolidado Agua | Planta de agua (Hl)",
+    "Consolidado Agua | Produccion (Hl)",
+    "Consolidado Aire | Totalizador_Aire_Bodega",
+    "Consolidado Aire | Totalizador_Aire_L5",
+    "Consolidado EE | Aire (Kw)",
+    "Consolidado EE | Bodega (Kw)",
+    "Consolidado EE | Calderas (Kw)",
+    "Consolidado EE | Envasado (Kw)",
+    "Consolidado EE | KW Gral Planta",
+    "Consolidado EE | Linea 2 (Kw)",
+    "Consolidado EE | Linea 3 (Kw)",
+    "Consolidado EE | Planta (Kw)",
+    "Consolidado EE | Prod Agua (Kw)",
+    "Consolidado EE | Sala Maq (Kw)",
+    "Consolidado EE | Servicios (Kw)",
+    "Consolidado GasVapor | ET Elaboracion (Mj)",
+    "Consolidado GasVapor | Tot_Vapor_L3_L4",
+    "Consolidado GasVapor | Vapor Elaboracion (Kg)",
+    "Consolidado KPI | Agua Linea 5/Hl",
+    "Consolidado KPI | Aire Elaboracion / Hl",
+    "Consolidado KPI | Aire L3 / Hl",
+    "Consolidado KPI | Aire L5 / Hl",
+    "Consolidado KPI | Aire Planta / Hl",
+    "Consolidado KPI | EE Aire / Hl",
+    "Consolidado KPI | EE Bodega / Hl",
+    "Consolidado KPI | EE Planta / Hl",
+    "Consolidado KPI | EE Sala Maq / Hl",
+    "Consolidado KPI | EE Servicios / Hl",
+    "Consolidado KPI | ET Servicios / Hl",
+    "Consolidado KPI | Produccion Agua / Hl",
+    "Totalizadores Agua | FC Cocina",
+    "Totalizadores Agua | Filtro de Carbon",
+    "Totalizadores Agua | Rechazo Osmosis",
+    "Totalizadores Agua | Red Bodega",
+    "Totalizadores CO2 | Totaliador_Latas",
+    "Totalizadores CO2 | Totalizador_Filtracion",
+    "Totalizadores Energia | KW Cocina",
+    "Totalizadores Energia | KW Enfluente Efl",
+    "Totalizadores Energia | KW Enfr Agua Cocina",
+    "Totalizadores Energia | KW Linea 2",
+    "Totalizadores Energia | KW Linea 3",
+    "Totalizadores Energia | KW Linea 3 y 4",
+    "Totalizadores Energia | KW Trafo 8",
+    "Totalizadores Energia | KW Trafo 9",
+    "Totalizadores Energia | Kw Compresores Aire",
+    "Totalizadores Gas y Vapor | M3_Tot_Gas"
+  ]
 }
