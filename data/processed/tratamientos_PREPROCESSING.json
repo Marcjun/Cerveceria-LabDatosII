@@ -472,8 +472,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 358.36997635933807,
         "Totalizadores Energia | KW Iluminacion L4": 238.04255319148936,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 233.45271867612294,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 714.9095744680851,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 1439.1294326241134,
         "Totalizadores Energia | KW Bba Glicol Bod": 2593.0130023640663,
         "Totalizadores Energia | KW Caldera 3": 193.4113475177305,
         "Totalizadores Energia | KW Enfluentes Coc": 107.98581560283688,
@@ -623,8 +621,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 41.675318670306886,
         "Totalizadores Energia | KW Iluminacion L4": 41.22161879065425,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 72.97542432031642,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 390.8020357708733,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 715.7860925365833,
         "Totalizadores Energia | KW Bba Glicol Bod": 545.8861758558297,
         "Totalizadores Energia | KW Caldera 3": 2306.125605705639,
         "Totalizadores Energia | KW Enfluentes Coc": 40.96746912338404,
@@ -774,8 +770,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 238.29999999999998,
         "Totalizadores Energia | KW Iluminacion L4": 138.0,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 97.69999999999999,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 1.0,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 0.0,
         "Totalizadores Energia | KW Bba Glicol Bod": 1456.1,
         "Totalizadores Energia | KW Caldera 3": 2.8999999999999986,
         "Totalizadores Energia | KW Enfluentes Coc": 34.0,
@@ -925,8 +919,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 403.30000000000007,
         "Totalizadores Energia | KW Iluminacion L4": 291.1,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 356.30000000000007,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 1187.0,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 2436.1,
         "Totalizadores Energia | KW Bba Glicol Bod": 3490.2,
         "Totalizadores Energia | KW Caldera 3": 366.70000000000016,
         "Totalizadores Energia | KW Enfluentes Coc": 203.10000000000002,
@@ -1077,8 +1069,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 358.36997635933807,
         "Totalizadores Energia | KW Iluminacion L4": 238.04255319148936,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 233.45271867612294,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 714.9095744680851,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 1439.1294326241134,
         "Totalizadores Energia | KW Bba Glicol Bod": 2593.0130023640663,
         "Totalizadores Energia | KW Caldera 3": 116.31170212765957,
         "Totalizadores Energia | KW Enfluentes Coc": 107.98581560283688,
@@ -1226,8 +1216,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 41.675318670306886,
         "Totalizadores Energia | KW Iluminacion L4": 41.22161879065425,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 72.97542432031642,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 390.8020357708733,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 715.7860925365833,
         "Totalizadores Energia | KW Bba Glicol Bod": 545.8861758558297,
         "Totalizadores Energia | KW Caldera 3": 500.6349161644806,
         "Totalizadores Energia | KW Enfluentes Coc": 40.96746912338404,
@@ -1375,8 +1363,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 238.29999999999998,
         "Totalizadores Energia | KW Iluminacion L4": 138.0,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 97.69999999999999,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 1.0,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 0.0,
         "Totalizadores Energia | KW Bba Glicol Bod": 1456.1,
         "Totalizadores Energia | KW Caldera 3": 2.8999999999999986,
         "Totalizadores Energia | KW Enfluentes Coc": 34.0,
@@ -1524,8 +1510,6 @@
         "Totalizadores Energia | KW Iluminacion L3": 403.30000000000007,
         "Totalizadores Energia | KW Iluminacion L4": 291.1,
         "Totalizadores Energia | KW Ilum Dep L3/L4": 356.30000000000007,
-        "Totalizadores Energia | KW Cond 5. 6 y 9": 1187.0,
-        "Totalizadores Energia | KW Cond 11. 12 y 13": 2436.1,
         "Totalizadores Energia | KW Bba Glicol Bod": 3490.2,
         "Totalizadores Energia | KW Caldera 3": 366.07000000000005,
         "Totalizadores Energia | KW Enfluentes Coc": 203.10000000000002,
@@ -1874,9 +1858,9 @@
         "Consolidado EE | Frio (Kw)",
         "Consolidado Agua | Agua Planta (Hl)"
       ],
-      "INT_Frio (Kw)__x__KW Cond 5. 6 y 9": [
+      "INT_Frio (Kw)__x__ET Bodega/Hl": [
         "Consolidado EE | Frio (Kw)",
-        "Totalizadores Energia | KW Cond 5. 6 y 9"
+        "Consolidado KPI | ET Bodega/Hl"
       ],
       "INT_FRIO_mismo_dia4__x__KW Trafo 11": [
         "FRIO_mismo_dia4",
@@ -1886,21 +1870,21 @@
         "FRIO_mismo_dia4",
         "Consolidado Agua | Agua Planta (Hl)"
       ],
-      "INT_FRIO_mismo_dia4__x__KW Cond 5. 6 y 9": [
+      "INT_FRIO_mismo_dia4__x__ET Bodega/Hl": [
         "FRIO_mismo_dia4",
-        "Totalizadores Energia | KW Cond 5. 6 y 9"
+        "Consolidado KPI | ET Bodega/Hl"
       ],
       "INT_KW Trafo 11__x__Agua Planta (Hl)": [
         "Totalizadores Energia | KW Trafo 11",
         "Consolidado Agua | Agua Planta (Hl)"
       ],
-      "INT_KW Trafo 11__x__KW Cond 5. 6 y 9": [
+      "INT_KW Trafo 11__x__ET Bodega/Hl": [
         "Totalizadores Energia | KW Trafo 11",
-        "Totalizadores Energia | KW Cond 5. 6 y 9"
+        "Consolidado KPI | ET Bodega/Hl"
       ],
-      "INT_Agua Planta (Hl)__x__KW Cond 5. 6 y 9": [
+      "INT_Agua Planta (Hl)__x__ET Bodega/Hl": [
         "Consolidado Agua | Agua Planta (Hl)",
-        "Totalizadores Energia | KW Cond 5. 6 y 9"
+        "Consolidado KPI | ET Bodega/Hl"
       ]
     }
   },
@@ -1960,38 +1944,24 @@
       "Consolidado EE | Frio (Kw)",
       "FRIO_media14",
       "FRIO_media5",
-      "MES_sin",
       "Totalizadores Energia | Kw Molino",
-      "INT_Frio (Kw)__x__Agua Planta (Hl)",
-      "Totalizadores Energia | Kw Admininistracion",
-      "Consolidado KPI | Agua Bodega / Hl",
+      "MES_sin",
       "MES_cos",
       "PROD_bodega_lag7",
-      "PROD_mosto_lag9",
-      "Totalizadores Energia | KW Cond 5. 6 y 9",
-      "Consolidado Aire | Totaliador_Aire_L4",
-      "DS_lunes",
       "EST_invierno",
-      "Consolidado Agua | Agua Planta (Hl)",
-      "Totalizadores Energia | KW Cond 11. 12 y 13",
+      "PROD_mosto_lag9",
+      "DS_lunes",
+      "Consolidado Aire | Totaliador_Aire_L4",
       "Consolidado GasVapor | Vapor Cocina (Kg)",
-      "RATIO_filtrada_frio",
-      "Consolidado Aire | Aire Envasado (M3)",
+      "Consolidado KPI | Agua Bodega / Hl",
       "INT_Frio (Kw)__x__FRIO_mismo_dia4",
       "Totalizadores Energia | KW Obrador Contratistas",
+      "INT_Frio (Kw)__x__Agua Planta (Hl)",
+      "Totalizadores Energia | Kw Admininistracion",
       "Consolidado KPI | ET Bodega/Hl",
+      "INT_Agua Planta (Hl)__x__ET Bodega/Hl",
       "RATIO_l4_frio",
-      "Consolidado KPI | EE Agua / Hl",
-      "Consolidado KPI | Aire Bodega / Hl",
-      "INT_FRIO_mismo_dia4__x__Agua Planta (Hl)",
-      "Totalizadores Energia | KW Caldera 3",
-      "Consolidado EE | Pta Agua / Eflu (Kw)",
-      "Consolidado KPI | Agua Elab / Hl",
-      "PROD_cocina_lag9",
       "Consolidado KPI | Aire Cocina / Hl",
-      "EST_primavera",
-      "EST_verano",
-      "EST_otono",
       "DS_martes",
       "DS_miercoles",
       "DS_jueves",
@@ -2000,12 +1970,12 @@
       "DS_domingo"
     ],
     "lasso": {
-      "alpha": 347.0266988650418
+      "alpha": 208.39407900702395
     },
     "random_forest": {
-      "max_depth": 14,
+      "max_depth": 19,
       "min_samples_leaf": 20,
-      "max_features": 0.46288769343298247
+      "max_features": 0.35046284468554584
     }
   }
 }
