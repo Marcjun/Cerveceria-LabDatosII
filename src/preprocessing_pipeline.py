@@ -159,7 +159,7 @@ def guardar_dataset(df, ruta):
     con el mismo formato que datos_base.csv del EDA. Devuelve la ruta."""
     ruta = Path(ruta)
     ruta.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(ruta, index=False, date_format="%Y-%m-%d")
+    df.to_csv(ruta, index=False, date_format="%Y-%m-%d", lineterminator="\n")
     return ruta
 
 
@@ -313,5 +313,5 @@ if __name__ == "__main__":
         lineage["ejecucion"]["estado"] = f"error en el paso {len(pasos) + 1}: {type(e).__name__}: {e}"
         raise
     finally:
-        ruta_lineage.write_text(json.dumps(lineage, ensure_ascii=False, indent=2), encoding="utf-8")
+        ruta_lineage.write_text(json.dumps(lineage, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
         print(f"Registro de la corrida en {ruta_lineage} ({len(pasos)} pasos)")

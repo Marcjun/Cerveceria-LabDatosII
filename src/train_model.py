@@ -216,7 +216,7 @@ def registrar_experimento(modelo, conjunto, metricas, hiperparametros=None, n_fe
         "semilla": semilla,
         "commit": commit["hash"] + ("*" if commit["sin_commitear"] else ""),
     }
-    pd.DataFrame([fila]).to_csv(ruta, mode="a", header=not ruta.exists(), index=False)
+    pd.DataFrame([fila]).to_csv(ruta, mode="a", header=not ruta.exists(), index=False, lineterminator="\n")
 
 
 def guardar_modelo(modelo, version):
@@ -259,7 +259,7 @@ def actualizar_registro(version, ruta_modelo, nombre, hiperparametros, features,
         "fecha": datetime.now().isoformat(timespec="seconds"),
     }}
     registro = {"latest": version, "versiones": versiones}
-    ruta.write_text(json.dumps(registro, ensure_ascii=False, indent=2), encoding="utf-8")
+    ruta.write_text(json.dumps(registro, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     return ruta
 
 

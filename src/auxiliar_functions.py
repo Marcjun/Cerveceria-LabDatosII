@@ -61,6 +61,25 @@ def hash_file(path, chunk=1 << 20):
     return h.hexdigest()
 
 
+# CSV que se comparan con tolerancia numérica en vez de byte a byte. En
+# dataset_final.csv algunas features (p. ej. MES_sin) salen del sin/cos de
+# numpy, que puede diferir en el último bit (~1e-16) entre Windows y Linux.
+_TOLERANT_FILES = {"data/processed/dataset_final.csv"}
+_TOLERANT_FLOAT_FORMAT = "%.12g"  # 12 cifras significativas
+
+
+def hash_csv_tolerante(path):
+    """SHA-256 de una versión canónica del CSV: se lee con pandas y se reescribe
+    con los floats redondeados a 12 cifras significativas y saltos de línea LF.
+    Absorbe diferencias de redondeo entre sistemas operativos, pero cualquier
+    cambio real en los datos sigue cambiando el hash."""
+    import pandas as pd  # import local: solo hace falta para estos archivos
+    texto = pd.read_csv(path).to_csv(
+        index=False, float_format=_TOLERANT_FLOAT_FORMAT, lineterminator="\n"
+    )
+    return hashlib.sha256(texto.encode("utf-8")).hexdigest()
+
+
 def snapshot():
     """{ruta_relativa_a_la_raíz: sha256} de todos los archivos rastreados.
 
@@ -73,7 +92,8 @@ def snapshot():
             continue
         for p in sorted(folder.rglob("*")):  # rglob: recursivo
             if p.is_file() and not _is_ignored(p):
-                snap[p.relative_to(ROOT).as_posix()] = hash_file(p)
+                rel = p.relative_to(ROOT).as_posix()
+                snap[rel] = hash_csv_tolerante(p) if rel in _TOLERANT_FILES else hash_file(p)
     return dict(sorted(snap.items()))
 
 
@@ -87,7 +107,7 @@ def load_checksums():
 def save_checksums(snap):
     CHECKSUMS_PATH.parent.mkdir(parents=True, exist_ok=True)
     CHECKSUMS_PATH.write_text(
-        json.dumps(snap, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+        json.dumps(snap, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
 
 

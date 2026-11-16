@@ -110,6 +110,6 @@ if __name__ == "__main__":
 
     salida = raiz_repo() / "results" / "predicciones.csv"
     salida.parent.mkdir(parents=True, exist_ok=True)
-    results.to_csv(salida, index=False, date_format="%Y-%m-%d")
+    results.to_csv(salida, index=False, date_format="%Y-%m-%d", lineterminator="\n")
     print(f"{len(results)} predicciones ({results['fecha'].min().date()} -> {results['fecha'].max().date()}) "
           f"generadas en {salida}")

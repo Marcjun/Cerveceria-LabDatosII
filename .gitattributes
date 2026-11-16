@@ -1,0 +1,3 @@
+# CSV y JSON siempre con LF (los checksums de data/ dependen de los bytes exactos)
+*.csv text eol=lf
+*.json text eol=lf
