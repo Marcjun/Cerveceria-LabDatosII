@@ -98,7 +98,7 @@ python src/predict.py "data/raw/Totalizadores Planta 2022_2023.xlsx"
 - Recibe la ruta de **un** Excel con la misma estructura que los de entrenamiento (puede ser uno nuevo, en cualquier carpeta). Las **comillas** son necesarias porque el nombre tiene espacios, en Windows y en Linux.
 - Opcionalmente se puede indicar la versión del modelo (por defecto, la última de `models/model_registry.json`):
   ```bash
-  python src/predict.py "data/raw/Totalizadores Planta 2022_2023.xlsx" 3.0.0
+  python src/predict.py "data/raw/Totalizadores Planta 2022_2023.xlsx" 4.2.0
   ```
 - Escribe `results/predicciones.csv`: una fila por día, `fecha` = día D y `prediccion_frio_kw` = consumo de frío estimado para D+1.
 

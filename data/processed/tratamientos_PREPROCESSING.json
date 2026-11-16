@@ -1945,23 +1945,22 @@
       "FRIO_media14",
       "FRIO_media5",
       "Totalizadores Energia | Kw Molino",
-      "MES_sin",
       "MES_cos",
       "PROD_bodega_lag7",
+      "MES_sin",
       "EST_invierno",
+      "Consolidado Aire | Totaliador_Aire_L4",
       "PROD_mosto_lag9",
       "DS_lunes",
-      "Consolidado Aire | Totaliador_Aire_L4",
       "Consolidado GasVapor | Vapor Cocina (Kg)",
-      "Consolidado KPI | Agua Bodega / Hl",
       "INT_Frio (Kw)__x__FRIO_mismo_dia4",
       "Totalizadores Energia | KW Obrador Contratistas",
       "INT_Frio (Kw)__x__Agua Planta (Hl)",
-      "Totalizadores Energia | Kw Admininistracion",
       "Consolidado KPI | ET Bodega/Hl",
+      "Totalizadores Energia | Kw Admininistracion",
+      "DS_sin",
       "INT_Agua Planta (Hl)__x__ET Bodega/Hl",
       "RATIO_l4_frio",
-      "Consolidado KPI | Aire Cocina / Hl",
       "DS_martes",
       "DS_miercoles",
       "DS_jueves",
@@ -1969,13 +1968,38 @@
       "DS_sabado",
       "DS_domingo"
     ],
-    "lasso": {
-      "alpha": 208.39407900702395
+    "metodos": {
+      "lasso": {
+        "opciones": {
+          "n": 12,
+          "n_trials": 50
+        },
+        "parametros": {
+          "alpha": 200.97883895734375
+        }
+      },
+      "random_forest": {
+        "opciones": {
+          "n": 12,
+          "n_trials": 30
+        },
+        "parametros": {
+          "max_depth": 20,
+          "min_samples_leaf": 20,
+          "max_features": 0.48277634884469467
+        }
+      }
     },
-    "random_forest": {
-      "max_depth": 19,
-      "min_samples_leaf": 20,
-      "max_features": 0.35046284468554584
-    }
+    "forzadas": [
+      "MES_sin",
+      "MES_cos",
+      "DS_lunes",
+      "DS_martes",
+      "DS_miercoles",
+      "DS_jueves",
+      "DS_viernes",
+      "DS_sabado",
+      "DS_domingo"
+    ]
   }
 }
