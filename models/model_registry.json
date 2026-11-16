@@ -1,0 +1,60 @@
+{
+  "latest": "4.2.0",
+  "versiones": {
+    "4.2.0": {
+      "path": "models/modelo_v4.2.0.pkl",
+      "modelo": "random_forest",
+      "hiperparametros": {
+        "n_estimators": 950,
+        "max_depth": 18,
+        "min_samples_split": 2,
+        "min_samples_leaf": 1,
+        "max_features": 0.2421379477363565,
+        "max_samples": 0.5150192774262857
+      },
+      "features": [
+        "Consolidado EE | Frio (Kw)",
+        "FRIO_media14",
+        "FRIO_media5",
+        "Totalizadores Energia | Kw Molino",
+        "MES_cos",
+        "PROD_bodega_lag7",
+        "MES_sin",
+        "EST_invierno",
+        "Consolidado Aire | Totaliador_Aire_L4",
+        "PROD_mosto_lag9",
+        "DS_lunes",
+        "Consolidado GasVapor | Vapor Cocina (Kg)",
+        "INT_Frio (Kw)__x__FRIO_mismo_dia4",
+        "Totalizadores Energia | KW Obrador Contratistas",
+        "INT_Frio (Kw)__x__Agua Planta (Hl)",
+        "Consolidado KPI | ET Bodega/Hl",
+        "Totalizadores Energia | Kw Admininistracion",
+        "DS_sin",
+        "INT_Agua Planta (Hl)__x__ET Bodega/Hl",
+        "RATIO_l4_frio",
+        "DS_martes",
+        "DS_miercoles",
+        "DS_jueves",
+        "DS_viernes",
+        "DS_sabado",
+        "DS_domingo"
+      ],
+      "metricas_validacion": {
+        "mae": 2212.643633369137,
+        "rmse": 2834.2607856542613,
+        "r2": 0.4636216047768994
+      },
+      "entrenado_con": {
+        "conjuntos": "train + validacion",
+        "desde": "2020-07-04",
+        "hasta": "2023-04-27",
+        "dias": 1028
+      },
+      "semilla": 42,
+      "commit": "4b80597",
+      "cambios_sin_commitear": false,
+      "fecha": "2026-11-15T22:54:03"
+    }
+  }
+}

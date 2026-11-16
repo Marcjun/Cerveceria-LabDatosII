@@ -1,0 +1,1483 @@
+{
+  "descripcion": "Transformaciones que aplica src/preprocessing_pipeline.py, en orden. Cada paso indica en 'detalle' dónde están las columnas y parámetros completos.",
+  "ejecucion": {
+    "script": "src/preprocessing_pipeline.py",
+    "fecha": "2026-11-15T21:57:51",
+    "estado": "completo",
+    "entradas": {
+      "Totalizadores Planta 2020_2022.xlsx": {
+        "filas": 15577,
+        "columnas": 311
+      },
+      "Totalizadores Planta 2021_2023.xlsx": {
+        "filas": 15318,
+        "columnas": 388
+      },
+      "Totalizadores Planta 2022_2023.xlsx": {
+        "filas": 12017,
+        "columnas": 397
+      }
+    },
+    "hojas_excluidas": [
+      "Auxiliar",
+      "Seguimiento Dia"
+    ]
+  },
+  "fuentes": {
+    "eda": "data/processed/tratamientos_EDA.json",
+    "preprocesamiento": "data/processed/tratamientos_PREPROCESSING.json"
+  },
+  "pasos": [
+    {
+      "paso": 1,
+      "etapa": "Unión | Totalizadores Planta 2020_2022",
+      "funcion": "corregir_dias_pegados",
+      "descripcion": "Días con más de 26 lecturas: separa los días pegados, saca los bloques copiados y recoloca las fechas",
+      "parametros": {
+        "max_lecturas": 26
+      },
+      "filas": [
+        15577,
+        15577
+      ],
+      "columnas": [
+        311,
+        311
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        168963,
+        168963
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 2,
+      "etapa": "Unión | Totalizadores Planta 2020_2022",
+      "funcion": "anclar_septiembre",
+      "descripcion": "Fecha los días anteriores al primer 01/09 contando etiquetas para atrás desde el 01/09",
+      "parametros": {},
+      "filas": [
+        15577,
+        15577
+      ],
+      "columnas": [
+        311,
+        311
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        168963,
+        168963
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 3,
+      "etapa": "Unión | Totalizadores Planta 2020_2022",
+      "funcion": "sacar_dias_cortos",
+      "descripcion": "Saca los días con menos de 20 lecturas",
+      "parametros": {
+        "min_lecturas": 20
+      },
+      "filas": [
+        15577,
+        15569
+      ],
+      "columnas": [
+        311,
+        311
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        168963,
+        168907
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 4,
+      "etapa": "Unión | Totalizadores Planta 2020_2022",
+      "funcion": "filtrar_2359",
+      "descripcion": "Deja solo la lectura de cierre del día",
+      "parametros": {
+        "horas": "23:59:00 a 23:59:59"
+      },
+      "filas": [
+        15569,
+        622
+      ],
+      "columnas": [
+        311,
+        311
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        168907,
+        6717
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 5,
+      "etapa": "Unión | Totalizadores Planta 2020_2022",
+      "funcion": "convertir_a_float",
+      "descripcion": "Pasa a float todas las columnas menos DIA y HORA",
+      "parametros": {},
+      "filas": [
+        622,
+        622
+      ],
+      "columnas": [
+        311,
+        311
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        6717,
+        6717
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 6,
+      "etapa": "Unión | Totalizadores Planta 2021_2023",
+      "funcion": "corregir_dias_pegados",
+      "descripcion": "Días con más de 26 lecturas: separa los días pegados, saca los bloques copiados y recoloca las fechas",
+      "parametros": {
+        "max_lecturas": 26
+      },
+      "filas": [
+        15318,
+        15318
+      ],
+      "columnas": [
+        388,
+        388
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        441031,
+        441031
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 7,
+      "etapa": "Unión | Totalizadores Planta 2021_2023",
+      "funcion": "anclar_septiembre",
+      "descripcion": "Fecha los días anteriores al primer 01/09 contando etiquetas para atrás desde el 01/09",
+      "parametros": {},
+      "filas": [
+        15318,
+        15318
+      ],
+      "columnas": [
+        388,
+        388
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        441031,
+        441031
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 8,
+      "etapa": "Unión | Totalizadores Planta 2021_2023",
+      "funcion": "sacar_dias_cortos",
+      "descripcion": "Saca los días con menos de 20 lecturas",
+      "parametros": {
+        "min_lecturas": 20
+      },
+      "filas": [
+        15318,
+        15293
+      ],
+      "columnas": [
+        388,
+        388
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        441031,
+        440234
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 9,
+      "etapa": "Unión | Totalizadores Planta 2021_2023",
+      "funcion": "filtrar_2359",
+      "descripcion": "Deja solo la lectura de cierre del día",
+      "parametros": {
+        "horas": "23:59:00 a 23:59:59"
+      },
+      "filas": [
+        15293,
+        611
+      ],
+      "columnas": [
+        388,
+        388
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        440234,
+        15899
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 10,
+      "etapa": "Unión | Totalizadores Planta 2021_2023",
+      "funcion": "convertir_a_float",
+      "descripcion": "Pasa a float todas las columnas menos DIA y HORA",
+      "parametros": {},
+      "filas": [
+        611,
+        611
+      ],
+      "columnas": [
+        388,
+        388
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        15899,
+        15899
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 11,
+      "etapa": "Unión | Totalizadores Planta 2022_2023",
+      "funcion": "corregir_dias_pegados",
+      "descripcion": "Días con más de 26 lecturas: separa los días pegados, saca los bloques copiados y recoloca las fechas",
+      "parametros": {
+        "max_lecturas": 26
+      },
+      "filas": [
+        12017,
+        12017
+      ],
+      "columnas": [
+        397,
+        397
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        365090,
+        365090
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 12,
+      "etapa": "Unión | Totalizadores Planta 2022_2023",
+      "funcion": "anclar_septiembre",
+      "descripcion": "Fecha los días anteriores al primer 01/09 contando etiquetas para atrás desde el 01/09",
+      "parametros": {},
+      "filas": [
+        12017,
+        12017
+      ],
+      "columnas": [
+        397,
+        397
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        365090,
+        365090
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 13,
+      "etapa": "Unión | Totalizadores Planta 2022_2023",
+      "funcion": "sacar_dias_cortos",
+      "descripcion": "Saca los días con menos de 20 lecturas",
+      "parametros": {
+        "min_lecturas": 20
+      },
+      "filas": [
+        12017,
+        11976
+      ],
+      "columnas": [
+        397,
+        397
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        365090,
+        363849
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 14,
+      "etapa": "Unión | Totalizadores Planta 2022_2023",
+      "funcion": "filtrar_2359",
+      "descripcion": "Deja solo la lectura de cierre del día",
+      "parametros": {
+        "horas": "23:59:00 a 23:59:59"
+      },
+      "filas": [
+        11976,
+        479
+      ],
+      "columnas": [
+        397,
+        397
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        363849,
+        13010
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 15,
+      "etapa": "Unión | Totalizadores Planta 2022_2023",
+      "funcion": "convertir_a_float",
+      "descripcion": "Pasa a float todas las columnas menos DIA y HORA",
+      "parametros": {},
+      "filas": [
+        479,
+        479
+      ],
+      "columnas": [
+        397,
+        397
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        13010,
+        13010
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 16,
+      "etapa": "Unión",
+      "funcion": "unir_archivos",
+      "descripcion": "Une los archivos, saca HORA y las columnas Unnamed y deja una fila por día: gana la fila con menos nulos (empate: la primera) y sus huecos se rellenan con las otras",
+      "parametros": {},
+      "filas": [
+        1712,
+        1205
+      ],
+      "columnas": [
+        411,
+        386
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 25,
+      "nulos": [
+        118585,
+        45547
+      ],
+      "celdas_modificadas": null
+    },
+    {
+      "paso": 17,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "marcar_sin_meta",
+      "descripcion": "Agrega no_hay_meta (día sin ninguna meta) y rellena las metas nulas con 1 (provisorio)",
+      "parametros": {},
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        386,
+        387
+      ],
+      "columnas_agregadas": [
+        "no_hay_meta"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        45547,
+        26932
+      ],
+      "celdas_modificadas": 18615
+    },
+    {
+      "paso": 18,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "marcar_nulos_por_area",
+      "descripcion": "Agrega nulo_<área>: 1 si ese día faltaba algún dato del área",
+      "parametros": {},
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        387,
+        393
+      ],
+      "columnas_agregadas": [
+        "nulo_Cocina",
+        "nulo_Filtro",
+        "nulo_Línea 2",
+        "nulo_Línea 3",
+        "nulo_Línea 4",
+        "nulo_Línea 5"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        26932,
+        26932
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > indicadores_nulos"
+    },
+    {
+      "paso": 19,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "imputar_promedio_anteriores",
+      "descripcion": "Rellena los nulos con el promedio de los 2 valores válidos anteriores",
+      "parametros": {
+        "n": 2,
+        "columnas": 40
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        393,
+        393
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        26932,
+        24647
+      ],
+      "celdas_modificadas": 2285,
+      "detalle": "tratamientos_EDA.json > tratamientos"
+    },
+    {
+      "paso": 20,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "imputar_promedio_anteriores",
+      "descripcion": "Pasa los negativos a nulo y los rellena con el promedio de los 2 valores válidos anteriores",
+      "parametros": {
+        "n": 2,
+        "columnas": 16
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        393,
+        393
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        24647,
+        24647
+      ],
+      "celdas_modificadas": 99,
+      "detalle": "tratamientos_EDA.json > tratamientos"
+    },
+    {
+      "paso": 21,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'nulos_mayor_36'",
+      "parametros": {
+        "columnas_registradas": 22
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        393,
+        371
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 22,
+      "nulos": [
+        24647,
+        9573
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > nulos_mayor_36"
+    },
+    {
+      "paso": 22,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'nulos_uno_o_dos_tramos'",
+      "parametros": {
+        "columnas_registradas": 25
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        371,
+        346
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 25,
+      "nulos": [
+        9573,
+        1498
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > nulos_uno_o_dos_tramos"
+    },
+    {
+      "paso": 23,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'restos_redundantes'",
+      "parametros": {
+        "columnas_registradas": 6
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        346,
+        340
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 6,
+      "nulos": [
+        1498,
+        1454
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > restos_redundantes"
+    },
+    {
+      "paso": 24,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'columnas_en_cero'",
+      "parametros": {
+        "columnas_registradas": 18
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        340,
+        322
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 18,
+      "nulos": [
+        1454,
+        1454
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > columnas_en_cero"
+    },
+    {
+      "paso": 25,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'columnas_identicas'",
+      "parametros": {
+        "columnas_registradas": 24
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        322,
+        298
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 24,
+      "nulos": [
+        1454,
+        1453
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > columnas_identicas"
+    },
+    {
+      "paso": 26,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'quiebre_estructural'",
+      "parametros": {
+        "columnas_registradas": 47
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        298,
+        251
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 47,
+      "nulos": [
+        1453,
+        452
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > quiebre_estructural"
+    },
+    {
+      "paso": 27,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'compresores_individuales'",
+      "parametros": {
+        "columnas_registradas": 4
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        251,
+        247
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 4,
+      "nulos": [
+        452,
+        452
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > compresores_individuales"
+    },
+    {
+      "paso": 28,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las columnas del paso 'correlacion_mayor_0.85'",
+      "parametros": {
+        "columnas_registradas": 41
+      },
+      "filas": [
+        1205,
+        1205
+      ],
+      "columnas": [
+        247,
+        206
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 41,
+      "nulos": [
+        452,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > correlacion_mayor_0.85"
+    },
+    {
+      "paso": 29,
+      "etapa": "Limpieza (EDA)",
+      "funcion": "rellenar_dias_faltantes",
+      "descripcion": "Agrega los días faltantes con la mediana de los k días anteriores del mismo mes y la columna imputado",
+      "parametros": {
+        "k": 10
+      },
+      "filas": [
+        1205,
+        1211
+      ],
+      "columnas": [
+        206,
+        207
+      ],
+      "columnas_agregadas": [
+        "imputado"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_EDA.json > dias_faltantes"
+    },
+    {
+      "paso": 30,
+      "etapa": "Target",
+      "funcion": "agregar_target",
+      "descripcion": "target = Frio (Kw) del día siguiente; se saca el último día (no tiene target)",
+      "parametros": {},
+      "filas": [
+        1211,
+        1210
+      ],
+      "columnas": [
+        207,
+        208
+      ],
+      "columnas_agregadas": [
+        "target"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0
+    },
+    {
+      "paso": 31,
+      "etapa": "Outliers",
+      "funcion": "corregir_outliers",
+      "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
+      "parametros": {
+        "umbral": 10,
+        "columnas_analizadas": 147
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        208,
+        208
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 164,
+      "detalle": "tratamientos_PREPROCESSING.json > outliers > pasada1"
+    },
+    {
+      "paso": 32,
+      "etapa": "Outliers",
+      "funcion": "corregir_outliers",
+      "descripcion": "Marca |x - media| / desvío > umbral y lleva solo esas celdas al p2 / p98 de train",
+      "parametros": {
+        "umbral": 10,
+        "columnas_analizadas": 145
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        208,
+        208
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 93,
+      "detalle": "tratamientos_PREPROCESSING.json > outliers > pasada2"
+    },
+    {
+      "paso": 33,
+      "etapa": "Feature engineering",
+      "funcion": "agregar_temperatura",
+      "descripcion": "Temperatura media, máxima y mínima del día (Open-Meteo, Tecate) y su variación",
+      "parametros": {
+        "csv": "data/external/temperatura_tecate.csv"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        208,
+        212
+      ],
+      "columnas_agregadas": [
+        "TEMP_dif",
+        "TEMP_max",
+        "TEMP_media",
+        "TEMP_min"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > temperatura"
+    },
+    {
+      "paso": 34,
+      "etapa": "Feature engineering",
+      "funcion": "media_movil",
+      "descripcion": "FRIO_media5: media móvil de 5 días (incluye D)",
+      "parametros": {
+        "columna": "Consolidado EE | Frio (Kw)",
+        "ventana": 5
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        212,
+        213
+      ],
+      "columnas_agregadas": [
+        "FRIO_media5"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > medias_moviles"
+    },
+    {
+      "paso": 35,
+      "etapa": "Feature engineering",
+      "funcion": "media_movil",
+      "descripcion": "FRIO_media14: media móvil de 14 días (incluye D)",
+      "parametros": {
+        "columna": "Consolidado EE | Frio (Kw)",
+        "ventana": 14
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        213,
+        214
+      ],
+      "columnas_agregadas": [
+        "FRIO_media14"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > medias_moviles"
+    },
+    {
+      "paso": 36,
+      "etapa": "Feature engineering",
+      "funcion": "variacion",
+      "descripcion": "FRIO_media5_dif: diferencia contra el día anterior",
+      "parametros": {
+        "columna": "FRIO_media5"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        214,
+        215
+      ],
+      "columnas_agregadas": [
+        "FRIO_media5_dif"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
+    },
+    {
+      "paso": 37,
+      "etapa": "Feature engineering",
+      "funcion": "variacion",
+      "descripcion": "PROD_cocina_dif: diferencia contra el día anterior",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Cocina"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        215,
+        216
+      ],
+      "columnas_agregadas": [
+        "PROD_cocina_dif"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
+    },
+    {
+      "paso": 38,
+      "etapa": "Feature engineering",
+      "funcion": "variacion",
+      "descripcion": "PROD_bodega_dif: diferencia contra el día anterior",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Producido Bodega"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        216,
+        217
+      ],
+      "columnas_agregadas": [
+        "PROD_bodega_dif"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
+    },
+    {
+      "paso": 39,
+      "etapa": "Feature engineering",
+      "funcion": "variacion",
+      "descripcion": "PROD_filtrada_dif: diferencia contra el día anterior",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Filtrada"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        217,
+        218
+      ],
+      "columnas_agregadas": [
+        "PROD_filtrada_dif"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
+    },
+    {
+      "paso": 40,
+      "etapa": "Feature engineering",
+      "funcion": "variacion",
+      "descripcion": "PROD_envasada_dif: diferencia contra el día anterior",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Envasada"
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        218,
+        219
+      ],
+      "columnas_agregadas": [
+        "PROD_envasada_dif"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > variaciones"
+    },
+    {
+      "paso": 41,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "PROD_mosto_lag9: valor de 9 días antes",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl de Mosto",
+        "k": 9
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        219,
+        220
+      ],
+      "columnas_agregadas": [
+        "PROD_mosto_lag9"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 42,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "PROD_cocina_lag9: valor de 9 días antes",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Cocina",
+        "k": 9
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        220,
+        221
+      ],
+      "columnas_agregadas": [
+        "PROD_cocina_lag9"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 43,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "PROD_bodega_lag7: valor de 7 días antes",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Producido Bodega",
+        "k": 7
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        221,
+        222
+      ],
+      "columnas_agregadas": [
+        "PROD_bodega_lag7"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 44,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "PROD_filtrada_lag7: valor de 7 días antes",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Filtrada",
+        "k": 7
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        222,
+        223
+      ],
+      "columnas_agregadas": [
+        "PROD_filtrada_lag7"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 45,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "PROD_envasada_lag7: valor de 7 días antes",
+      "parametros": {
+        "columna": "Consolidado Produccion | Hl Cerveza Envasada",
+        "k": 7
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        223,
+        224
+      ],
+      "columnas_agregadas": [
+        "PROD_envasada_lag7"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 46,
+      "etapa": "Feature engineering",
+      "funcion": "rezago",
+      "descripcion": "FRIO_lag6: valor de 6 días antes",
+      "parametros": {
+        "columna": "Consolidado EE | Frio (Kw)",
+        "k": 6
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        224,
+        225
+      ],
+      "columnas_agregadas": [
+        "FRIO_lag6"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > rezagos"
+    },
+    {
+      "paso": 47,
+      "etapa": "Feature engineering",
+      "funcion": "media_mismo_dia",
+      "descripcion": "FRIO_mismo_dia4: promedio de las últimas 4 semanas en el mismo día de la semana que D+1",
+      "parametros": {
+        "columna": "Consolidado EE | Frio (Kw)",
+        "semanas": 4
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        225,
+        226
+      ],
+      "columnas_agregadas": [
+        "FRIO_mismo_dia4"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > medias_mismo_dia"
+    },
+    {
+      "paso": 48,
+      "etapa": "Feature engineering",
+      "funcion": "agregar_combinaciones",
+      "descripcion": "Ratios producción / frío del mismo día (0 si el frío es 0)",
+      "parametros": {
+        "ratios": 9
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        226,
+        235
+      ],
+      "columnas_agregadas": [
+        "RATIO_bodega_frio",
+        "RATIO_cocina_frio",
+        "RATIO_envasada_frio",
+        "RATIO_filtrada_frio",
+        "RATIO_l2_frio",
+        "RATIO_l3_frio",
+        "RATIO_l4_frio",
+        "RATIO_l5_frio",
+        "RATIO_mosto_frio"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > ratios"
+    },
+    {
+      "paso": 49,
+      "etapa": "Feature engineering",
+      "funcion": "agregar_eficiencias",
+      "descripcion": "efic_<X> = KPI / meta en los días con meta; el resto, la media de train",
+      "parametros": {
+        "pares": 33
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        235,
+        268
+      ],
+      "columnas_agregadas": [
+        "efic_Agua Bodega",
+        "efic_Agua Cocina",
+        "efic_Agua Elab",
+        "efic_Agua Envas",
+        "efic_Agua Linea 2",
+        "efic_Agua Linea 3",
+        "efic_Agua Linea 4",
+        "efic_Agua Planta",
+        "efic_Agua Planta de Agua",
+        "efic_Agua Servicios",
+        "efic_Aire Bodega",
+        "efic_Aire Cocina",
+        "efic_Aire Envasado",
+        "efic_Aire L2",
+        "efic_Aire L4",
+        "efic_Aire Servicios",
+        "efic_EE Agua",
+        "efic_EE CO2",
+        "efic_EE Cocina",
+        "efic_EE Eflu",
+        "efic_EE Elaboracion",
+        "efic_EE Envasado",
+        "efic_EE Frio",
+        "efic_EE Linea 2",
+        "efic_EE Linea 4",
+        "efic_ET Bodega",
+        "efic_ET Cocina",
+        "efic_ET Elab",
+        "efic_ET Envasado",
+        "efic_ET Linea 2",
+        "efic_ET Linea 3",
+        "efic_ET Linea 4",
+        "efic_ET Planta"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > eficiencias y tratamientos_PREPROCESSING.json > medias_train"
+    },
+    {
+      "paso": 50,
+      "etapa": "Feature engineering",
+      "funcion": "borrar_columnas",
+      "descripcion": "Borra las metas (ya están dentro de las efic_*)",
+      "parametros": {
+        "columnas_registradas": 49
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        268,
+        219
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 49,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > metas_tras_eficiencias"
+    },
+    {
+      "paso": 51,
+      "etapa": "Feature engineering",
+      "funcion": "agregar_combinaciones",
+      "descripcion": "Interacciones: producto de cada par de variables principales del mismo día",
+      "parametros": {
+        "interacciones": 10
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        219,
+        229
+      ],
+      "columnas_agregadas": [
+        "INT_Agua Planta (Hl)__x__ET Bodega/Hl",
+        "INT_FRIO_mismo_dia4__x__Agua Planta (Hl)",
+        "INT_FRIO_mismo_dia4__x__ET Bodega/Hl",
+        "INT_FRIO_mismo_dia4__x__KW Trafo 11",
+        "INT_Frio (Kw)__x__Agua Planta (Hl)",
+        "INT_Frio (Kw)__x__ET Bodega/Hl",
+        "INT_Frio (Kw)__x__FRIO_mismo_dia4",
+        "INT_Frio (Kw)__x__KW Trafo 11",
+        "INT_KW Trafo 11__x__Agua Planta (Hl)",
+        "INT_KW Trafo 11__x__ET Bodega/Hl"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > features > interacciones"
+    },
+    {
+      "paso": 52,
+      "etapa": "Calendario",
+      "funcion": "agregar_calendario",
+      "descripcion": "Día de la semana y mes del día que se predice (D+1) con codificación seno/coseno, estación en one-hot (4 columnas) y fin de semana",
+      "parametros": {},
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        229,
+        249
+      ],
+      "columnas_agregadas": [
+        "DIA_SEMANA",
+        "DS_cos",
+        "DS_domingo",
+        "DS_jueves",
+        "DS_lunes",
+        "DS_martes",
+        "DS_miercoles",
+        "DS_sabado",
+        "DS_sin",
+        "DS_viernes",
+        "ESTACION",
+        "EST_invierno",
+        "EST_otono",
+        "EST_primavera",
+        "EST_verano",
+        "FERIADO",
+        "FIN_SEMANA",
+        "MES",
+        "MES_cos",
+        "MES_sin"
+      ],
+      "columnas_borradas": 0,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0
+    },
+    {
+      "paso": 53,
+      "etapa": "Selección",
+      "funcion": "seleccionar",
+      "descripcion": "Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
+      "parametros": {
+        "features": 26
+      },
+      "filas": [
+        1210,
+        1210
+      ],
+      "columnas": [
+        249,
+        28
+      ],
+      "columnas_agregadas": [],
+      "columnas_borradas": 221,
+      "nulos": [
+        0,
+        0
+      ],
+      "celdas_modificadas": 0,
+      "detalle": "tratamientos_PREPROCESSING.json > seleccion"
+    }
+  ],
+  "salida": {
+    "archivo": "data/processed/dataset_final.csv",
+    "filas": 1210,
+    "columnas": 28,
+    "escalado": false,
+    "conjuntos": {
+      "train": {
+        "X_shape": [
+          846,
+          26
+        ],
+        "desde": "2020-07-04",
+        "hasta": "2022-10-27"
+      },
+      "val": {
+        "X_shape": [
+          182,
+          26
+        ],
+        "desde": "2022-10-28",
+        "hasta": "2023-04-27"
+      },
+      "test": {
+        "X_shape": [
+          182,
+          26
+        ],
+        "desde": "2023-04-28",
+        "hasta": "2023-10-26"
+      }
+    }
+  }
+}
