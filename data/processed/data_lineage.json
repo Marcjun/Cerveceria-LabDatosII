@@ -2,7 +2,7 @@
   "descripcion": "Transformaciones que aplica src/preprocessing_pipeline.py, en orden. Cada paso indica en 'detalle' dónde están las columnas y parámetros completos.",
   "ejecucion": {
     "script": "src/preprocessing_pipeline.py",
-    "fecha": "2026-11-15T19:46:26",
+    "fecha": "2026-11-15T21:57:51",
     "estado": "completo",
     "entradas": {
       "Totalizadores Planta 2020_2022.xlsx": {
@@ -1428,7 +1428,7 @@
       "funcion": "seleccionar",
       "descripcion": "Deja DIA, las features elegidas por LASSO y Random Forest (unión) y el target",
       "parametros": {
-        "features": 27
+        "features": 26
       },
       "filas": [
         1210,
@@ -1436,10 +1436,10 @@
       ],
       "columnas": [
         249,
-        29
+        28
       ],
       "columnas_agregadas": [],
-      "columnas_borradas": 220,
+      "columnas_borradas": 221,
       "nulos": [
         0,
         0
@@ -1451,13 +1451,13 @@
   "salida": {
     "archivo": "data/processed/dataset_final.csv",
     "filas": 1210,
-    "columnas": 29,
+    "columnas": 28,
     "escalado": false,
     "conjuntos": {
       "train": {
         "X_shape": [
           846,
-          27
+          26
         ],
         "desde": "2020-07-04",
         "hasta": "2022-10-27"
@@ -1465,7 +1465,7 @@
       "val": {
         "X_shape": [
           182,
-          27
+          26
         ],
         "desde": "2022-10-28",
         "hasta": "2023-04-27"
@@ -1473,7 +1473,7 @@
       "test": {
         "X_shape": [
           182,
-          27
+          26
         ],
         "desde": "2023-04-28",
         "hasta": "2023-10-26"
